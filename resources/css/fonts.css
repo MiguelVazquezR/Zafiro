@@ -1,0 +1,32 @@
+/* Gentium Plus Bold */
+@font-face {
+    font-family: 'Gentium Plus Bold';
+    src: url('/fonts/GentiumPlus-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+  }
+  
+  /* Gentium Plus Bold Italic */
+  @font-face {
+    font-family: 'Gentium Plus Bold Italic';
+    src: url('/fonts/GentiumPlus-BoldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+  }
+  
+  /* Gentium Plus Italic */
+  @font-face {
+    font-family: 'Gentium Plus Italic';
+    src: url('/fonts/GentiumPlus-Italic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+  }
+  
+  /* Gentium Plus Regular */
+  @font-face {
+    font-family: 'Gentium Plus Regular';
+    src: url('/fonts/GentiumPlus-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
