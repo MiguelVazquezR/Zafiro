@@ -7,59 +7,46 @@ use Illuminate\Http\Request;
 
 class MessageController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $messages = Message::latest()->get();
+        return inertia('Message/Index', compact('messages'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
-    {
-        //
+    {   
+        $request->validate([
+            'name' => 'required|string',
+            'address' => 'nullable|string',
+            'phone' => 'nullable|string|min:10|max:10',
+            'message' => 'required',
+            'service' => 'nullable|string',
+        ]); 
+
+        Message::create($request->all());
+
+        return back();
+
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Message $message)
+    public function MarkAsdispatched(Request $request)
     {
-        //
+        foreach ($request->messages as $message) {
+            $message = Message::find($message['id']);
+            $message->status = Message::DISPATCHED;
+            $message->save();
+        }
+
+        return response()->json(['message' => 'mensaje(s) marcado(s) como despachado(s)']);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Message $message)
+    public function massiveDelete(Request $request)
     {
-        //
-    }
+        foreach ($request->messages as $message) {
+            $message = Message::find($message['id']);
+            $message->delete();
+        }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Message $message)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Message $message)
-    {
-        //
+        return response()->json(['message' => 'mensaje(s) eliminado(s)']);
     }
 }

@@ -232,7 +232,7 @@
                     <h2 class="text-xl text-[#FFD700] font-bold mb-5">Contacto</h2>
                     <p>
                         <i class="fa-solid fa-envelope mr-3"></i>
-                        jose.rdz@ingenieriazafiro.com
+                        jose.rg@ingenieriazafiro.com
                     </p>
                     <p>
                         <i class="fa-solid fa-phone mr-3"></i>
@@ -256,6 +256,7 @@
 <script>
 import { useForm, Link, Head } from "@inertiajs/vue3";
 import { useToast } from "vue-toastification";
+import InputError from "@/Components/InputError.vue";
 
 // services images
 import s1 from "../../../public/images/services1.png";
@@ -414,6 +415,9 @@ export default {
             ]
         };
     },
+    components: {
+        InputError,
+    },  
     mounted() {
         window.addEventListener('scroll', this.handleScroll);
         this.toast = useToast();
@@ -444,10 +448,18 @@ export default {
             this.form.post(route("messages.store"), {
                 onSuccess: () => {
                     this.toast.success("Mensaje enviado correctamente", {
-                        timeout: 3000
+                        timeout: 5000
                     });
 
-                    form.reset();
+                    this.form.reset();
+                    this.goToContact();
+                },
+                onError: () => {
+                    this.toast.error("Completar correctamente formulario", {
+                        timeout: 5000
+                    });
+
+                    this.goToContact();
                 }
             });
         },
