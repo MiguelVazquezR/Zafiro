@@ -11,7 +11,7 @@
                 <h1 class="text-[#FFD700] my-9 text-3xl text-center">{{ services[currentServiceIndex].title }}</h1>
                 <img class="w-[600px] mx-auto opacity-100" :src="services[currentServiceIndex].image">
                 <button @click="goToContact"
-                    class="mx-auto mt-11 text-2xl rounded-full border-2 border-[#FFD700] text-black flex justify-between items-center py-1 px-5 bg-[#FFD700] transition-all">
+                    class="mx-auto mt-11 text-2xl rounded-full border-2 border-[#FFD700] text-black dark:text-black flex justify-between items-center py-1 px-5 bg-[#FFD700] transition-all">
                     Contáctanos
                 </button>
             </div>
@@ -35,7 +35,7 @@
 
         <!-- navbar -->
         <nav :class="['navbar', { 'fixed-navbar': isNavbarFixed }]"
-            class="flex items-center justify-between py-4 lg:px-10 px-6 w-full">
+            class="flex items-center justify-between py-4 lg:px-10 px-6 w-full dark:bg-white">
             <div class="flex space-x-2 items-center">
                 <img src="../../../public/images/logo_dark.png" class="h-14" alt="logo" />
                 <span class="font-bold text-[#FFD700] text-xl">INGENIERÍA ZAFIRO</span>
@@ -117,7 +117,7 @@
                     </div>
                 </div>
                 <button @click="goToContact"
-                    class="ml-auto mr-5 mt-20 text-2xl rounded-full border-2 border-[#FFD700] text-black flex justify-between items-center py-1 px-5 bg-[#FFD700] transition-all">
+                    class=" ml-auto mr-5 mt-20 text-2xl rounded-full border-2 border-[#FFD700] dark:text-black text-black flex justify-between items-center py-1 px-5 bg-[#FFD700] transition-all">
                     Contáctanos
                 </button>
             </section>
@@ -133,13 +133,13 @@
                         <p class="text-white text-justify">{{ service.description }}</p>
                         <figure @click="showPreview = true; currentServiceIndex = index;"
                             class="w-3/4 h-48 rounded-[20px] absolute -bottom-[104px] left-[12.5%] cursor-pointer">
-                            <img class="h-48 rounded-[20px]" :src="service.image">
+                            <img class="h-48 w-full rounded-[20px]" :src="service.image">
                             <div
-                                class="w-6 h-6 rounded-full bg-black opacity-50 flex items-center justify-center absolute bottom-3 right-3">
+                                class="w-6 h-6 rounded-full bg-black opacity-50 flex items-center justify-center absolute bottom-3 right-4">
                                 <i class="fa-solid fa-magnifying-glass-plus text-white text-xs"></i>
                             </div>
                         </figure>
-                    </div>
+                    </div>  
                 </div>
             </section>
 
@@ -149,7 +149,7 @@
                     <div class="col-span-3 border-2 border-[#FFD700] rounded-[20px] py-10 px-5">
                         <div class="flex h-full">
                             <div @click="currentProyectIndex = currentProyectIndex == 0 ? (projects.length - 1) : currentProyectIndex - 1"
-                                class="w-8 h-full mr-2 flex justify-center items-center cursor-pointer">
+                                class="w-8 h-11/12 lg:h-full mr-2 flex justify-center items-center cursor-pointer">
                                 <button>
                                     <i class="fa-solid fa-chevron-left"></i>
                                 </button>
@@ -157,12 +157,12 @@
                             <figure class="w-1/2">
                                 <img :src="projects[currentProyectIndex].image">
                             </figure>
-                            <div class="w-1/2 flex flex-col ml-5 justify-around text-3xl">
-                                <h1 class="text-center font-bold">PROYECTOS</h1>
-                                <p class="">{{ projects[currentProyectIndex].description }}</p>
+                            <div class="w-1/2 flex flex-col ml-5 justify-start text-3xl">
+                                <h1 class="text-center font-bold mb-12 lg:mb-32">PROYECTOS</h1>
+                                <p class="text-center text-xl">{{ projects[currentProyectIndex].description }}</p>
                             </div>
                             <div @click="currentProyectIndex = currentProyectIndex == (projects.length - 1) ? 0 : currentProyectIndex + 1"
-                                class="w-8 h-full ml-2 flex justify-center items-center cursor-pointer">
+                                class="w-8 h-11/12 lg:h-full ml-2 flex justify-center items-center cursor-pointer">
                                 <button>
                                     <i class="fa-solid fa-chevron-right"></i>
                                 </button>
