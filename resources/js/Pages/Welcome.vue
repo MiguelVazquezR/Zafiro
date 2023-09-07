@@ -135,7 +135,7 @@
                             <p class="text-red-600 text-xs" v-if="form.errors?.address">{{ form.errors?.address }}</p>
                         </div>
                         <div class="mb-5">
-                            <label for="address">Mensaje</label>
+                            <label for="address">Mensaje <span class="text-[#FFD700]">*</span></label>
                             <textarea v-model="form.message" rows="5" required
                                 class="active:ring-0 focus:ring-0 border-none outline-none bg-[#D9D9D9] block w-full text-[#808080] rounded-[10px]"
                                 placeholder="Dejános un mensaje "></textarea>
@@ -356,11 +356,11 @@ export default {
         store() {
             this.form.post(route("messages.store"), {
                 onSuccess: () => {
-                    this.toast.success("Mensaje enviado correctamente", {
-                        timeout: 3000
+                    this.toast.success("Gracias por tu mensaje, te contactaremos lo antes posible", {
+                        timeout: 5000
                     });
 
-                    form.reset();
+                    this.form.reset();
                 }
             });
         },

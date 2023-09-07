@@ -10,7 +10,7 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+const appName = 'Ingeniería Zafiro';
 
 const options = {
     // You can set your default options here
