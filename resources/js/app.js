@@ -10,6 +10,12 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 
+// Import the CSS or use your own!
+import "vue-toastification/dist/index.css";
+
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
+
 const appName = 'Ingeniería Zafiro';
 
 const options = {
