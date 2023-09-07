@@ -15,11 +15,9 @@ return new class extends Migration
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('email');
-            $table->string('company')->nullable();
+            $table->string('address');
             $table->string('phone')->nullable();
             $table->string('service')->nullable();
-            $table->boolean('info')->default(false);
             $table->text('message');
             $table->enum('status', [Message::IN_PROCESS, Message::DISPATCHED])->default(Message::IN_PROCESS);
             $table->timestamps();

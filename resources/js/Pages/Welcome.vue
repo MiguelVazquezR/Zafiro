@@ -5,14 +5,13 @@
         <div v-if="showPreview" class="fixed inset-0 bg-black opacity-90 z-20"></div>
 
         <!-- Imagen centrada sin opacidad -->
-        <div v-if="showPreview" class="fixed inset-0 flex justify-center items-center z-30">
+        <div v-if="showPreview" @click="showPreview = false; currentServiceIndex = null;"
+            class="fixed inset-0 flex justify-center items-center z-30">
             <div class="relative">
                 <h1 class="text-[#FFD700] my-9 text-3xl text-center">{{ services[currentServiceIndex].title }}</h1>
-                <button @click="showPreview = false; currentServiceIndex = null;"
-                    class="absolute top-9 right-2 p-4 text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
                 <img class="w-[600px] mx-auto opacity-100" :src="services[currentServiceIndex].image">
                 <button @click="goToContact"
-                    class="mx-auto mt-11 text-2xl rounded-full border-2 border-[#FFD700] text-black flex justify-between items-center py-1 px-5 bg-[#FFD700] transition-all">
+                    class="mx-auto mt-11 text-2xl rounded-full border-2 border-[#FFD700] text-black dark:text-black flex justify-between items-center py-1 px-5 bg-[#FFD700] transition-all">
                     Contáctanos
                 </button>
             </div>
@@ -27,21 +26,22 @@
 
         <!-- mobile menu (hamburger) -->
         <div v-if="showMobileMenu"
-            class="flex flex-col z-30 w-2/3 bg-[#262626] rounded-xl fixed top-20 right-1 border-white border py-1 text-white">
-            <button class="mx-1 py-2 hover:bg-[#FFD700] rounded-lg" @click="scrollToSection('Inicio')">Inicio</button>
+            class="flex flex-col z-30 w-2/3 bg-[#262626] rounded-xl fixed top-24 right-5 border-white border py-1 text-white">
+            <button class="mx-1 py-2 hover:bg-[#FFD700] rounded-lg" @click="scrollToSection('InicioM')">Inicio</button>
             <button class="mx-1 py-2 hover:bg-[#FFD700] rounded-lg" @click="scrollToSection('Servicios')">Servicios</button>
+            <button class="mx-1 py-2 hover:bg-[#FFD700] rounded-lg" @click="scrollToSection('Contacto')">Proyectos</button>
             <button class="mx-1 py-2 hover:bg-[#FFD700] rounded-lg" @click="scrollToSection('Contacto')">Contacto</button>
         </div>
 
         <!-- navbar -->
         <nav :class="['navbar', { 'fixed-navbar': isNavbarFixed }]"
-            class="flex items-center justify-between py-4 lg:px-10 px-6 w-full">
+            class="flex items-center justify-between py-4 lg:px-10 px-6 w-full dark:bg-white">
             <div class="flex space-x-2 items-center">
                 <img src="../../../public/images/logo_dark.png" class="h-14" alt="logo" />
                 <span class="font-bold text-[#FFD700] text-xl">INGENIERÍA ZAFIRO</span>
             </div>
             <button @click="showMobileMenu = !showMobileMenu" class="lg:hidden">
-                <i class="fa-solid fa-bars text-xl"></i>
+                <i class="fa-solid fa-bars text-xl text-[#FFD700]"></i>
             </button>
             <div class="mr-12 hidden lg:inline">
                 <button class="mx-2 rounded-[10px] px-1 py-px hover:bg-[#FFD700] hover:text-white"
@@ -56,6 +56,72 @@
         </nav>
 
         <main class="pt-20">
+            <!-- home desktop-->
+            <section class="hidden md:block lg:mx-24 mx-1 mt-9 relative mb-24" id="Inicio">
+                <div class="bg-[#1A1A1A] rounded-[20px] h-[400px] relative">
+                    <img class="absolute left-0 top-0" src="../../../public/images/decoration_left.png">
+                    <img class="absolute right-0 top-0 h-[400px]" src="../../../public/images/decoration_right.png">
+                    <div class="flex h-full py-24">
+                        <div @click="currentKirbyIndex = currentKirbyIndex == 0 ? (kirby.length - 1) : currentKirbyIndex - 1"
+                            class="w-8 h-full mr-2 flex justify-center items-center cursor-pointer">
+                            <button class="z-20 text-white text-lg ml-8">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </button>
+                        </div>
+                        <figure class="md:w-1/2 lg:w-1/3 h-2/3 z-20">
+                            <img class="h-[450px] mx-auto" :src="kirby[currentKirbyIndex].image">
+                        </figure>
+                        <div class="w-2/3 flex flex-col ml-5 pr-32 text-3xl">
+                            <h1 class="text-center text-[#FFD700] mb-8">{{ kirby[currentKirbyIndex].title }}</h1>
+                            <p class="text-white text-justify">{{ kirby[currentKirbyIndex].description }}</p>
+                        </div>
+                        <div @click="currentKirbyIndex = currentKirbyIndex == (kirby.length - 1) ? 0 : currentKirbyIndex + 1"
+                            class="w-8 h-full ml-2 flex justify-center items-center cursor-pointer">
+                            <button class="z-20 text-white text-lg mr-8">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <button @click="goToContact"
+                    class="ml-auto mr-14 mt-11 text-2xl rounded-full border-2 border-[#FFD700] text-black flex justify-between items-center py-1 px-5 bg-[#FFD700] transition-all">
+                    Contáctanos
+                </button>
+            </section>
+
+            <!-- home mobile-->
+            <section class="md:hidden mx-4 mt-9 relative mb-16" id="InicioM">
+                <div class="bg-[#1A1A1A] rounded-[20px] h-[450px] relative">
+                    <img class="absolute -left-0 bottom-10 h-[160px]" src="../../../public/images/decoration_left.png">
+                    <img class="absolute right-0 top-0 h-[300px]" src="../../../public/images/decoration_right.png">
+                    <div class="flex flex-col items-center text-xl px-7 pt-7 h-1/2">
+                        <h1 class="text-center text-[#FFD700] mb-8">{{ kirby[currentKirbyIndex].title }}</h1>
+                        <p class="text-white text-justify">{{ kirby[currentKirbyIndex].description }}</p>
+                    </div>
+                    <div class="flex h-1/2">
+                        <div @click="currentKirbyIndex = currentKirbyIndex == 0 ? (kirby.length - 1) : currentKirbyIndex - 1"
+                            class="w-8 h-full mr-2 flex justify-center items-center cursor-pointer">
+                            <button class="z-20 text-white text-lg ml-8">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </button>
+                        </div>
+                        <figure class="w-full z-20 rounded-2xl">
+                            <img class="h-[300px] rounded-2xl mx-auto" :src="kirby[currentKirbyIndex].image">
+                        </figure>
+                        <div @click="currentKirbyIndex = currentKirbyIndex == (kirby.length - 1) ? 0 : currentKirbyIndex + 1"
+                            class="w-8 h-full ml-2 flex justify-center items-center cursor-pointer">
+                            <button class="z-20 text-white text-lg mr-8">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <button @click="goToContact"
+                    class=" ml-auto mr-5 mt-20 text-2xl rounded-full border-2 border-[#FFD700] dark:text-black text-black flex justify-between items-center py-1 px-5 bg-[#FFD700] transition-all">
+                    Contáctanos
+                </button>
+            </section>
+
             <!-- Services -->
             <section class="lg:mx-24 mx-1 mt-9 relative mb-32" id="Servicios">
                 <h2 class="font-bold mb-10 text-3xl text-center">Nuestros servicios</h2>
@@ -67,23 +133,23 @@
                         <p class="text-white text-justify">{{ service.description }}</p>
                         <figure @click="showPreview = true; currentServiceIndex = index;"
                             class="w-3/4 h-48 rounded-[20px] absolute -bottom-[104px] left-[12.5%] cursor-pointer">
-                            <img :src="service.image">
+                            <img class="h-48 w-full rounded-[20px]" :src="service.image">
                             <div
-                                class="w-6 h-6 rounded-full bg-black opacity-50 flex items-center justify-center absolute bottom-3 right-3">
+                                class="w-6 h-6 rounded-full bg-black opacity-50 flex items-center justify-center absolute bottom-3 right-4">
                                 <i class="fa-solid fa-magnifying-glass-plus text-white text-xs"></i>
                             </div>
                         </figure>
-                    </div>
+                    </div>  
                 </div>
             </section>
 
             <!-- form -->
-            <section class="lg:mx-24 mx-1 mt-44 relative" id="Contacto">
+            <section class="lg:mx-24 md:mx-20 mx-1 mt-44 relative" id="Contacto">
                 <div class="lg:grid grid-cols-5 gap-9 mb-6">
                     <div class="col-span-3 border-2 border-[#FFD700] rounded-[20px] py-10 px-5">
                         <div class="flex h-full">
                             <div @click="currentProyectIndex = currentProyectIndex == 0 ? (projects.length - 1) : currentProyectIndex - 1"
-                                class="w-8 h-full mr-2 flex justify-center items-center cursor-pointer">
+                                class="w-8 h-11/12 lg:h-full mr-2 flex justify-center items-center cursor-pointer">
                                 <button>
                                     <i class="fa-solid fa-chevron-left"></i>
                                 </button>
@@ -91,19 +157,19 @@
                             <figure class="w-1/2">
                                 <img :src="projects[currentProyectIndex].image">
                             </figure>
-                            <div class="w-1/2 flex flex-col ml-5 justify-around text-3xl">
-                                <h1 class="text-center font-bold">PROYECTOS</h1>
-                                <p class="">{{ projects[currentProyectIndex].description }}</p>
+                            <div class="w-1/2 flex flex-col ml-5 justify-start text-3xl">
+                                <h1 class="text-center font-bold mb-12 lg:mb-32">PROYECTOS</h1>
+                                <p class="text-center text-xl">{{ projects[currentProyectIndex].description }}</p>
                             </div>
                             <div @click="currentProyectIndex = currentProyectIndex == (projects.length - 1) ? 0 : currentProyectIndex + 1"
-                                class="w-8 h-full ml-2 flex justify-center items-center cursor-pointer">
+                                class="w-8 h-11/12 lg:h-full ml-2 flex justify-center items-center cursor-pointer">
                                 <button>
                                     <i class="fa-solid fa-chevron-right"></i>
                                 </button>
                             </div>
                         </div>
                     </div>
-                    <form @submit.prevent="store" class="col-span-2">
+                    <form @submit.prevent="store" class="col-span-2 md:mt-12 lg:mt-0 mt-8 mx-8">
                         <h2 class="font-bold mb-3 text-xl text-[#FFD700]">CONTÁCTANOS</h2>
                         <div class="mb-5">
                             <label for="name">Nombre <span class="text-[#FFD700]">*</span></label>
@@ -153,28 +219,32 @@
                 </div>
             </section>
 
-            <footer class="p-4 lg:grid grid-cols-3 gap-3 text-white bg-[#1A1A1A] mt-24 md:relative">
-                <figure class="flex flex-col items-center space-y-2">
-                    <img class="" src="../../../public/images/logo_light.png" />
+            <footer class="p-4 md:grid grid-cols-3 gap-3 text-white bg-[#1A1A1A] mt-24 md:relative">
+                <figure class="h-full md:h-auto flex md:flex-col items-center space-y-2">
+                    <img class="h-16 md:h-auto" src="../../../public/images/logo_light.png" />
                     <span class="font-bold text-[#FFD700] text-xl">INGENIERÍA ZAFIRO</span>
                 </figure>
                 <div class="flex flex-col">
                     <h2 class="text-xl text-[#FFD700] font-bold mb-5">Servicios</h2>
                     <li v-for="(service, index) in services" :key="index">{{ service.title }}</li>
                 </div>
-                <div class="flex flex-col">
+                <div class="flex flex-col mb-5">
                     <h2 class="text-xl text-[#FFD700] font-bold mb-5">Contacto</h2>
                     <p>
                         <i class="fa-solid fa-envelope mr-3"></i>
-                        jose.rdz@ingenieriazafiro.com
+                        jose.rg@ingenieriazafiro.com
                     </p>
                     <p>
                         <i class="fa-solid fa-phone mr-3"></i>
                         3312517732
                     </p>
                 </div>
+                <p class="col-span-full">
+                    <small>Copyrigth &copy; 2023 </small>
+                    <small class="block md:inline mb-5"> Ingeniería Zafiro. Todos los derechos reservados.</small>
+                </p>
                 <a href="https://dtw.com.mx" target="_blank"
-                    class="col-span-full flex justify-start items-center space-x-2">
+                    class="col-span-full flex justify-end items-center space-x-2 mr-24">
                     <small>by Digtital TW</small>
                     <img class="w-6" src="../../../public/images/dtw_logo.png">
                 </a>
@@ -186,6 +256,7 @@
 <script>
 import { useForm, Link, Head } from "@inertiajs/vue3";
 import { useToast } from "vue-toastification";
+import InputError from "@/Components/InputError.vue";
 
 // services images
 import s1 from "../../../public/images/services1.png";
@@ -194,6 +265,10 @@ import s3 from "../../../public/images/services3.png";
 import s4 from "../../../public/images/services4.png";
 import s5 from "../../../public/images/services5.png";
 import s6 from "../../../public/images/services6.png";
+
+// home images
+import h1 from "../../../public/images/h1.png";
+import h2 from "../../../public/images/h2.png";
 
 // projects images
 import p1 from "../../../public/images/p1.png";
@@ -234,6 +309,7 @@ export default {
             showMobileMenu: false,
             currentProyectIndex: 0,
             currentServiceIndex: null,
+            currentKirbyIndex: 0,
             showPreview: false,
             services: [
                 {
@@ -324,9 +400,24 @@ export default {
                     description: "Muro con ladrillo aparente",
                     image: p19,
                 },
+            ],
+            kirby: [
+                {
+                    title: "Nosotros",
+                    image: h1,
+                    description: "Contamos con amplia experiencia en el ramo de la construcción."
+                },
+                {
+                    title: "Tecnología avanzada ",
+                    image: h2,
+                    description: "Nuestro compromiso con tecnología de vanguardia nos lleva a emplear el potente receptor GNSS Reach RS+ de Emlid."
+                },
             ]
         };
     },
+    components: {
+        InputError,
+    },  
     mounted() {
         window.addEventListener('scroll', this.handleScroll);
         this.toast = useToast();
@@ -356,11 +447,19 @@ export default {
         store() {
             this.form.post(route("messages.store"), {
                 onSuccess: () => {
-                    this.toast.success("Gracias por tu mensaje, te contactaremos lo antes posible", {
+                    this.toast.success("Mensaje enviado correctamente", {
                         timeout: 5000
                     });
 
                     this.form.reset();
+                    this.goToContact();
+                },
+                onError: () => {
+                    this.toast.error("Completar correctamente formulario", {
+                        timeout: 5000
+                    });
+
+                    this.goToContact();
                 }
             });
         },
