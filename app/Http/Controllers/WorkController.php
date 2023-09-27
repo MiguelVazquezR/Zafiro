@@ -71,4 +71,22 @@ class WorkController extends Controller
     {
         //
     }
+
+    public function massiveDelete(Request $request)
+    {
+        foreach ($request->works as $work) {
+            $work = Work::find($work['id']);
+            $work->delete();
+        }
+
+        return response()->json(['message' => 'trabajo(s) eliminado(s)']);
+    }
+
+    public function showInvoice($work_id)
+    {
+        $work = WorkResource::make(Work::find($work_id));
+        $today = today()->isoFormat('DD MMMM, YYYY');
+
+        return inertia('Work/Invoice', compact('work', 'today'));
+    }
 }

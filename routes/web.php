@@ -38,6 +38,7 @@ Route::middleware([
 
 // ** works routes **
 Route::resource('works', WorkController::class)->middleware('auth');
+Route::get('works/{work_id}/invoice', [WorkController::class, 'showInvoice'])->middleware('auth')->name('works.invoice');
 
 // ** messages routes **
 Route::resource('messages', MessageController::class)->except('show')->middleware('auth');

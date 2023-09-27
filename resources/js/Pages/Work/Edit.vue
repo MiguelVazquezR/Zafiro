@@ -11,7 +11,7 @@
 
             <!-- form -->
             <div class="bg-white rounded-xl shadow-lg px-5 py-3 mt-6">
-                <form @submit.prevent="store()" class="lg:grid grid-cols-2 gap-4 space-y-3 lg:space-y-0">
+                <form @submit.prevent="update()" class="lg:grid grid-cols-2 gap-4 space-y-3 lg:space-y-0">
                     <div>
                         <label class="text-sm">Nombre de cliente</label>
                         <input v-model="form.customer_name" type="text" class="active:ring-0 focus:ring-0 border-none outline-none bg-[#D9D9D9] block w-full text-[#808080] rounded-[10px] h-9">
@@ -57,7 +57,8 @@
                         <input v-model="form.start_date" type="date" class="active:ring-0 focus:ring-0 border-none outline-none bg-[#D9D9D9] block w-full text-[#808080] rounded-[10px]">
                         <InputError :message="form.errors.start_date" />
                     </div>
-                    <div class="flex justify-end mt-3 col-span-full">
+                    <div class="flex justify-end space-x-2 mt-3 col-span-full">
+                        <PrimaryButton @click="$inertia.get(route('works.invoice', work.id))" type="button">Ver recibo</PrimaryButton>
                         <PrimaryButton>Guardar</PrimaryButton>
                     </div>
                 </form>
@@ -100,7 +101,7 @@ export default {
     },
     methods: {
         update() {
-            this.form.post(route('works.update', this.work), {
+            this.form.put(route('works.update', this.work), {
                 onSuccess: () => {
                     this.$notify({
                         title: 'Correcto',
