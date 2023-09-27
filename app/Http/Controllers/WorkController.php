@@ -89,4 +89,13 @@ class WorkController extends Controller
 
         return inertia('Work/Invoice', compact('work', 'today'));
     }
+
+    public function massiveStore(Request $request)
+    {
+        foreach ($request->works as $item) {
+            Work::create($item);
+        }
+
+        return response()->json(['message' => 'Se sincronizaron los datos']);
+    }
 }
