@@ -3,6 +3,7 @@
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\WorkController;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -45,3 +46,9 @@ Route::post('works/massive-store', [WorkController::class, 'massiveStore'])->mid
 Route::resource('messages', MessageController::class)->except('show')->middleware('auth');
 Route::post('messages/mark-as-dispatched', [MessageController::class, 'MarkAsdispatched'])->name('messages.mark-as-dispatched');
 Route::post('messages/massive-delete', [MessageController::class, 'massiveDelete'])->name('messages.massive-delete');
+
+//artisan commands
+Route::get('/route-cache', function () {
+    Artisan::call('route:cache');
+    return 'routes cached!.';
+});
