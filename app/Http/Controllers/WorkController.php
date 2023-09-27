@@ -1,0 +1,74 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Resources\WorkResource;
+use App\Models\Work;
+use Illuminate\Http\Request;
+
+class WorkController extends Controller
+{
+    public function index()
+    {
+        $works = WorkResource::collection(Work::latest()->get());
+
+        return inertia('Work/Index', compact('works'));
+    }
+
+    public function create()
+    {
+        return inertia('Work/Create');
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'town' => 'required|string|max:255',
+            'ejido' => 'required|string|max:255',
+            'parcel_number' => 'required|string|max:255',
+            'customer_name' => 'required|string|max:255',
+            'price' => 'required|numeric|min:0',
+            'area' => 'required|numeric|min:0',
+            'work_type' => 'required|string|max:255',
+            'start_date' => 'required|date',
+        ]);
+
+        Work::create($validated);
+
+        return to_route('works.index');
+    }
+
+    public function show(Work $work)
+    {
+        return inertia('Work/Show');
+    }
+
+    public function edit(Work $work)
+    {
+        $date = $work->start_date->toDateString();
+        return inertia('Work/Edit', compact('work', 'date'));
+    }
+
+    public function update(Request $request, Work $work)
+    {
+        $validated = $request->validate([
+            'town' => 'required|string|max:255',
+            'ejido' => 'required|string|max:255',
+            'parcel_number' => 'required|string|max:255',
+            'customer_name' => 'required|string|max:255',
+            'price' => 'required|numeric|min:0',
+            'area' => 'required|numeric|min:0',
+            'work_type' => 'required|string|max:255',
+            'start_date' => 'required|date',
+        ]);
+
+        $work->update($validated);
+
+        return to_route('works.index');
+    }
+
+    public function destroy(Work $work)
+    {
+        //
+    }
+}
