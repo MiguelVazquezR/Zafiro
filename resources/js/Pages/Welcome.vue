@@ -232,7 +232,7 @@
                     <h2 class="text-xl text-[#FFD700] font-bold mb-5">Contacto</h2>
                     <p>
                         <i class="fa-solid fa-envelope mr-3"></i>
-                        jose.rg@ingenieriazafiro.com
+                        ingenieriazafiro@dtw.com.mx
                     </p>
                     <p>
                         <i class="fa-solid fa-phone mr-3"></i>
@@ -245,7 +245,7 @@
                 </p>
                 <a href="https://dtw.com.mx" target="_blank"
                     class="col-span-full flex justify-end items-center space-x-2 mr-24">
-                    <small>by Digtital TW</small>
+                    <small>by Digtital Tech Work</small>
                     <img class="w-6" src="../../../public/images/dtw_logo.png">
                 </a>
             </footer>
@@ -385,7 +385,7 @@ export default {
                     image: p13,
                 },
                 {
-                    description: "Armando de losa",
+                    description: "Armado de losa",
                     image: p14,
                 },
                 {
