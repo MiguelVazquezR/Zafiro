@@ -232,7 +232,7 @@
                     <h2 class="text-xl text-[#FFD700] font-bold mb-5">Contacto</h2>
                     <p>
                         <i class="fa-solid fa-envelope mr-3"></i>
-                        ingenieriazafiro@dtw.com.mx
+                        jose.rod@ingenieriazafiro.dtw.com.mx
                     </p>
                     <p>
                         <i class="fa-solid fa-phone mr-3"></i>
