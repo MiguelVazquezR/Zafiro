@@ -18,8 +18,8 @@
         </div>
 
         <!-- whatsapp button -->
-        <a class="z-50 w-14 h-14 lg:w-20 lg:h-20 rounded-full bg-green-600 shadow-md shadow-green-800/100 flex items-center justify-center fixed bottom-3 right-3 hover:scale-105"
-            href="https://api.whatsapp.com/send?phone=523312517732&text=Hola!%20vi%20tu%20página%20,%20me%20interesa%20su%20servicio!"
+        <a class="md:hidden z-50 w-14 h-14 lg:w-20 lg:h-20 rounded-full bg-green-600 shadow-md shadow-green-800/100 flex items-center justify-center fixed bottom-3 right-3 hover:scale-105"
+            href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página%20,%20me%20interesa%20su%20servicio!"
             target="_blank" rel="noopener noreferrer">
             <i class="fa-brands fa-beat fa-whatsapp text-2xl lg:text-4xl text-gray-100"></i>
         </a>
@@ -27,10 +27,12 @@
         <!-- mobile menu (hamburger) -->
         <div v-if="showMobileMenu"
             class="flex flex-col z-30 w-2/3 bg-[#262626] rounded-xl fixed top-24 right-5 border-white border py-1 text-white">
-            <button class="mx-1 py-2 hover:bg-[#FFD700] rounded-lg" @click="scrollToSection('InicioM')">Inicio</button>
+            <button class="mx-1 py-2 bg-[#FFD700] rounded-lg">LOTES</button>
+            <button class="mx-1 py-2 hover:bg-[#FFD700] rounded-lg" @click="$inertia.visit('/otros-servicios')">OTROS SERVICIOS</button>
+            <!-- <button class="mx-1 py-2 hover:bg-[#FFD700] rounded-lg" @click="scrollToSection('InicioM')">Inicio</button>
             <button class="mx-1 py-2 hover:bg-[#FFD700] rounded-lg" @click="scrollToSection('Servicios')">Servicios</button>
             <button class="mx-1 py-2 hover:bg-[#FFD700] rounded-lg" @click="scrollToSection('Contacto')">Proyectos</button>
-            <button class="mx-1 py-2 hover:bg-[#FFD700] rounded-lg" @click="scrollToSection('Contacto')">Contacto</button>
+            <button class="mx-1 py-2 hover:bg-[#FFD700] rounded-lg" @click="scrollToSection('Contacto')">Contacto</button> -->
         </div>
 
         <!-- navbar -->
@@ -43,187 +45,108 @@
             <button @click="showMobileMenu = !showMobileMenu" class="lg:hidden">
                 <i class="fa-solid fa-bars text-xl text-[#FFD700]"></i>
             </button>
-            <div class="mr-12 hidden lg:inline">
-                <button class="mx-2 rounded-[10px] px-1 py-px hover:bg-[#FFD700] hover:text-white"
+            <div class="mr-12 hidden lg:inline">        
+                <button class="mx-2 rounded-sm px-1 py-px bg-[#FFD700]">LOTES</button>
+                <button class="mx-2 rounded-sm px-1 py-px hover:bg-[#FFD700] transition-colors ease-linear duration-200" @click="$inertia.visit('/otros-servicios')">OTROS SERVICIOS</button>
+                <a href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página%20,%20me%20interesa%20su%20servicio!" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-brands fa-whatsapp text-xl ml-2"></i>
+                </a>
+                <!-- <button class="mx-2 rounded-[10px] px-1 py-px hover:bg-[#FFD700] hover:text-white"
                     @click="scrollToSection('Inicio')">Inicio</button>
                 <button class="mx-2 rounded-[10px] px-1 py-px hover:bg-[#FFD700] hover:text-white"
                     @click="scrollToSection('Servicios')">Servicios</button>
                 <button class="mx-2 rounded-[10px] px-1 py-px hover:bg-[#FFD700] hover:text-white"
                     @click="scrollToSection('Contacto')">Proyectos</button>
                 <button class="mx-2 rounded-[10px] px-1 py-px hover:bg-[#FFD700] hover:text-white"
-                    @click="scrollToSection('Contacto')">Contacto</button>
+                    @click="scrollToSection('Contacto')">Contacto</button> -->
             </div>
         </nav>
 
         <main class="pt-20">
             <!-- home desktop-->
-            <section class="hidden md:block lg:mx-24 mx-1 mt-9 relative mb-24" id="Inicio">
-                <div class="bg-[#1A1A1A] rounded-[20px] h-[400px] relative">
-                    <img class="absolute left-0 top-0" src="../../../public/images/decoration_left.png">
-                    <img class="absolute right-0 top-0 h-[400px]" src="../../../public/images/decoration_right.png">
-                    <div class="flex h-full py-24">
-                        <div @click="currentKirbyIndex = currentKirbyIndex == 0 ? (kirby.length - 1) : currentKirbyIndex - 1"
-                            class="w-8 h-full mr-2 flex justify-center items-center cursor-pointer">
-                            <button class="z-20 text-white text-lg ml-8">
-                                <i class="fa-solid fa-chevron-left"></i>
-                            </button>
-                        </div>
-                        <figure class="md:w-1/2 lg:w-1/3 h-2/3 z-20">
-                            <img class="h-[450px] mx-auto" :src="kirby[currentKirbyIndex].image">
-                        </figure>
-                        <div class="w-2/3 flex flex-col ml-5 pr-32 text-3xl">
-                            <h1 class="text-center text-[#FFD700] mb-8">{{ kirby[currentKirbyIndex].title }}</h1>
-                            <p class="text-white text-justify">{{ kirby[currentKirbyIndex].description }}</p>
-                        </div>
-                        <div @click="currentKirbyIndex = currentKirbyIndex == (kirby.length - 1) ? 0 : currentKirbyIndex + 1"
-                            class="w-8 h-full ml-2 flex justify-center items-center cursor-pointer">
-                            <button class="z-20 text-white text-lg mr-8">
-                                <i class="fa-solid fa-chevron-right"></i>
-                            </button>
-                        </div>
+            <section class="hidden md:block lg:mx-24 mx-1 mt-9 relative mb-28" id="Inicio">
+                <div class="rounded-[20px] h-[500px] relative">
+                    <img class="mx-auto w-[90%] h-[120%]" src="../../../public/images/home_lotes.png">
+
+                    <div class="absolute bottom-3 left-28 h-1/2 w-[500px]">
+                        <p class="text-white text-3xl">EL SITIO IDEAL PARA ENCONTRAR EL  TERRERNO PERFECTO PARA TI </p>
+                        <p class="text-[#D9D9D9] text-3xl mt-5">TERRENOS EN VENTA </p>
+                        <button @click="goToContact"
+                            class="ml-auto mr-2 mt-14 text-xl rounded-full border-2 border-[#FFD700] text-black flex justify-between items-center py-1 px-5 bg-[#FFD700] transition-all">
+                            Contáctanos
+                        </button>
                     </div>
                 </div>
-                <button @click="goToContact"
-                    class="ml-auto mr-14 mt-11 text-2xl rounded-full border-2 border-[#FFD700] text-black flex justify-between items-center py-1 px-5 bg-[#FFD700] transition-all">
-                    Contáctanos
-                </button>
             </section>
 
             <!-- home mobile-->
             <section class="md:hidden mx-4 mt-9 relative mb-16" id="InicioM">
-                <div class="bg-[#1A1A1A] rounded-[20px] h-[450px] relative">
-                    <img class="absolute -left-0 bottom-10 h-[160px]" src="../../../public/images/decoration_left.png">
-                    <img class="absolute right-0 top-0 h-[300px]" src="../../../public/images/decoration_right.png">
-                    <div class="flex flex-col items-center text-xl px-7 pt-7 h-1/2">
-                        <h1 class="text-center text-[#FFD700] mb-8">{{ kirby[currentKirbyIndex].title }}</h1>
-                        <p class="text-white text-justify">{{ kirby[currentKirbyIndex].description }}</p>
-                    </div>
-                    <div class="flex h-1/2">
-                        <div @click="currentKirbyIndex = currentKirbyIndex == 0 ? (kirby.length - 1) : currentKirbyIndex - 1"
-                            class="w-8 h-full mr-2 flex justify-center items-center cursor-pointer">
-                            <button class="z-20 text-white text-lg ml-8">
-                                <i class="fa-solid fa-chevron-left"></i>
-                            </button>
-                        </div>
-                        <figure class="w-full z-20 rounded-2xl">
-                            <img class="h-[300px] rounded-2xl mx-auto" :src="kirby[currentKirbyIndex].image">
-                        </figure>
-                        <div @click="currentKirbyIndex = currentKirbyIndex == (kirby.length - 1) ? 0 : currentKirbyIndex + 1"
-                            class="w-8 h-full ml-2 flex justify-center items-center cursor-pointer">
-                            <button class="z-20 text-white text-lg mr-8">
-                                <i class="fa-solid fa-chevron-right"></i>
-                            </button>
-                        </div>
+                <div class="rounded-[20px] h-[300px] relative">
+                    <img class="absolute right-0 top-0 h-[100%]" src="../../../public/images/home_lotes.png">
+                    <div class="absolute bottom-16 left-1 h-1/2 w-[230px]">
+                        <p class="text-white text-base">EL SITIO IDEAL PARA ENCONTRAR EL  TERRERNO PERFECTO PARA TI </p>
+                        <p class="text-[#D9D9D9] text-base mt-5">TERRENOS EN VENTA </p>
+                        <button @click="goToContact"
+                            class="ml-auto mr-16 mt-14 text-sm rounded-full border-2 border-[#FFD700] text-black flex justify-between items-center py-1 px-5 bg-[#FFD700] transition-all">
+                            Contáctanos
+                        </button>
                     </div>
                 </div>
-                <button @click="goToContact"
-                    class=" ml-auto mr-5 mt-20 text-2xl rounded-full border-2 border-[#FFD700] dark:text-black text-black flex justify-between items-center py-1 px-5 bg-[#FFD700] transition-all">
-                    Contáctanos
-                </button>
             </section>
 
             <!-- Services -->
-            <section class="lg:mx-24 mx-1 mt-9 relative mb-32" id="Servicios">
-                <h2 class="font-bold mb-10 text-3xl text-center">Nuestros servicios</h2>
+            <section class="lg:mx-24 mx-1 relative mb-32" id="Servicios">
+                <h2 class="font-bold mb-10 text-3xl text-center">Explora nuestros fraccionamientos y encuentra tu lote perfecto.</h2>
 
                 <div class="grid xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-44">
-                    <div v-for="(service, index) in services" :key="index"
-                        class="bg-[#1A1A1A] rounded-[20px] px-5 pt-6  min-h-[326px] text-2xl relative">
-                        <h1 class="text-[#FFD700] text-center mb-3">{{ service.title }}</h1>
-                        <p class="text-white text-justify">{{ service.description }}</p>
-                        <figure @click="showPreview = true; currentServiceIndex = index;"
-                            class="w-3/4 h-48 rounded-[20px] absolute -bottom-[104px] left-[12.5%] cursor-pointer">
-                            <img class="h-48 w-full rounded-[20px]" :src="service.image">
-                            <div
-                                class="w-6 h-6 rounded-full bg-black opacity-50 flex items-center justify-center absolute bottom-3 right-4">
-                                <i class="fa-solid fa-magnifying-glass-plus text-white text-xs"></i>
-                            </div>
+                    <!-- componente de lote de fraccionamiento ------------------- -->
+                    <div class="rounded-[20px] border border-[#D9D9D9] shadow-md min-h-[530px] text-2xl relative cursor-pointer">
+                        <figure class="h-1/2 bg-slate-500 rounded-t-[20px]">
+                            <!-- <img src="" alt=""> -->
                         </figure>
+                        <div class="p-5">
+                            <p class="text-gray-500 text-right text-base">- {{ 'Lotes residenciales' }}</p>
+                            <p class="text-[#4D4D4D] text-xl mt-4"> {{ 'Fraccionameinto “Los Arrallanes”' }}</p>
+                            <p class="text-[#4D4D4D] text-base mt-1"> {{ 'Lotes desde' }}</p>
+                            <p class="text-black text-3xl font-bold mt-1"> ${{ '   390,000' }}</p>
+                            <p class="text-[#4D4D4D] text-base mt-1"><i class="fa-solid fa-location-dot mr-2"></i>{{ 'Tizapán el Alto, Jalisco.' }}</p>
+                            <p class="text-[#4D4D4D] text-base mt-1"><i class="fa-solid fa-ruler-horizontal mr-2"></i>{{ 'Desde 900 m2' }}</p>
+                            <p class="text-[#4D4D4D] text-base mt-1">{{ 'Disponibles: 64 lotes' }}</p>
+                        </div>
                     </div>  
                 </div>
             </section>
+            
+            <section class="bg-[#EDEDED] rounded-t-[70px] px-32 py-14">
+                <h2 class="mb-9 text-3xl ml-3 font-bold">Descubre los diferentes tamaños de terreno que tenemos para ti. </h2>
+                <!-- componente de terreno individual --------- -->
+                <div class="bg-white rounded-xl border shadow-md p-3 w-[550px] h-[220px] flex space-x-4 cursor-pointer">
+                    <figure class="rounded-md w-[235px] bg-gray-500">
+                        <!-- <img src="" alt=""> -->
+                    </figure>
 
-            <!-- form -->
-            <section class="lg:mx-24 md:mx-20 mx-1 mt-44 relative" id="Contacto">
-                <div class="lg:grid grid-cols-5 gap-9 mb-6">
-                    <div class="col-span-3 border-2 border-[#FFD700] rounded-[20px] py-10 px-5">
-                        <div class="flex h-full">
-                            <div @click="currentProyectIndex = currentProyectIndex == 0 ? (projects.length - 1) : currentProyectIndex - 1"
-                                class="w-8 h-11/12 lg:h-full mr-2 flex justify-center items-center cursor-pointer">
-                                <button>
-                                    <i class="fa-solid fa-chevron-left"></i>
-                                </button>
-                            </div>
-                            <figure class="w-1/2">
-                                <img :src="projects[currentProyectIndex].image">
-                            </figure>
-                            <div class="w-1/2 flex flex-col ml-5 justify-start text-3xl">
-                                <h1 class="text-center font-bold mb-12 lg:mb-32">PROYECTOS</h1>
-                                <p class="text-center text-xl">{{ projects[currentProyectIndex].description }}</p>
-                            </div>
-                            <div @click="currentProyectIndex = currentProyectIndex == (projects.length - 1) ? 0 : currentProyectIndex + 1"
-                                class="w-8 h-11/12 lg:h-full ml-2 flex justify-center items-center cursor-pointer">
-                                <button>
-                                    <i class="fa-solid fa-chevron-right"></i>
-                                </button>
-                            </div>
-                        </div>
+                    <div class="w-[315px]">
+                        <p class="text-base text-right">{{'Frac. Los Arrallanes'}}</p>
+                        <p class="text-base text-[#4D4D4D]">Venta de terreno/lote</p>
+                        <p class="text-2xl font-bold">{{ '$74,000' }}</p>
+                        <p class="text-xl">{{ '2.7 hectáreas' }}</p>
+                        <p class="text-[#4D4D4D] text-base mt-1"><i class="fa-solid fa-location-dot mr-2"></i>{{ 'Tizapán el Alto, Jalisco.' }}</p>
+                        <p class="text-[#4D4D4D] text-base mt-1"><i class="fa-solid fa-ruler-horizontal mr-2"></i>{{ '32 x 34 m' }}</p>
                     </div>
-                    <form @submit.prevent="store" class="col-span-2 md:mt-12 lg:mt-0 mt-8 mx-8">
-                        <h2 class="font-bold mb-3 text-xl text-[#FFD700]">CONTÁCTANOS</h2>
-                        <div class="mb-5">
-                            <label for="name">Nombre <span class="text-[#FFD700]">*</span></label>
-                            <input v-model="form.name" type="text" id="name" required ref="nameInput"
-                                class="active:ring-0 focus:ring-0 border-none outline-none bg-[#D9D9D9] block w-full text-[#808080] rounded-[10px] h-9"
-                                placeholder="Escribe tu nombre" />
-                            <p class="text-red-600 text-xs" v-if="form.errors?.name">{{ form.errors?.name }}</p>
-                        </div>
-                        <div class="mb-5">
-                            <label for="phone">Teléfono <span class="text-[#FFD700]">*</span></label>
-                            <input v-model="form.phone" type="text" id="phone" required
-                                class="active:ring-0 focus:ring-0 border-none outline-none bg-[#D9D9D9] block w-full text-[#808080] rounded-[10px] h-9"
-                                placeholder="Escribe tu teléfono" />
-                            <p class="text-red-600 text-xs" v-if="form.errors?.phone">{{ form.errors?.phone }}</p>
-                        </div>
-                        <div class="mb-5">
-                            <label for="service">Servicio</label>
-                            <select v-model="form.service" id="service"
-                                class="active:ring-0 focus:ring-0 border-none outline-none bg-[#D9D9D9] block w-full text-[#808080] rounded-[10px]">
-                                <option v-for="(service, index) in services" :key="index" :value="service.title">{{
-                                    service.title }}</option>
-                            </select>
-                        </div>
-                        <div class="mb-5">
-                            <label for="address">Dirección</label>
-                            <input v-model="form.address" type="text" id="address"
-                                class="active:ring-0 focus:ring-0 border-none outline-none bg-[#D9D9D9] block w-full text-[#808080] rounded-[10px] h-9"
-                                placeholder="Escribe la dirección donde solicita el servicio" />
-                            <p class="text-red-600 text-xs" v-if="form.errors?.address">{{ form.errors?.address }}</p>
-                        </div>
-                        <div class="mb-5">
-                            <label for="address">Mensaje <span class="text-[#FFD700]">*</span></label>
-                            <textarea v-model="form.message" rows="5" required
-                                class="active:ring-0 focus:ring-0 border-none outline-none bg-[#D9D9D9] block w-full text-[#808080] rounded-[10px]"
-                                placeholder="Dejános un mensaje "></textarea>
-                            <p class="text-red-600 text-xs" v-if="form.errors?.message">{{ form.errors?.message }}</p>
-                        </div>
-                        <button type="submit"
-                            class="mx-auto mt-5 rounded-full border-2 border-[#FFD700] text-black flex justify-between items-center py-1 px-5 hover:bg-[#FFD700] transition-all">
-                            Enviar
-                            <i class="fa-solid fa-chevron-right ml-6"></i>
-                        </button>
-                    </form>
-                    <!-- <figure class="rounded-[20px] hidden lg:block">
-                        <img class="rounded-[20px]" src="../../../public/assets/images/contact.png" />
-                    </figure> -->
+                </div>
+                <div class="text-center mt-7">
+                    <i class="fa-solid fa-angle-down text-white bg-black rounded-full p-2 cursor-pointer"></i>
                 </div>
             </section>
-
-            <footer class="p-4 md:grid grid-cols-3 gap-3 text-white bg-[#1A1A1A] mt-24 md:relative">
+            <footer class="p-4 md:grid grid-cols-4 gap-3 text-white bg-[#1A1A1A] md:relative">
                 <figure class="h-full md:h-auto flex md:flex-col items-center space-y-2">
                     <img class="h-16 md:h-auto" src="../../../public/images/logo_light.png" />
                     <span class="font-bold text-[#FFD700] text-xl">INGENIERÍA ZAFIRO</span>
                 </figure>
+                <div class="flex flex-col">
+                    <h2 class="text-xl text-[#FFD700] font-bold mb-5">Venta de terrenos</h2>
+                    <li v-for="(lote, index) in lotes" :key="index">{{ lote.title }}</li>
+                </div>
                 <div class="flex flex-col">
                     <h2 class="text-xl text-[#FFD700] font-bold mb-5">Servicios</h2>
                     <li v-for="(service, index) in services" :key="index">{{ service.title }}</li>
@@ -412,7 +335,15 @@ export default {
                     image: h2,
                     description: "Nuestro compromiso con tecnología de vanguardia nos lleva a emplear el potente receptor GNSS Reach RS+ de Emlid."
                 },
-            ]
+            ],
+            lotes: [
+                {
+                    title: 'Fraccionamiento "Los Arrayanes"',
+                },
+                {
+                    title: 'Fraccionamiento "El Crucero"',
+                },
+            ],
         };
     },
     components: {

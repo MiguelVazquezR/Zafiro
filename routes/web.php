@@ -19,11 +19,17 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
+    return Inertia::render('Lotes', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
+    ]);
+});
+
+Route::get('/otros-servicios', function () {
+    return Inertia::render('OtrosServicios', [
+        'canLogin' => Route::has('login'),
     ]);
 });
 
