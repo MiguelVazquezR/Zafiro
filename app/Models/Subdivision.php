@@ -23,6 +23,10 @@ class Subdivision extends Model implements HasMedia
         'amenities',
     ];
 
+    protected $casts = [
+        'amenities' => 'array'
+    ];
+
     //relationships
     public function batches() :HasMany
     {

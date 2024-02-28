@@ -20,7 +20,7 @@ return new class extends Migration
             $table->unsignedFloat('lowest_surface')->nullable();
             $table->string('address');
             $table->text('description');
-            $table->text('amenities');
+            $table->json('amenities')->nullable();
             $table->timestamps();
         });
     }
