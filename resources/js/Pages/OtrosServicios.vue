@@ -18,8 +18,8 @@
         </div>
 
         <!-- whatsapp button -->
-        <a class="z-50 w-14 h-14 lg:w-20 lg:h-20 rounded-full bg-green-600 shadow-md shadow-green-800/100 flex items-center justify-center fixed bottom-3 right-3 hover:scale-105"
-            href="https://api.whatsapp.com/send?phone=523312517732&text=Hola!%20vi%20tu%20página%20,%20me%20interesa%20su%20servicio!"
+        <a class="md:hidden z-50 w-14 h-14 lg:w-20 lg:h-20 rounded-full bg-green-600 shadow-md shadow-green-800/100 flex items-center justify-center fixed bottom-3 right-3 hover:scale-105"
+            href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página%20,%20me%20interesa%20su%20servicio!"
             target="_blank" rel="noopener noreferrer">
             <i class="fa-brands fa-beat fa-whatsapp text-2xl lg:text-4xl text-gray-100"></i>
         </a>
@@ -27,10 +27,12 @@
         <!-- mobile menu (hamburger) -->
         <div v-if="showMobileMenu"
             class="flex flex-col z-30 w-2/3 bg-[#262626] rounded-xl fixed top-24 right-5 border-white border py-1 text-white">
-            <button class="mx-1 py-2 hover:bg-[#FFD700] rounded-lg" @click="scrollToSection('InicioM')">Inicio</button>
+            <button class="mx-1 py-2 hover:bg-[#FFD700] rounded-lg" @click="$inertia.visit('/')">LOTES</button>
+            <button class="mx-1 py-2 bg-[#FFD700] rounded-lg">OTROS SERVICIOS</button>
+            <!-- <button class="mx-1 py-2 hover:bg-[#FFD700] rounded-lg" @click="scrollToSection('InicioM')">Inicio</button>
             <button class="mx-1 py-2 hover:bg-[#FFD700] rounded-lg" @click="scrollToSection('Servicios')">Servicios</button>
             <button class="mx-1 py-2 hover:bg-[#FFD700] rounded-lg" @click="scrollToSection('Contacto')">Proyectos</button>
-            <button class="mx-1 py-2 hover:bg-[#FFD700] rounded-lg" @click="scrollToSection('Contacto')">Contacto</button>
+            <button class="mx-1 py-2 hover:bg-[#FFD700] rounded-lg" @click="scrollToSection('Contacto')">Contacto</button> -->
         </div>
 
         <!-- navbar -->
@@ -43,15 +45,20 @@
             <button @click="showMobileMenu = !showMobileMenu" class="lg:hidden">
                 <i class="fa-solid fa-bars text-xl text-[#FFD700]"></i>
             </button>
-            <div class="mr-12 hidden lg:inline">
-                <button class="mx-2 rounded-[10px] px-1 py-px hover:bg-[#FFD700] hover:text-white"
+            <div class="mr-12 hidden lg:inline">        
+                <button class="mx-2 rounded-sm px-1 py-px hover:bg-[#FFD700] transition-colors ease-linear duration-200" @click="$inertia.visit('/')">LOTES</button>
+                <button class="mx-2 rounded-sm px-1 py-px bg-[#FFD700]">OTROS SERVICIOS</button>
+                <a href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página%20,%20me%20interesa%20su%20servicio!" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-brands fa-whatsapp text-xl ml-2"></i>
+                </a>
+                <!-- <button class="mx-2 rounded-[10px] px-1 py-px hover:bg-[#FFD700] hover:text-white"
                     @click="scrollToSection('Inicio')">Inicio</button>
                 <button class="mx-2 rounded-[10px] px-1 py-px hover:bg-[#FFD700] hover:text-white"
                     @click="scrollToSection('Servicios')">Servicios</button>
                 <button class="mx-2 rounded-[10px] px-1 py-px hover:bg-[#FFD700] hover:text-white"
                     @click="scrollToSection('Contacto')">Proyectos</button>
                 <button class="mx-2 rounded-[10px] px-1 py-px hover:bg-[#FFD700] hover:text-white"
-                    @click="scrollToSection('Contacto')">Contacto</button>
+                    @click="scrollToSection('Contacto')">Contacto</button> -->
             </div>
         </nav>
 
@@ -219,11 +226,15 @@
                 </div>
             </section>
 
-            <footer class="p-4 md:grid grid-cols-3 gap-3 text-white bg-[#1A1A1A] mt-24 md:relative">
+            <footer class="p-4 md:grid grid-cols-4 gap-3 text-white bg-[#1A1A1A] mt-24 md:relative">
                 <figure class="h-full md:h-auto flex md:flex-col items-center space-y-2">
                     <img class="h-16 md:h-auto" src="../../../public/images/logo_light.png" />
                     <span class="font-bold text-[#FFD700] text-xl">INGENIERÍA ZAFIRO</span>
                 </figure>
+                <div class="flex flex-col">
+                    <h2 class="text-xl text-[#FFD700] font-bold mb-5">Venta de terrenos</h2>
+                    <li v-for="(lote, index) in lotes" :key="index">{{ lote.title }}</li>
+                </div>
                 <div class="flex flex-col">
                     <h2 class="text-xl text-[#FFD700] font-bold mb-5">Servicios</h2>
                     <li v-for="(service, index) in services" :key="index">{{ service.title }}</li>
@@ -412,7 +423,15 @@ export default {
                     image: h2,
                     description: "Nuestro compromiso con tecnología de vanguardia nos lleva a emplear el potente receptor GNSS Reach RS+ de Emlid."
                 },
-            ]
+            ],
+            lotes: [
+                {
+                    title: 'Fraccionamiento "Los Arrayanes"',
+                },
+                {
+                    title: 'Fraccionamiento "El Crucero"',
+                },
+            ],
         };
     },
     components: {
