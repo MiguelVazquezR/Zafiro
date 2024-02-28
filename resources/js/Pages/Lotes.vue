@@ -29,10 +29,6 @@
             class="flex flex-col z-30 w-2/3 bg-[#262626] rounded-xl fixed top-24 right-5 border-white border py-1 text-white">
             <button class="mx-1 py-2 bg-[#FFD700] rounded-lg">LOTES</button>
             <button class="mx-1 py-2 hover:bg-[#FFD700] rounded-lg" @click="$inertia.visit('/otros-servicios')">OTROS SERVICIOS</button>
-            <!-- <button class="mx-1 py-2 hover:bg-[#FFD700] rounded-lg" @click="scrollToSection('InicioM')">Inicio</button>
-            <button class="mx-1 py-2 hover:bg-[#FFD700] rounded-lg" @click="scrollToSection('Servicios')">Servicios</button>
-            <button class="mx-1 py-2 hover:bg-[#FFD700] rounded-lg" @click="scrollToSection('Contacto')">Proyectos</button>
-            <button class="mx-1 py-2 hover:bg-[#FFD700] rounded-lg" @click="scrollToSection('Contacto')">Contacto</button> -->
         </div>
 
         <!-- navbar -->
@@ -51,14 +47,6 @@
                 <a href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página%20,%20me%20interesa%20su%20servicio!" target="_blank" rel="noopener noreferrer">
                     <i class="fa-brands fa-whatsapp text-xl ml-2"></i>
                 </a>
-                <!-- <button class="mx-2 rounded-[10px] px-1 py-px hover:bg-[#FFD700] hover:text-white"
-                    @click="scrollToSection('Inicio')">Inicio</button>
-                <button class="mx-2 rounded-[10px] px-1 py-px hover:bg-[#FFD700] hover:text-white"
-                    @click="scrollToSection('Servicios')">Servicios</button>
-                <button class="mx-2 rounded-[10px] px-1 py-px hover:bg-[#FFD700] hover:text-white"
-                    @click="scrollToSection('Contacto')">Proyectos</button>
-                <button class="mx-2 rounded-[10px] px-1 py-px hover:bg-[#FFD700] hover:text-white"
-                    @click="scrollToSection('Contacto')">Contacto</button> -->
             </div>
         </nav>
 
@@ -95,25 +83,10 @@
             </section>
 
             <!-- Services -->
-            <section class="lg:mx-24 mx-1 relative mb-32" id="Servicios">
-                <h2 class="font-bold mb-10 text-3xl text-center">Explora nuestros fraccionamientos y encuentra tu lote perfecto.</h2>
-
-                <div class="grid xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-44">
-                    <!-- componente de lote de fraccionamiento ------------------- -->
-                    <div class="rounded-[20px] border border-[#D9D9D9] shadow-md min-h-[530px] text-2xl relative cursor-pointer">
-                        <figure class="h-1/2 bg-slate-500 rounded-t-[20px]">
-                            <!-- <img src="" alt=""> -->
-                        </figure>
-                        <div class="p-5">
-                            <p class="text-gray-500 text-right text-base">- {{ 'Lotes residenciales' }}</p>
-                            <p class="text-[#4D4D4D] text-xl mt-4"> {{ 'Fraccionameinto “Los Arrallanes”' }}</p>
-                            <p class="text-[#4D4D4D] text-base mt-1"> {{ 'Lotes desde' }}</p>
-                            <p class="text-black text-3xl font-bold mt-1"> ${{ '   390,000' }}</p>
-                            <p class="text-[#4D4D4D] text-base mt-1"><i class="fa-solid fa-location-dot mr-2"></i>{{ 'Tizapán el Alto, Jalisco.' }}</p>
-                            <p class="text-[#4D4D4D] text-base mt-1"><i class="fa-solid fa-ruler-horizontal mr-2"></i>{{ 'Desde 900 m2' }}</p>
-                            <p class="text-[#4D4D4D] text-base mt-1">{{ 'Disponibles: 64 lotes' }}</p>
-                        </div>
-                    </div>  
+            <section class="lg:mx-72 mx-1 relative mb-32 pt-10" id="Servicios">
+                <h2 class="font-bold my-10 text-2xl text-center">Explora nuestros fraccionamientos y encuentra tu lote perfecto.</h2>
+                <div class="grid xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-4">
+                    <SubdivisionCard v-for="subdivision in subdivisions.data" :key="subdivision" :subdivision="subdivision" />  
                 </div>
             </section>
             
@@ -180,6 +153,7 @@
 import { useForm, Link, Head } from "@inertiajs/vue3";
 import { useToast } from "vue-toastification";
 import InputError from "@/Components/InputError.vue";
+import SubdivisionCard from "@/Components/MyComponents/Subdivision/SubdivisionCard.vue";
 
 // services images
 import s1 from "../../../public/images/services1.png";
@@ -189,31 +163,6 @@ import s4 from "../../../public/images/services4.png";
 import s5 from "../../../public/images/services5.png";
 import s6 from "../../../public/images/services6.png";
 
-// home images
-import h1 from "../../../public/images/h1.png";
-import h2 from "../../../public/images/h2.png";
-
-// projects images
-import p1 from "../../../public/images/p1.png";
-import p2 from "../../../public/images/p2.png";
-import p3 from "../../../public/images/p3.png";
-import p4 from "../../../public/images/p4.png";
-import p5 from "../../../public/images/p5.png";
-import p6 from "../../../public/images/p6.png";
-import p7 from "../../../public/images/p7.png";
-import p8 from "../../../public/images/p8.png";
-import p9 from "../../../public/images/p9.png";
-import p10 from "../../../public/images/p10.png";
-import p11 from "../../../public/images/p11.png";
-import p12 from "../../../public/images/p12.png";
-import p13 from "../../../public/images/p13.png";
-import p14 from "../../../public/images/p14.png";
-import p15 from "../../../public/images/p15.png";
-import p16 from "../../../public/images/p16.png";
-import p17 from "../../../public/images/p17.png";
-import p18 from "../../../public/images/p18.png";
-import p19 from "../../../public/images/p19.png";
-import p20 from "../../../public/images/p20.png";
 
 export default {
     data() {
@@ -266,76 +215,6 @@ export default {
                     image: s6,
                 },
             ],
-            projects: [
-                {
-                    description: "Pulido de losa",
-                    image: p1,
-                },
-                {
-                    description: "Cimentación y compactación de material de banco",
-                    image: p2,
-                },
-                {
-                    description: "Mecanica de suelos",
-                    image: p4,
-                },
-                {
-                    description: "Demolición y retiro de escombro ",
-                    image: p5,
-                },
-                {
-                    description: "Replanteo de puntos con gps topografico",
-                    image: p7,
-                },
-                {
-                    description: " Cimbrado, armado y colado de losa Estructural",
-                    image: p8,
-                },
-                {
-                    description: "Mecanica de suelos prueba spt",
-                    image: p9,
-                },
-                {
-                    description: "Carga y acarreo de escombro",
-                    image: p10,
-                },
-                {
-                    description: "Cimentación de mampostería ",
-                    image: p11,
-                },
-                {
-                    description: "Experiencia en proyectos verticales",
-                    image: p13,
-                },
-                {
-                    description: "Armado de losa",
-                    image: p14,
-                },
-                {
-                    description: "Construction de carcamárcamo pluvial",
-                    image: p17,
-                },
-                {
-                    description: "Estructura de acero",
-                    image: p18,
-                },
-                {
-                    description: "Muro con ladrillo aparente",
-                    image: p19,
-                },
-            ],
-            kirby: [
-                {
-                    title: "Nosotros",
-                    image: h1,
-                    description: "Contamos con amplia experiencia en el ramo de la construcción."
-                },
-                {
-                    title: "Tecnología avanzada ",
-                    image: h2,
-                    description: "Nuestro compromiso con tecnología de vanguardia nos lleva a emplear el potente receptor GNSS Reach RS+ de Emlid."
-                },
-            ],
             lotes: [
                 {
                     title: 'Fraccionamiento "Los Arrayanes"',
@@ -346,64 +225,17 @@ export default {
             ],
         };
     },
+    props:{
+        subdivisions: Object
+    },
     components: {
         InputError,
-    },  
-    mounted() {
-        window.addEventListener('scroll', this.handleScroll);
-        this.toast = useToast();
-    },
-    beforeDestroy() {
-        window.removeEventListener('scroll', this.handleScroll);
-    },
-    methods: {
-        handleScroll() {
-            const currentScrollY = window.scrollY;
-
-            if (currentScrollY > this.lastScrollY && currentScrollY > window.innerHeight) {
-                // Si se hace scroll hacia abajo y se ha pasado el alto de la pantalla
-                this.isNavbarFixed = false;
-            } else {
-                // Si se hace scroll hacia arriba
-                this.isNavbarFixed = true;
-            }
-
-            this.lastScrollY = currentScrollY;
-        },
-        scrollToSection(sectionId) {
-            const section = document.getElementById(sectionId);
-            section.scrollIntoView({ behavior: 'smooth' });
-            this.showMobileMenu = false;
-        },
-        store() {
-            this.form.post(route("messages.store"), {
-                onSuccess: () => {
-                    this.toast.success("Mensaje enviado correctamente", {
-                        timeout: 5000
-                    });
-
-                    this.form.reset();
-                    this.goToContact();
-                },
-                onError: () => {
-                    this.toast.error("Completar correctamente formulario", {
-                        timeout: 5000
-                    });
-
-                    this.goToContact();
-                }
-            });
-        },
-        goToContact() {
-            this.showPreview = false;
-            this.scrollToSection('Contacto');
-            this.$refs.nameInput.focus();
-        }
-    },
-    components: {
+        SubdivisionCard,
         Link,
         Head,
-    }
+    },  
+    methods: {
+    },
 };
 </script>
 

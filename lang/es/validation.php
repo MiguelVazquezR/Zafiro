@@ -202,5 +202,8 @@ return [
         'area' => 'área',
         'work_type' => 'tipo de trabajo',
         'start_date' => 'fecha de inicio',
+        'batches_availables' => 'lotes disponibles',
+        'type' => 'tipo',
+        'address' => 'ubicación',
     ],
 ];
