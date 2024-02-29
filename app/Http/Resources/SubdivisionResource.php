@@ -29,6 +29,7 @@ class SubdivisionResource extends JsonResource
             'amenities' => $this->amenities,
             'images' => $this->getMedia('images')->all(),
             'planos' => $this->getMedia('planos')->all(),
+            'batches' => BatchResource::collection($this->whenLoaded('batches')),
             'created_at' => $this->created_at->isoFormat('DD MMM, YYYY h:mm A'),
         ];
     }

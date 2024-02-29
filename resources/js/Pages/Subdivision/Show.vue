@@ -141,13 +141,9 @@
                                 
                                 <iframe class="mt-5 rounded-lg"
                                     src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA0s1a7phLN0iaD6-UE7m4qP-z21pH0eSc&q=Eiffel+Tower+Paris+France"
-                                    width="600" height="380" frameborder="0" style="border:0; width: 100%;" allowfullscreen></iframe>
-                                    
-                                <!-- lotes del fraccionamiento  -->
-                                <div class="my-9">
-                                    <p class="text-lg font-bold">Lotes de {{ subdivision.data.name }} </p>
-                                </div>
+                                    width="600" height="380" frameborder="0" style="border:0; width: 100%;" allowfullscreen></iframe>                                    
                             </div>
+
                         </div>
                     </div>
 
@@ -158,6 +154,14 @@
                             <PrimaryButton> 
                                 <a href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página%20,%20me%20interesa%20su%20servicio!" target="_blank" rel="noopener noreferrer">Contactar por whatsapp</a>
                             </PrimaryButton>
+                        </div>
+                    </div>
+
+                    <!-- lotes del fraccionamiento  -->
+                    <div class="my-9 col-span-full">
+                        <p class="text-lg font-bold">Lotes de {{ subdivision.data.name }} </p>
+                        <div class="grid xs:grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-4 mt-7 lg:mx-24">
+                            <BatchCard v-for="batch in subdivision.data.batches" :key="batch" :batch="batch" />
                         </div>
                     </div>
 
@@ -206,6 +210,7 @@
 <script>
 import { useForm, Link, Head } from "@inertiajs/vue3";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+import BatchCard from "@/Components/MyComponents/Batch/BatchCard.vue";
 
 // services images
 import s1 from "../../../../public/images/services1.png";
@@ -298,6 +303,7 @@ export default {
     },
     components: {
         PrimaryButton,
+        BatchCard,
         Link,
         Head,
     }
