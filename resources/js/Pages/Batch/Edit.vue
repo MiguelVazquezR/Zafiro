@@ -1,8 +1,8 @@
 <template>
     <AppLayout title="Editar lote">
-        <div class="lg:w-2/3 mx-auto rounded-md lg:border border-secondary p-5">
+        <div class="lg:w-[80%] mx-auto rounded-md lg:border border-secondary p-5">
             <h1 class="font-bold text-lg text-center lg:text-left">Editar Lote <span class="text-primary">"{{ batch.name }}"</span></h1>
-            <div class="lg:grid grid-cols-3 space-x-3 mt-3">
+            <div class="lg:grid grid-cols-3 gap-x-3 mt-3">
                 <div>
                     <p class="text-xs text-red-600">Si vas a cambiar o agregar nuevas imágenes es necesario ponerlas todas de nuevo ya que se eliminarán</p>
                     <InputFilePreview v-show="currentImage == 1" :imageUrl="batch.media[0]?.original_url" @cleared="form.cleared_cover1 = true" @imagen="this.form.image_cover1 = $event;" />
@@ -66,9 +66,14 @@
                         <FileUploader @files-selected="this.form.planos = $event" />
                     </div>
                     <div class="mt-3">
-                        <InputLabel value="Ubicación*" class="ml-3 mb-1" />
-                        <el-input v-model="form.address" placeholder="Escribe el ubicación" :maxlength="100" clearable />
+                        <InputLabel value="Dirección*" class="ml-3 mb-1" />
+                        <el-input v-model="form.address" placeholder="Escribe la dirección del lote" :maxlength="100" clearable />
                         <InputError :message="form.errors.address" />
+                    </div>
+                    <div class="mt-3">
+                        <InputLabel value="Url de maps" class="ml-3 mb-1" />
+                        <el-input v-model="form.maps_url" placeholder="Pega la url de google maps" :maxlength="700" clearable />
+                        <InputError :message="form.errors.maps_url" />
                     </div>
                     <div class="mt-3">
                         <InputLabel value="Descripción*" class="ml-3 mb-1" />
@@ -102,6 +107,7 @@ data() {
         price: this.batch.price,
         surface: this.batch.surface,
         address: this.batch.address,
+        maps_url: this.batch.maps_url,
         description: this.batch.description,
         image_cover1: null,
         image_cover2: null,

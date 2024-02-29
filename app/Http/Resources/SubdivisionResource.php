@@ -25,6 +25,7 @@ class SubdivisionResource extends JsonResource
             ],
             'lowest_surface' => $this->lowest_surface,
             'address' => $this->address,
+            'maps_url' => $this->maps_url,
             'description' => $this->description,
             'amenities' => $this->amenities,
             'images' => $this->getMedia('images')->all(),

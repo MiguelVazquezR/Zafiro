@@ -58,7 +58,7 @@
                 <p class="text-sm text-[#4D4D4D] underline"><i class="fa-solid fa-location-dot mr-2"></i> Terreno en {{ batch.data.subdivision.address }}</p>
 
                 <!-- imagenes -->
-                <div class="lg:grid grid-cols-2 gap-9 mt-5 relative">
+                <div class="lg:grid grid-cols-2 gap-9 mt-5 relative space-y-3 md:space-y-0">
                     <figure class="w-full h-[600px] flex justify-center">
                         <img class="object-cover rounded-xl w-full" :src="batch.data.images[0]?.original_url" alt="">
                     </figure>
@@ -93,10 +93,10 @@
                         <div class="my-7">
                             <p class="font-bold text-lg mb-4 pl-4">Características</p>
 
-                            <div class="flex flex-wrap items-center border-b border-[#D9D9D9] pb-7 space-x-3 pl-4">
+                            <div class="flex flex-wrap items-center border-b border-[#D9D9D9] pb-7 space-x-3 pl-4 gap-y-2">
 
                                 <!-- Precio desde -->
-                                <div class="rounded-md border border-[#D9D9D9] flex items-center px-2 py-1">
+                                <div class="rounded-md border border-[#D9D9D9] flex items-center px-2 py-1 ml-3 md:ml-0">
                                     <i class="fa-solid fa-dollar-sign border-r border-[#D9D9D9] pr-1 text-lg"></i>
                                     <div class="flex flex-col justify-center px-3">
                                         <p class="text-sm text-[#4D4D4D]">Precio</p>
@@ -140,12 +140,17 @@
                             </div>
 
                             <!-- Ubicación -->
-                            <div class="my-4 pl-4">
+                            <div v-if="batch.data.maps_url" class="my-4 pl-4">
                                 <p class="font-bold text-lg">Ubicación</p>
-                                
-                                <iframe class="mt-5 rounded-lg"
-                                    src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA0s1a7phLN0iaD6-UE7m4qP-z21pH0eSc&q=Eiffel+Tower+Paris+France"
-                                    width="600" height="380" frameborder="0" style="border:0; width: 100%;" allowfullscreen></iframe>
+                                <iframe
+                                    class="mt-5 rounded-lg"
+                                    :src="getEmbedMapUrl(batch.data.maps_url)"
+                                    width="600"
+                                    height="380"
+                                    frameborder="0"
+                                    style="border: 0; width: 100%;"
+                                    allowfullscreen
+                                ></iframe>
                             </div>
                         </div>
                     </div>
@@ -205,15 +210,6 @@
 <script>
 import { useForm, Link, Head } from "@inertiajs/vue3";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import axios from 'axios';
-
-// services images
-import s1 from "../../../../public/images/services1.png";
-import s2 from "../../../../public/images/services2.png";
-import s3 from "../../../../public/images/services3.png";
-import s4 from "../../../../public/images/services4.png";
-import s5 from "../../../../public/images/services5.png";
-import s6 from "../../../../public/images/services6.png";
 
 export default {
     data() {
@@ -234,32 +230,26 @@ export default {
                 {
                     title: "Deslinde de parcelas",
                     description: "Definimos de manera precisa las fronteras de tu parcela para garantizar la propiedad y el uso adecuado de la tierra.",
-                    image: s1,
                 },
                 {
                     title: "Planos topográficos",
                     description: "Brindamos una visión detallada y precisa del terreno. Ya sea para proyectos de construcción, planificación urbana o análisis del terreno.",
-                    image: s2,
                 },
                 {
                     title: "Obra civil",
                     description: "Desde el diseño hasta la construcción, gestionamos cada etapa del proceso con precisión y profesionalismo.",
-                    image: s3,
                 },
                 {
                     title: "Lotificaciones",
                     description: "Convertimos terrenos en comunidades planificadas, creamos espacios funcionales y atractivos ",
-                    image: s4,
                 },
                 {
                     title: "Diseño arquitectónico",
                     description: "Desde residencias hasta espacios comerciales, cada diseño es una expresión de tus necesidades y estilos. ",
-                    image: s5,
                 },
                 {
                     title: "Experiencia con acabados de lujo",
                     description: "Desde selecciones de materiales exclusivos hasta ejecución impecable, creamos ambientes que reflejan tu gusto refinado.",
-                    image: s6,
                 },
             ],
             lotes: [
@@ -281,6 +271,13 @@ export default {
         },
         handleMinusImage(){
             this.currentImage === 0 ? this.currentImage = this.batch.data.images?.length - 1 : this.currentImage -= 1
+        },
+        getEmbedMapUrl(mapsUrl) {
+        // Asegurarte de que mapsUrl tenga el formato correcto
+        const formattedUrl = mapsUrl.replace('https://www.google.com/maps/place/', '');
+
+        // Agregar "/embed/v1/" y la key al inicio de la URL
+        return `https://www.google.com/maps/embed/v1/place?key=AIzaSyA0s1a7phLN0iaD6-UE7m4qP-z21pH0eSc&q=${formattedUrl}`;
         },
     },
     components: {

@@ -1,6 +1,6 @@
 <template>
     <AppLayout title="Editar fraccionamiento">
-        <div class="lg:w-2/3 mx-auto rounded-md lg:border border-secondary p-5">
+        <div class="lg:w-[80%] mx-auto rounded-md lg:border border-secondary p-5">
             <h1 class="font-bold text-lg text-center lg:text-left">Editar fraccionamiento <span class="text-primary">"{{ subdivision.name }}"</span></h1>
             <div class="lg:grid grid-cols-3 space-x-3 mt-3">
                 <div>
@@ -71,9 +71,15 @@
                         <FileUploader @files-selected="this.form.planos = $event" />
                     </div>
                     <div class="mt-3">
-                        <InputLabel value="Ubicación*" class="ml-3 mb-1" />
-                        <el-input v-model="form.address" placeholder="Escribe el ubicación" :maxlength="100" clearable />
-                        <InputError :message="form.errors.address" />
+                        <InputLabel value="Url de maps" class="ml-3 mb-1" />
+                        <el-input v-model="form.maps_url" placeholder="Pega la url de google maps" :maxlength="700" clearable />
+                        <InputError :message="form.errors.maps_url" />
+                    </div>
+                    <div class="mt-3">
+                        <InputLabel value="Descripción*" class="ml-3 mb-1" />
+                        <el-input v-model="form.description" :autosize="{ minRows: 3, maxRows: 5 }" type="textarea"
+                                    placeholder="Escribe la descripción" :maxlength="800" show-word-limit clearable />
+                        <InputError :message="form.errors.description" />
                     </div>
                     <div class="mt-3">
                         <InputLabel value="Descripción*" class="ml-3 mb-1" />
@@ -120,6 +126,7 @@ data() {
         lowest_price: this.subdivision.lowest_price,
         lowest_surface: this.subdivision.lowest_surface,
         address: this.subdivision.address,
+        maps_url: this.subdivision.maps_url,
         description: this.subdivision.description,
         amenities: this.subdivision.amenities,
         image_cover1: null,

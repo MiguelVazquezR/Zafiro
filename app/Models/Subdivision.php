@@ -19,6 +19,7 @@ class Subdivision extends Model implements HasMedia
         'lowest_price',
         'lowest_surface',
         'address',
+        'maps_url',
         'description',
         'amenities',
     ];

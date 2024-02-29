@@ -209,6 +209,18 @@ const logout = () => {
                         <ResponsiveNavLink :href="route('works.index')" :active="route().current('works.*')">
                             Trabajos
                         </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('subdivisions.create')" :active="route().current('subdivisions.create')">
+                            Nuevo fraccionamiento
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('subdivisions.index')" :active="route().current('subdivisions.index')">
+                            Lista de fraccionamientos
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('batches.create')" :active="route().current('batches.create')">
+                            Nuevo lote
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('batches.index')" :active="route().current('batches.index')">
+                            Lista de lotes
+                        </ResponsiveNavLink>
                     </div>
 
                     <!-- Responsive Settings Options -->
