@@ -57,7 +57,7 @@
                 <p class="text-sm text-[#4D4D4D] underline"><i class="fa-solid fa-location-dot mr-2"></i> Terrenos en {{ subdivision.data.address }}</p>
 
                 <!-- imagenes -->
-                <div class="lg:grid grid-cols-2 gap-9 mt-5 relative">
+                <div class="lg:grid grid-cols-2 gap-9 mt-5 relative space-y-3 md:space-y-0">
                     <figure class="w-full h-[600px] flex justify-center">
                         <img class="object-cover rounded-xl w-full" :src="subdivision.data.images[0]?.original_url" alt="">
                     </figure>
@@ -86,10 +86,10 @@
                         <div class="my-7">
                             <p class="font-bold text-lg mb-4 pl-4">Características</p>
 
-                            <div class="flex flex-wrap items-center border-b border-[#D9D9D9] pb-7 space-x-3 pl-4">
+                            <div class="flex flex-wrap items-center border-b border-[#D9D9D9] pb-7 space-x-3 pl-4 gap-y-2">
 
                                 <!-- Precio desde -->
-                                <div class="rounded-md border border-[#D9D9D9] flex items-center px-2 py-1">
+                                <div class="rounded-md border border-[#D9D9D9] flex items-center px-2 py-1 ml-3 md:ml-0">
                                     <i class="fa-solid fa-dollar-sign border-r border-[#D9D9D9] pr-1 text-lg"></i>
                                     <div class="flex flex-col justify-center px-3">
                                         <p class="text-sm text-[#4D4D4D]">Precio desde</p>

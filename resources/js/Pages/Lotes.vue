@@ -68,7 +68,7 @@
             </section>
 
             <!-- home mobile-->
-            <section class="md:hidden mx-4 mt-9 relative mb-16" id="InicioM">
+            <section class="md:hidden mt-9 relative mb-16" id="InicioM">
                 <div class="rounded-[20px] h-[300px] relative">
                     <img class="absolute right-0 top-0 h-[100%]" src="../../../public/images/home_lotes.png">
                     <div class="absolute bottom-16 left-1 h-1/2 w-[230px]">
@@ -90,9 +90,9 @@
                 </div>
             </section>
             
-            <section class="bg-[#EDEDED] rounded-t-[70px] px-32 py-14">
-                <h2 class="mb-9 text-3xl ml-3 font-bold">Descubre los diferentes tamaños de terreno que tenemos para ti. </h2>
-                <div class="grid xs:grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-4 lg:mx-28">
+            <section class="bg-[#EDEDED] rounded-t-[70px] lg:px-32 p-2 lg:py-14">
+                <h2 class="py-9 lg:text-3xl ml-3 font-bold">Descubre los diferentes tamaños de terreno que tenemos para ti. </h2>
+                <div class="md:grid md:grid-cols-2 gap-x-4 gap-y-4 lg:mx-28 space-y-2 md:space-y-0">
                     <BatchCard v-for="batch in batches.data" :key="batch" :batch="batch" />
                 </div>
                 <p v-if="loadingItems" class="text-xs my-4 text-center">
