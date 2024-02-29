@@ -62,11 +62,11 @@ class BatchController extends Controller
     }
 
 
-    public function show(Batch $batch_id)
+    public function show($batch_id)
     {
-        $batch = BatchResource::make(Batch::with('media')->find($batch_id));
+        $batch = BatchResource::make(Batch::with(['media', 'subdivision'])->find($batch_id));
 
-        // return $subdivision;
+        // return $batch;
         return inertia('Batch/Show', compact('batch'));
     }
 

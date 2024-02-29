@@ -62,7 +62,7 @@ class SubdivisionController extends Controller
    
     public function show($subdivision_id)
     {   
-        $subdivision = SubdivisionResource::make(Subdivision::with('media')->find($subdivision_id));
+        $subdivision = SubdivisionResource::make(Subdivision::with(['media', 'batches.subdivision'])->find($subdivision_id));
 
         // return $subdivision;
         return inertia('Subdivision/Show', compact('subdivision'));
