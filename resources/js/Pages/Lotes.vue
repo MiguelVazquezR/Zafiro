@@ -92,20 +92,8 @@
             
             <section class="bg-[#EDEDED] rounded-t-[70px] px-32 py-14">
                 <h2 class="mb-9 text-3xl ml-3 font-bold">Descubre los diferentes tamaños de terreno que tenemos para ti. </h2>
-                <!-- componente de terreno individual --------- -->
-                <div class="bg-white rounded-xl border shadow-md p-3 w-[550px] h-[220px] flex space-x-4 cursor-pointer">
-                    <figure class="rounded-md w-[235px] bg-gray-500">
-                        <!-- <img src="" alt=""> -->
-                    </figure>
-
-                    <div class="w-[315px]">
-                        <p class="text-base text-right">{{'Frac. Los Arrallanes'}}</p>
-                        <p class="text-base text-[#4D4D4D]">Venta de terreno/lote</p>
-                        <p class="text-2xl font-bold">{{ '$74,000' }}</p>
-                        <p class="text-xl">{{ '2.7 hectáreas' }}</p>
-                        <p class="text-[#4D4D4D] text-base mt-1"><i class="fa-solid fa-location-dot mr-2"></i>{{ 'Tizapán el Alto, Jalisco.' }}</p>
-                        <p class="text-[#4D4D4D] text-base mt-1"><i class="fa-solid fa-ruler-horizontal mr-2"></i>{{ '32 x 34 m' }}</p>
-                    </div>
+                <div class="grid xs:grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-4 lg:mx-28">
+                    <BatchCard v-for="batch in batches.data" :key="batch" :batch="batch" />
                 </div>
                 <div class="text-center mt-7">
                     <i class="fa-solid fa-angle-down text-white bg-black rounded-full p-2 cursor-pointer"></i>
@@ -154,6 +142,7 @@ import { useForm, Link, Head } from "@inertiajs/vue3";
 import { useToast } from "vue-toastification";
 import InputError from "@/Components/InputError.vue";
 import SubdivisionCard from "@/Components/MyComponents/Subdivision/SubdivisionCard.vue";
+import BatchCard from "@/Components/MyComponents/Batch/BatchCard.vue";
 
 // services images
 import s1 from "../../../public/images/services1.png";
@@ -226,11 +215,13 @@ export default {
         };
     },
     props:{
-        subdivisions: Object
+        subdivisions: Object,
+        batches: Object,
     },
     components: {
         InputError,
         SubdivisionCard,
+        BatchCard,
         Link,
         Head,
     },  

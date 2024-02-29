@@ -4,7 +4,9 @@ use App\Http\Controllers\BatchController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\SubdivisionController;
 use App\Http\Controllers\WorkController;
+use App\Http\Resources\BatchResource;
 use App\Http\Resources\SubdivisionResource;
+use App\Models\Batch;
 use App\Models\Subdivision;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Artisan;
@@ -25,11 +27,13 @@ use Inertia\Inertia;
 Route::get('/', function () {
 
     $subdivisions = SubdivisionResource::collection(Subdivision::with('media')->get());
+    $batches = BatchResource::collection(Batch::with(['media', 'subdivision'])->get());
 
     return Inertia::render('Lotes', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
-        'subdivisions' => $subdivisions
+        'subdivisions' => $subdivisions,
+        'batches' => $batches,
     ]);
 });
 

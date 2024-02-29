@@ -66,7 +66,7 @@
                 </div>
 
                 <!-- Informacion -->
-                <div class="mt-10 lg:grid grid-cols-4">
+                <div class="mt-10 lg:grid grid-cols-4 gap-x-8">
                     <div class="col-span-3">
                         <p class="text-sm text-[#4A4A4A] border-b pb-2"><i class="fa-solid fa-house mr-2 ml-4"></i> <i class="fa-solid fa-chevron-right"></i> <span class="text-black ml-2">{{ subdivision.data.name }}</span></p>
 
@@ -151,6 +151,15 @@
                         </div>
                     </div>
 
+                    <!-- contactar por whatsApp -->
+                    <div class="rounded-lg border border-[#D9D9D9DD] shadow-sm self-start py-3 px-6 mt-7">
+                        <p>Contacta con el vendedor para resolver tus dudas </p>
+                        <div class="flex justify-center mt-5">
+                            <PrimaryButton> 
+                                <a href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página%20,%20me%20interesa%20su%20servicio!" target="_blank" rel="noopener noreferrer">Contactar por whatsapp</a>
+                            </PrimaryButton>
+                        </div>
+                    </div>
 
                 </div>
             </section>
@@ -196,7 +205,7 @@
 
 <script>
 import { useForm, Link, Head } from "@inertiajs/vue3";
-import InputError from "@/Components/InputError.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
 
 // services images
 import s1 from "../../../../public/images/services1.png";
@@ -288,7 +297,7 @@ export default {
         }
     },
     components: {
-        InputError,
+        PrimaryButton,
         Link,
         Head,
     }
