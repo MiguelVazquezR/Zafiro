@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\SubdivisionResource;
+use App\Models\Batch;
 use App\Models\Subdivision;
 use Illuminate\Http\Request;
 
@@ -63,6 +64,7 @@ class SubdivisionController extends Controller
     public function show($subdivision_id)
     {   
         $subdivision = SubdivisionResource::make(Subdivision::with(['media', 'batches.subdivision'])->find($subdivision_id));
+        // $total_batches = Batch::where('subdivision_id', $subdivision_id)->count();
 
         // return $subdivision;
         return inertia('Subdivision/Show', compact('subdivision'));

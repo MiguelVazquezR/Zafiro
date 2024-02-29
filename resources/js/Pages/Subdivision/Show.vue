@@ -4,6 +4,19 @@
 
         <div v-if="showPreview" class="fixed inset-0 bg-black opacity-90 z-20"></div>
 
+        <!-- Imagenenes -->
+        <div v-if="showPreview" @click="showPreview = false"
+            class="fixed inset-0 flex justify-center items-center border z-30">
+                <!-- Change image -->
+                <div class="absolute top-1/2 w-2/3 flex justify-between items-center">
+                    <i @click.stop="handleMinusImage" class="fa-solid fa-angle-left text-white text-lg px-[19px] py-3 rounded-full bg-gray-400/60 hover:scale-105"></i>
+                    <i @click.stop="handlePlusImage" class="fa-solid fa-angle-right text-white text-lg px-[19px] py-3 rounded-full bg-gray-400/60 hover:scale-105"></i>
+                </div>
+            <div>
+                <img class="w-[700px] rounded-lg mx-auto" :src="subdivision.data.images[currentImage].original_url">
+            </div>
+        </div>
+
         <!-- whatsapp button -->
         <a class="md:hidden z-50 w-14 h-14 lg:w-20 lg:h-20 rounded-full bg-green-600 shadow-md shadow-green-800/100 flex items-center justify-center fixed bottom-3 right-3 hover:scale-105"
             href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página%20,%20me%20interesa%20su%20servicio!"
@@ -62,7 +75,7 @@
                             <img class="bject-cover rounded-xl w-full h-[270px]" :src="subdivision.data.images[4]?.original_url" alt="">
                         </figure>
                     </div>
-                    <button class="absolute bottom-0 right-16 rounded-full bg-white border border-[#D9D9D9] p-2">Mostrar todas las fotos<i class="fa-solid fa-photo-film ml-2 text-xs"></i></button>
+                    <button @click="showPreview = true" v-if="subdivision.data.images?.length > 5" class="absolute bottom-0 right-16 rounded-full bg-white border border-[#D9D9D9] p-2">Mostrar todas las fotos<i class="fa-solid fa-photo-film ml-2 text-xs"></i></button>
                 </div>
 
                 <!-- Informacion -->
@@ -103,7 +116,7 @@
                                 </div>
 
                                 <!-- Vista previa -->
-                                <a :href="subdivision.data.planos[0]?.original_url" target="_blank" class="rounded-md border border-[#D9D9D9] flex items-center px-2 py-1 cursor-pointer">
+                                <a v-if="subdivision.data.planos?.length > 0" :href="subdivision.data.planos[0]?.original_url" target="_blank" class="rounded-md border border-[#D9D9D9] flex items-center px-2 py-1 cursor-pointer">
                                     <i class="fa-solid fa-photo-film border-r border-[#D9D9D9] pr-1 text-lg"></i>
                                     <div class="flex flex-col justify-center px-3">
                                         <p class="text-sm text-[#4D4D4D]">Vista previa</p>
@@ -232,13 +245,9 @@ export default {
         return {
             form,
             isNavbarFixed: false,
-            currentTestimony: 0,
-            lastScrollY: 0,
             showMobileMenu: false,
-            currentProyectIndex: 0,
-            currentServiceIndex: null,
-            currentKirbyIndex: 0,
             showPreview: false,
+            currentImage: 0,
             services: [
                 {
                     title: "Deslinde de parcelas",
@@ -299,7 +308,13 @@ export default {
             } else if (amenity == 'Gimnasio') {
                 return 'fa-solid fa-dumbbell';
             }
-        }
+        },
+        handlePlusImage(){
+            this.currentImage === (this.subdivision.data.images?.length - 1) ? this.currentImage = 0 : this.currentImage += 1
+        },
+        handleMinusImage(){
+            this.currentImage === 0 ? this.currentImage = this.subdivision.data.images?.length - 1 : this.currentImage -= 1
+        },
     },
     components: {
         PrimaryButton,

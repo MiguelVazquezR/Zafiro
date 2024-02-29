@@ -27,13 +27,15 @@ use Inertia\Inertia;
 Route::get('/', function () {
 
     $subdivisions = SubdivisionResource::collection(Subdivision::with('media')->get());
-    $batches = BatchResource::collection(Batch::with(['media', 'subdivision'])->get());
+    $batches = BatchResource::collection(Batch::with(['media', 'subdivision'])->get()->take(2));
+    $total_batches = Batch::all()->count();
 
     return Inertia::render('Lotes', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'subdivisions' => $subdivisions,
         'batches' => $batches,
+        'total_batches' => $total_batches,
     ]);
 });
 
@@ -72,6 +74,7 @@ Route::post('subdivisions/update-with-media/{subdivision}', [SubdivisionControll
 Route::resource('batches', BatchController::class)->except('show')->middleware('auth');
 Route::get('/batches/{batch}', [BatchController::class, 'show'])->name('batches.show');
 Route::post('batches/update-with-media/{batch}', [BatchController::class, 'updateWithMedia'])->name('batches.update-with-media');
+Route::get('batches-get-by-page/{currentPage}', [BatchController::class, 'getItemsByPage'])->name('batches.get-by-page');
 
 //artisan commands
 Route::get('/route-cache', function () {
