@@ -5,7 +5,7 @@
         <div v-if="showPreview" class="fixed inset-0 bg-black opacity-90 z-20"></div>
 
         <!-- Imagen centrada sin opacidad -->
-        <div v-if="showPreview" @click="showPreview = false; currentServiceIndex = null;"
+        <div v-if="showPreview" @click="showPreview = false"
             class="fixed inset-0 flex justify-center items-center z-30">
             <div class="relative">
                 <h1 class="text-[#FFD700] my-9 text-3xl text-center">{{ services[currentServiceIndex].title }}</h1>
@@ -95,7 +95,10 @@
                 <div class="grid xs:grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-4 lg:mx-28">
                     <BatchCard v-for="batch in batches.data" :key="batch" :batch="batch" />
                 </div>
-                <div class="text-center mt-7">
+                <p v-if="loadingItems" class="text-xs my-4 text-center">
+                    Cargando <i class="fa-sharp fa-solid fa-circle-notch fa-spin ml-2 text-primary"></i>
+                </p>
+                <div v-else-if="(total_batches > 2) && (batches.data.length < total_batches) && batches.data.length" @click="fetchItemsByPage" class="text-center mt-7">
                     <i class="fa-solid fa-angle-down text-white bg-black rounded-full p-2 cursor-pointer"></i>
                 </div>
             </section>
@@ -139,18 +142,9 @@
 
 <script>
 import { useForm, Link, Head } from "@inertiajs/vue3";
-import { useToast } from "vue-toastification";
 import InputError from "@/Components/InputError.vue";
 import SubdivisionCard from "@/Components/MyComponents/Subdivision/SubdivisionCard.vue";
 import BatchCard from "@/Components/MyComponents/Batch/BatchCard.vue";
-
-// services images
-import s1 from "../../../public/images/services1.png";
-import s2 from "../../../public/images/services2.png";
-import s3 from "../../../public/images/services3.png";
-import s4 from "../../../public/images/services4.png";
-import s5 from "../../../public/images/services5.png";
-import s6 from "../../../public/images/services6.png";
 
 
 export default {
@@ -165,43 +159,35 @@ export default {
         return {
             form,
             isNavbarFixed: false,
-            currentTestimony: 0,
-            lastScrollY: 0,
             showMobileMenu: false,
-            currentProyectIndex: 0,
             currentServiceIndex: null,
-            currentKirbyIndex: 0,
             showPreview: false,
+            loadingItems: false,
+            currentPage: 1,
             services: [
                 {
                     title: "Deslinde de parcelas",
                     description: "Definimos de manera precisa las fronteras de tu parcela para garantizar la propiedad y el uso adecuado de la tierra.",
-                    image: s1,
                 },
                 {
                     title: "Planos topográficos",
                     description: "Brindamos una visión detallada y precisa del terreno. Ya sea para proyectos de construcción, planificación urbana o análisis del terreno.",
-                    image: s2,
                 },
                 {
                     title: "Obra civil",
                     description: "Desde el diseño hasta la construcción, gestionamos cada etapa del proceso con precisión y profesionalismo.",
-                    image: s3,
                 },
                 {
                     title: "Lotificaciones",
                     description: "Convertimos terrenos en comunidades planificadas, creamos espacios funcionales y atractivos ",
-                    image: s4,
                 },
                 {
                     title: "Diseño arquitectónico",
                     description: "Desde residencias hasta espacios comerciales, cada diseño es una expresión de tus necesidades y estilos. ",
-                    image: s5,
                 },
                 {
                     title: "Experiencia con acabados de lujo",
                     description: "Desde selecciones de materiales exclusivos hasta ejecución impecable, creamos ambientes que reflejan tu gusto refinado.",
-                    image: s6,
                 },
             ],
             lotes: [
@@ -217,6 +203,7 @@ export default {
     props:{
         subdivisions: Object,
         batches: Object,
+        total_batches: Number,
     },
     components: {
         InputError,
@@ -226,6 +213,21 @@ export default {
         Head,
     },  
     methods: {
+        async fetchItemsByPage() {
+            try {
+                this.loadingItems = true;
+                const response = await axios.get(route('batches.get-by-page', this.currentPage));
+
+                if (response.status === 200) {
+                    this.batches.data = [...this.batches.data, ...response.data.items];
+                    this.currentPage++;
+                }
+            } catch (error) {
+                console.log(error)
+            } finally {
+                this.loadingItems = false;
+            }
+        },
     },
 };
 </script>

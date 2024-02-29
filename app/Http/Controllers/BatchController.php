@@ -152,4 +152,15 @@ class BatchController extends Controller
     {
         $batch->delete();
     }
+
+
+    public function getItemsByPage($currentPage)
+    {
+        $offset = $currentPage * 2;
+        $batches = BatchResource::collection(Batch::with(['media', 'subdivision'])->skip($offset)
+            ->take(2)
+            ->get());
+
+        return response()->json(['items' => $batches]);
+    }
 }
