@@ -23,6 +23,7 @@ class BatchResource extends JsonResource
             ],
             'surface' => $this->surface,
             'address' => $this->address,
+            'maps_url' => $this->maps_url,
             'description' => $this->description,
             'images' => $this->getMedia('images')->all(),
             'planos' => $this->getMedia('planos')->all(),

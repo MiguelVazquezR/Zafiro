@@ -17,6 +17,7 @@ class Batch extends Model implements HasMedia
         'price',
         'surface',
         'address',
+        'maps_url',
         'description',
         'subdivision_id',
     ];
