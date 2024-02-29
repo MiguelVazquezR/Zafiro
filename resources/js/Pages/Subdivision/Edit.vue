@@ -4,6 +4,7 @@
             <h1 class="font-bold text-lg text-center lg:text-left">Editar fraccionamiento <span class="text-primary">"{{ subdivision.name }}"</span></h1>
             <div class="lg:grid grid-cols-3 space-x-3 mt-3">
                 <div>
+                    <p class="text-xs text-red-600">Si vas a cambiar o agregar nuevas imágenes es necesario ponerlas todas de nuevo ya que se eliminarán</p>
                     <InputFilePreview v-show="currentImage == 1" :imageUrl="subdivision.media[0]?.original_url" @cleared="form.cleared_cover1 = true" @imagen="this.form.image_cover1 = $event;" />
                     <InputFilePreview v-show="currentImage == 2" :imageUrl="subdivision.media[1]?.original_url" @cleared="form.cleared_cover2 = true" @imagen="this.form.image_cover2 = $event;" />
                     <InputFilePreview v-show="currentImage == 3" :imageUrl="subdivision.media[2]?.original_url" @cleared="form.cleared_cover3 = true" @imagen="this.form.image_cover3 = $event;" />
@@ -95,7 +96,7 @@
                 </div>
             </div>
             <div class="text-right mt-5 col-span-full">
-                <PrimaryButton :disabled="form.processing" @click="update">Publicar</PrimaryButton>
+                <PrimaryButton :disabled="form.processing" @click="update">Guardar cambios</PrimaryButton>
             </div>
         </div>
     </AppLayout>

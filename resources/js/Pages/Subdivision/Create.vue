@@ -77,7 +77,7 @@
                     <div class="mt-3">
                         <InputLabel value="Descripción*" class="ml-3 mb-1" />
                         <el-input v-model="form.description" :autosize="{ minRows: 3, maxRows: 5 }" type="textarea"
-                                    placeholder="Escribe una breve descripción del evento" :maxlength="800" show-word-limit clearable />
+                                    placeholder="Escribe la descripción" :maxlength="800" show-word-limit clearable />
                         <InputError :message="form.errors.description" />
                     </div>  
                     <div class="w-full mt-3">

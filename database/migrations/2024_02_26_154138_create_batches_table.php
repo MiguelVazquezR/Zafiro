@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->unsignedDouble('price')->nullable();
             $table->unsignedFloat('surface')->nullable();
-            $table->string('address');
-            $table->text('description');
+            $table->string('address')->nullable();
+            $table->text('description')->nullable();
             $table->foreignId('subdivision_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });

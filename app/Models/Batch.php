@@ -22,7 +22,7 @@ class Batch extends Model implements HasMedia
     ];
 
     //relationships
-    public function subdivition() :BelongsTo
+    public function subdivision() :BelongsTo
     {
         return $this->belongsTo(Subdivision::class);
     }

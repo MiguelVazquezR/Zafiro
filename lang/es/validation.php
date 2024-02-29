@@ -205,5 +205,9 @@ return [
         'batches_availables' => 'lotes disponibles',
         'type' => 'tipo',
         'address' => 'ubicación',
+        'lowest_price' => 'precio desde',
+        'lowest_surface' => 'superficie desde',
+        'surface' => 'superficie',
+        'subdivision_id' => 'fraccionamiento',
     ],
 ];
