@@ -1,5 +1,5 @@
 <template>
-    <div @click="$inertia.get(route('subdivisions.show', subdivision.id))" class="rounded-[20px] border border-[#D9D9D9] shadow-md h-[500px] text-2xl relative cursor-pointer">
+    <div @click="$inertia.get(route('subdivisions.show', subdivision.id))" class="rounded-[20px] border border-[#D9D9D9] shadow-md h-[420px] text-xl relative cursor-pointer">
         <figure class="h-1/2 bg-gray-300 rounded-t-[20px] relative">
             <img class="object-contain h-full w-full rounded-t-[20px]" :src="subdivision.images[currentImage]?.original_url" alt="">
             <!-- Change image -->
@@ -17,14 +17,14 @@
                 </el-popconfirm>
             </div>
         </figure>
-        <div class="p-5">
-            <p class="text-gray-500 text-right text-base">- Lotes {{ subdivision.type }}</p>
-            <p class="text-[#4D4D4D] text-xl mt-4"> {{ subdivision.name }}</p>
-            <p class="text-[#4D4D4D] text-base mt-1">Lotes desde</p>
-            <p class="text-black text-3xl font-bold mt-1"> ${{ subdivision.lowest_price.numberFormat }}</p>
-            <p class="text-[#4D4D4D] text-base mt-1"><i class="fa-solid fa-location-dot mr-2"></i>{{ subdivision.address }}</p>
-            <p class="text-[#4D4D4D] text-base mt-1"><i class="fa-solid fa-ruler-horizontal mr-2"></i>{{ subdivision.lowest_surface }} m2</p>
-            <p class="text-[#4D4D4D] text-base mt-1">Disponibles: {{ subdivision.batches_availables }}</p>
+        <div class="px-4 py-3">
+            <p class="text-gray-500 text-right text-sm">- Lotes {{ subdivision.type }}</p>
+            <p class="text-[#4D4D4D] text-lg mt-1"> {{ subdivision.name }}</p>
+            <p class="text-[#4D4D4D] text-sm mt-px">Lotes desde</p>
+            <p class="text-black text-2xl font-bold mt-px"> ${{ subdivision.lowest_price.numberFormat }}</p>
+            <p class="text-[#4D4D4D] text-sm mt-px"><i class="fa-solid fa-location-dot mr-2"></i>{{ subdivision.address }}</p>
+            <p class="text-[#4D4D4D] text-sm mt-px"><i class="fa-solid fa-ruler-horizontal mr-2"></i>{{ subdivision.lowest_surface }} m2</p>
+            <p class="text-[#4D4D4D] text-sm mt-px">Disponibles: {{ subdivision.batches_availables }}</p>
         </div>
     </div>  
 </template>

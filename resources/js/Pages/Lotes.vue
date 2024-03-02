@@ -5,11 +5,10 @@
         <div v-if="showPreview" class="fixed inset-0 bg-black opacity-90 z-20"></div>
 
         <!-- Imagen centrada sin opacidad -->
-        <div v-if="showPreview" @click="showPreview = false"
-            class="fixed inset-0 flex justify-center items-center z-30">
+        <div v-if="showPreview" @click="showPreview = false" class="fixed inset-0 flex justify-center items-center z-30">
             <div class="relative">
                 <h1 class="text-[#FFD700] my-9 text-3xl text-center">{{ services[currentServiceIndex].title }}</h1>
-                <img class="w-[600px] mx-auto opacity-100" :src="services[currentServiceIndex].image">
+                <img class="w-[400px] mx-auto opacity-100" :src="services[currentServiceIndex].image">
                 <button @click="goToContact"
                     class="mx-auto mt-11 text-2xl rounded-full border-2 border-[#FFD700] text-black dark:text-black flex justify-between items-center py-1 px-5 bg-[#FFD700] transition-all">
                     Contáctanos
@@ -28,7 +27,8 @@
         <div v-if="showMobileMenu"
             class="flex flex-col z-30 w-2/3 bg-[#262626] rounded-xl fixed top-24 right-5 border-white border py-1 text-white">
             <button class="mx-1 py-2 bg-[#FFD700] rounded-lg">LOTES</button>
-            <button class="mx-1 py-2 hover:bg-[#FFD700] rounded-lg" @click="$inertia.visit('/otros-servicios')">OTROS SERVICIOS</button>
+            <button class="mx-1 py-2 hover:bg-[#FFD700] rounded-lg" @click="$inertia.visit('/otros-servicios')">OTROS
+                SERVICIOS</button>
         </div>
 
         <!-- navbar -->
@@ -41,28 +41,30 @@
             <button @click="showMobileMenu = !showMobileMenu" class="lg:hidden">
                 <i class="fa-solid fa-bars text-xl text-[#FFD700]"></i>
             </button>
-            <div class="mr-12 hidden lg:inline">        
+            <div class="mr-12 hidden lg:inline">
                 <button class="mx-2 rounded-sm px-1 py-px bg-[#FFD700]">LOTES</button>
-                <button class="mx-2 rounded-sm px-1 py-px hover:bg-[#FFD700] transition-colors ease-linear duration-200" @click="$inertia.visit('/otros-servicios')">OTROS SERVICIOS</button>
-                <a href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página%20,%20me%20interesa%20su%20servicio!" target="_blank" rel="noopener noreferrer">
+                <button class="mx-2 rounded-sm px-1 py-px hover:bg-[#FFD700] transition-colors ease-linear duration-200"
+                    @click="$inertia.visit('/otros-servicios')">OTROS SERVICIOS</button>
+                <a href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página%20,%20me%20interesa%20su%20servicio!"
+                    target="_blank" rel="noopener noreferrer">
                     <i class="fa-brands fa-whatsapp text-xl ml-2"></i>
                 </a>
             </div>
         </nav>
 
-        <main class="pt-20">
+        <main class="pt-14">
             <!-- home desktop-->
-            <section class="hidden md:block lg:mx-24 mx-1 mt-9 relative mb-28" id="Inicio">
+            <section class="hidden md:block mt-9 relative mb-48" id="Inicio">
                 <div class="rounded-[20px] h-[500px] relative">
-                    <img class="mx-auto w-[90%] h-[120%]" src="../../../public/images/home_lotes.png">
+                    <img class="mx-auto w-full" src="../../../public/images/home_lotes.png">
 
                     <div class="absolute bottom-3 left-28 h-1/2 w-[500px]">
-                        <p class="text-white text-3xl">EL SITIO IDEAL PARA ENCONTRAR EL  TERRERNO PERFECTO PARA TI </p>
+                        <p class="text-white lg:text-3xl">EL SITIO IDEAL PARA ENCONTRAR EL TERRERNO PERFECTO PARA TI </p>
                         <p class="text-[#D9D9D9] text-3xl mt-5">TERRENOS EN VENTA </p>
-                        <button @click="goToContact"
-                            class="ml-auto mr-2 mt-14 text-xl rounded-full border-2 border-[#FFD700] text-black flex justify-between items-center py-1 px-5 bg-[#FFD700] transition-all">
+                        <a href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página,%20me%20interesa%20comparar%20un%20terreno"
+                            class="ml-auto mr-2 mt-14 text-xl rounded-full border-2 border-[#FFD700] text-black flex justify-center items-center py-1 px-5 bg-[#FFD700] transition-all">
                             Contáctanos
-                        </button>
+                        </a>
                     </div>
                 </div>
             </section>
@@ -71,11 +73,11 @@
             <section class="md:hidden mt-9 relative mb-16" id="InicioM">
                 <div class="rounded-[20px] h-[300px] relative">
                     <img class="absolute right-0 top-0 h-[100%]" src="../../../public/images/home_lotes.png">
-                    <div class="absolute bottom-16 left-1 h-1/2 w-[230px]">
-                        <p class="text-white text-base">EL SITIO IDEAL PARA ENCONTRAR EL  TERRERNO PERFECTO PARA TI </p>
-                        <p class="text-[#D9D9D9] text-base mt-5">TERRENOS EN VENTA </p>
+                    <div class="absolute bottom-16 left-4 h-1/2 w-[230px]">
+                        <p class="text-white text-sm">EL SITIO IDEAL PARA ENCONTRAR EL TERRERNO PERFECTO PARA TI </p>
+                        <p class="text-[#D9D9D9] text-sm mt-5">TERRENOS EN VENTA </p>
                         <button @click="goToContact"
-                            class="ml-auto mr-16 mt-14 text-sm rounded-full border-2 border-[#FFD700] text-black flex justify-between items-center py-1 px-5 bg-[#FFD700] transition-all">
+                            class="ml-auto mr-20 mt-14 text-sm rounded-full border-2 border-[#FFD700] text-black flex justify-between items-center py-1 px-5 bg-[#FFD700] transition-all">
                             Contáctanos
                         </button>
                     </div>
@@ -83,22 +85,27 @@
             </section>
 
             <!-- Services -->
-            <section class="lg:mx-72 mx-1 relative mb-32 pt-10" id="Servicios">
-                <h2 class="font-bold my-10 text-2xl text-center">Explora nuestros fraccionamientos y encuentra tu lote perfecto.</h2>
+            <section class="lg:mx-72 mx-5 relative mb-16 lg:mb-32 pt-0 lg:pt-10" id="Servicios">
+                <h2 class="font-bold my-5 lg:my-10 text-lg lg:text-2xl text-center">Explora nuestros fraccionamientos y
+                    encuentra tu lote
+                    perfecto.</h2>
                 <div class="grid xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-4">
-                    <SubdivisionCard v-for="subdivision in subdivisions.data" :key="subdivision" :subdivision="subdivision" />  
+                    <SubdivisionCard v-for="subdivision in subdivisions.data" :key="subdivision"
+                        :subdivision="subdivision" />
                 </div>
             </section>
-            
+
             <section class="bg-[#EDEDED] rounded-t-[70px] lg:px-32 p-2 lg:py-14">
-                <h2 class="py-9 lg:text-3xl ml-3 font-bold">Descubre los diferentes tamaños de terreno que tenemos para ti. </h2>
+                <h2 class="py-9 lg:text-3xl ml-3 font-bold">Descubre los diferentes tamaños de terreno que tenemos para ti.
+                </h2>
                 <div class="md:grid md:grid-cols-2 gap-x-4 gap-y-4 lg:mx-28 space-y-2 md:space-y-0">
                     <BatchCard v-for="batch in batches.data" :key="batch" :batch="batch" />
                 </div>
                 <p v-if="loadingItems" class="text-xs my-4 text-center">
                     Cargando <i class="fa-sharp fa-solid fa-circle-notch fa-spin ml-2 text-primary"></i>
                 </p>
-                <div v-else-if="(total_batches > 2) && (batches.data.length < total_batches) && batches.data.length" @click="fetchItemsByPage" class="text-center mt-7">
+                <div v-else-if="(total_batches > 2) && (batches.data.length < total_batches) && batches.data.length"
+                    @click="fetchItemsByPage" class="text-center mt-7">
                     <i class="fa-solid fa-angle-down text-white bg-black rounded-full p-2 cursor-pointer"></i>
                 </div>
             </section>
@@ -200,7 +207,7 @@ export default {
             ],
         };
     },
-    props:{
+    props: {
         subdivisions: Object,
         batches: Object,
         total_batches: Number,
@@ -211,8 +218,21 @@ export default {
         BatchCard,
         Link,
         Head,
-    },  
+    },
     methods: {
+        handleScroll() {
+            const currentScrollY = window.scrollY;
+
+            if (currentScrollY > this.lastScrollY && currentScrollY > window.innerHeight) {
+                // Si se hace scroll hacia abajo y se ha pasado el alto de la pantalla
+                this.isNavbarFixed = false;
+            } else {
+                // Si se hace scroll hacia arriba
+                this.isNavbarFixed = true;
+            }
+
+            this.lastScrollY = currentScrollY;
+        },
         async fetchItemsByPage() {
             try {
                 this.loadingItems = true;
@@ -228,6 +248,12 @@ export default {
                 this.loadingItems = false;
             }
         },
+    },
+    mounted() {
+        window.addEventListener('scroll', this.handleScroll);
+    },
+    beforeDestroy() {
+        window.removeEventListener('scroll', this.handleScroll);
     },
 };
 </script>
