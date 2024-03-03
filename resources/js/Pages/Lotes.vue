@@ -55,7 +55,7 @@
         <main class="pt-14">
             <!-- home desktop-->
             <section class="hidden md:block mt-9 relative mb-48" id="Inicio">
-                <div class="rounded-[20px] h-[500px] relative">
+                <div class="rounded-[20px] h-[630px] relative">
                     <img class="mx-auto w-full" src="../../../public/images/home_lotes.png">
 
                     <div class="absolute bottom-3 left-28 h-1/2 w-[500px]">
