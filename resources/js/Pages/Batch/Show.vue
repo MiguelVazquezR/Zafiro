@@ -63,7 +63,7 @@
                     batch.data.subdivision.address }}</p>
 
                 <!-- imagenes -->
-                <div class="lg:grid grid-cols-2 gap-9 mt-5 relative space-y-3 md:space-y-0">
+                <div class="lg:grid grid-cols-2 gap-9 mt-5 relative space-y-3 lg:space-y-0">
                     <figure class="w-full h-[600px] flex justify-center">
                         <img class="object-cover rounded-xl w-full" :src="batch.data.images[0]?.original_url" alt="">
                     </figure>
