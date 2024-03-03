@@ -62,7 +62,7 @@
                     </div>
                     <div>
                         <InputLabel value="Planos" class="ml-3 mb-1 text-sm" />
-                        <FileUploader @files-selected="this.form.planos = $event" />
+                        <FileUploader @files-selected="this.form.planos = $event" :multiple="false" />
                     </div>
                     <div class="mt-3">
                         <InputLabel value="Dirección*" class="ml-3 mb-1" />

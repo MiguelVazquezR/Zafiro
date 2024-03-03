@@ -58,7 +58,7 @@
 
         <main class="pt-20">
             <section class="lg:p-20 lg:mx-12 mx-2">
-                <h1 class="font-bold text-3xl">{{ batch.data.name }}. Venta de terrenos en {{ batch.data.address }}</h1>
+                <h1 class="font-bold text-3xl">{{ batch.data.name }}</h1>
                 <p class="text-sm text-[#4D4D4D] underline"><i class="fa-solid fa-location-dot mr-2"></i> Terreno en {{
                     batch.data.subdivision.address }}</p>
 
@@ -86,8 +86,10 @@
                         </figure>
                     </div>
                     <button @click="showPreview = true" v-if="batch.data.images?.length > 5"
-                        class="absolute -bottom-5 right-20 rounded-[10px] bg-white border border-[#D9D9D9] p-2">Mostrar todas
-                        las fotos<i class="fa-solid fa-photo-film ml-2 text-xs"></i></button>
+                        class="absolute -bottom-5 right-20 rounded-[10px] bg-white border border-[#D9D9D9] py-2 px-3">
+                        Mostrar todas las fotos
+                        <i class="fa-regular fa-images ml-2 text-xs"></i>
+                    </button>
                 </div>
 
                 <!-- Informacion -->
@@ -150,7 +152,7 @@
                                 <a v-if="batch.data.planos?.length > 0" :href="batch.data.planos[0]?.original_url"
                                     target="_blank"
                                     class="rounded-md border border-[#D9D9D9] flex items-center px-2 py-1 cursor-pointer">
-                                    <i class="fa-solid fa-photo-film border-r border-[#D9D9D9] pr-1 text-lg"></i>
+                                    <i class="fa-solid fa-file-lines border-r border-[#D9D9D9] pr-1 text-lg"></i>
                                     <div class="flex flex-col justify-center px-3">
                                         <p class="text-sm text-[#4D4D4D]">Vista previa</p>
                                         <p class="text-base font-bold">{{ batch.data.planos[0]?.file_name }}</p>
@@ -286,6 +288,19 @@ export default {
         batch: Object,
     },
     methods: {
+        handleScroll() {
+            const currentScrollY = window.scrollY;
+
+            if (currentScrollY > this.lastScrollY && currentScrollY > window.innerHeight) {
+                // Si se hace scroll hacia abajo y se ha pasado el alto de la pantalla
+                this.isNavbarFixed = false;
+            } else {
+                // Si se hace scroll hacia arriba
+                this.isNavbarFixed = true;
+            }
+
+            this.lastScrollY = currentScrollY;
+        },
         handlePlusImage() {
             this.currentImage === (this.batch.data.images?.length - 1) ? this.currentImage = 0 : this.currentImage += 1
         },
@@ -304,7 +319,13 @@ export default {
         PrimaryButton,
         Link,
         Head,
-    }
+    },
+    mounted() {
+        window.addEventListener('scroll', this.handleScroll);
+    },
+    beforeDestroy() {
+        window.removeEventListener('scroll', this.handleScroll);
+    },
 };
 </script>
 

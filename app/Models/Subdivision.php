@@ -22,6 +22,7 @@ class Subdivision extends Model implements HasMedia
         'maps_url',
         'description',
         'amenities',
+        'soon',
     ];
 
     protected $casts = [

@@ -58,7 +58,7 @@
         <main class="pt-20">
 
             <section class="lg:p-20 lg:mx-12 mx-2">
-                <h1 class="font-bold text-3xl">Lotes {{ subdivision.data.type + ' ' + subdivision.data.name }}</h1>
+                <h1 class="font-bold text-3xl">Lotes {{ subdivision.data.type + ' en fraccionamiento "' + subdivision.data.name + '"' }}</h1>
                 <p class="text-sm text-[#4D4D4D] underline"><i class="fa-solid fa-location-dot mr-2"></i> Terrenos en {{
                     subdivision.data.address }}</p>
 
@@ -147,7 +147,7 @@
                                 <a v-if="subdivision.data.planos?.length > 0"
                                     :href="subdivision.data.planos[0]?.original_url" target="_blank"
                                     class="rounded-md border border-[#D9D9D9] flex items-center px-2 py-1 cursor-pointer">
-                                    <i class="fa-solid fa-photo-film border-r border-[#D9D9D9] pr-1 text-lg"></i>
+                                    <i class="fa-solid fa-file-lines border-r border-[#D9D9D9] pr-1 text-lg"></i>
                                     <div class="flex flex-col justify-center px-3">
                                         <p class="text-sm text-[#4D4D4D]">Vista previa</p>
                                         <p class="text-base font-bold">{{ subdivision.data.planos[0]?.file_name }}</p>
@@ -314,6 +314,19 @@ export default {
         subdivision: Object,
     },
     methods: {
+        handleScroll() {
+            const currentScrollY = window.scrollY;
+
+            if (currentScrollY > this.lastScrollY && currentScrollY > window.innerHeight) {
+                // Si se hace scroll hacia abajo y se ha pasado el alto de la pantalla
+                this.isNavbarFixed = false;
+            } else {
+                // Si se hace scroll hacia arriba
+                this.isNavbarFixed = true;
+            }
+
+            this.lastScrollY = currentScrollY;
+        },
         getIcon(amenity) {
             if (amenity == 'Espacio para niños') {
                 return 'fa-solid fa-fan';
@@ -348,7 +361,13 @@ export default {
         BatchCard,
         Link,
         Head,
-    }
+    },
+    mounted() {
+        window.addEventListener('scroll', this.handleScroll);
+    },
+    beforeDestroy() {
+        window.removeEventListener('scroll', this.handleScroll);
+    },
 };
 </script>
 

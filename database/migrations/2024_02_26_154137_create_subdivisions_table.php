@@ -20,8 +20,9 @@ return new class extends Migration
             $table->unsignedFloat('lowest_surface')->nullable();
             $table->string('address');
             $table->text('maps_url')->nullable();
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->json('amenities')->nullable();
+            $table->boolean('soon')->default(false);
             $table->timestamps();
         });
     }
