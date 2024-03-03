@@ -7,11 +7,13 @@
         <!-- Imagenenes -->
         <div v-if="showPreview" @click="showPreview = false"
             class="fixed inset-0 flex justify-center items-center border z-30">
-                <!-- Change image -->
-                <div class="absolute top-1/2 w-2/3 flex justify-between items-center">
-                    <i @click.stop="handleMinusImage" class="fa-solid fa-angle-left text-white text-lg px-[19px] py-3 rounded-full bg-gray-400/60 hover:scale-105"></i>
-                    <i @click.stop="handlePlusImage" class="fa-solid fa-angle-right text-white text-lg px-[19px] py-3 rounded-full bg-gray-400/60 hover:scale-105"></i>
-                </div>
+            <!-- Change image -->
+            <div class="absolute top-1/2 lg:top-1/2 w-4/5 lg:w-2/3 flex justify-between items-center">
+                <i @click.stop="handleMinusImage"
+                    class="fa-solid fa-angle-left text-white text-lg px-[19px] py-3 rounded-full bg-gray-400/60 hover:scale-105"></i>
+                <i @click.stop="handlePlusImage"
+                    class="fa-solid fa-angle-right text-white text-lg px-[19px] py-3 rounded-full bg-gray-400/60 hover:scale-105"></i>
+            </div>
             <div>
                 <img class="w-[700px] rounded-lg mx-auto" :src="batch.data.images[currentImage].original_url">
             </div>
@@ -29,7 +31,8 @@
         <div v-if="showMobileMenu"
             class="flex flex-col z-30 w-2/3 bg-[#262626] rounded-xl fixed top-24 right-5 border-white border py-1 text-white">
             <button class="mx-1 py-2 hover:bg-[#FFD700] rounded-lg" @click="$inertia.visit('/')">LOTES</button>
-            <button class="mx-1 py-2 hover:bg-[#FFD700] rounded-lg" @click="$inertia.visit('/otros-servicios')">OTROS SERVICIOS</button>
+            <button class="mx-1 py-2 hover:bg-[#FFD700] rounded-lg" @click="$inertia.visit('/otros-servicios')">OTROS
+                SERVICIOS</button>
         </div>
 
         <!-- navbar -->
@@ -42,61 +45,82 @@
             <button @click="showMobileMenu = !showMobileMenu" class="lg:hidden">
                 <i class="fa-solid fa-bars text-xl text-[#FFD700]"></i>
             </button>
-            <div class="mr-12 hidden lg:inline">        
+            <div class="mr-12 hidden lg:inline">
                 <button class="mx-2 rounded-sm px-1 py-px hover:bg-[#FFD700]" @click="$inertia.visit('/')">LOTES</button>
-                <button class="mx-2 rounded-sm px-1 py-px hover:bg-[#FFD700] transition-colors ease-linear duration-200" @click="$inertia.visit('/otros-servicios')">OTROS SERVICIOS</button>
-                <a href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página%20,%20me%20interesa%20su%20servicio!" target="_blank" rel="noopener noreferrer">
+                <button class="mx-2 rounded-sm px-1 py-px hover:bg-[#FFD700] transition-colors ease-linear duration-200"
+                    @click="$inertia.visit('/otros-servicios')">OTROS SERVICIOS</button>
+                <a href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página,%20me%20interesa%20comparar%20un%20terreno"
+                    target="_blank" rel="noopener noreferrer">
                     <i class="fa-brands fa-whatsapp text-xl ml-2"></i>
                 </a>
             </div>
         </nav>
 
         <main class="pt-20">
-
             <section class="lg:p-20 lg:mx-12 mx-2">
                 <h1 class="font-bold text-3xl">{{ batch.data.name }}. Venta de terrenos en {{ batch.data.address }}</h1>
-                <p class="text-sm text-[#4D4D4D] underline"><i class="fa-solid fa-location-dot mr-2"></i> Terreno en {{ batch.data.subdivision.address }}</p>
+                <p class="text-sm text-[#4D4D4D] underline"><i class="fa-solid fa-location-dot mr-2"></i> Terreno en {{
+                    batch.data.subdivision.address }}</p>
 
                 <!-- imagenes -->
-                <div class="lg:grid grid-cols-2 gap-9 mt-5 relative">
+                <div class="lg:grid grid-cols-2 gap-9 mt-5 relative space-y-3 lg:space-y-0">
                     <figure class="w-full h-[600px] flex justify-center">
                         <img class="object-cover rounded-xl w-full" :src="batch.data.images[0]?.original_url" alt="">
                     </figure>
                     <div class="grid grid-cols-2 gap-7 sm:mt-7 lg:mt-0">
                         <figure v-if="batch.data.images?.length > 1" class="w-full">
-                            <img class="bject-cover rounded-xl w-full h-[270px]" :src="batch.data.images[1]?.original_url" alt="">
+                            <img class="object-cover rounded-xl w-full h-[286px]" :src="batch.data.images[1]?.original_url"
+                                alt="">
                         </figure>
                         <figure v-if="batch.data.images?.length > 2" class="w-full">
-                            <img class="bject-cover rounded-xl w-full h-[270px]" :src="batch.data.images[2]?.original_url" alt="">
+                            <img class="object-cover rounded-xl w-full h-[286px]" :src="batch.data.images[2]?.original_url"
+                                alt="">
                         </figure>
                         <figure v-if="batch.data.images?.length > 3" class="w-full">
-                            <img class="bject-cover rounded-xl w-full h-[270px]" :src="batch.data.images[3]?.original_url" alt="">
+                            <img class="object-cover rounded-xl w-full h-[286px]" :src="batch.data.images[3]?.original_url"
+                                alt="">
                         </figure>
                         <figure v-if="batch.data.images?.length > 4" class="w-full">
-                            <img class="bject-cover rounded-xl w-full h-[270px]" :src="batch.data.images[4]?.original_url" alt="">
+                            <img class="object-cover rounded-xl w-full h-[286px]" :src="batch.data.images[4]?.original_url"
+                                alt="">
                         </figure>
                     </div>
-                    <button @click="showPreview = true" v-if="batch.data.images?.length > 5" class="absolute bottom-0 right-16 rounded-full bg-white border border-[#D9D9D9] p-2">Mostrar todas las fotos<i class="fa-solid fa-photo-film ml-2 text-xs"></i></button>
+                    <button @click="showPreview = true" v-if="batch.data.images?.length > 5"
+                        class="absolute -bottom-5 right-20 rounded-[10px] bg-white border border-[#D9D9D9] p-2">Mostrar todas
+                        las fotos<i class="fa-solid fa-photo-film ml-2 text-xs"></i></button>
                 </div>
 
                 <!-- Informacion -->
                 <div class="mt-10 lg:grid grid-cols-4 gap-x-8">
                     <div class="col-span-3">
-                        <p class="text-sm text-[#4A4A4A] border-b pb-2">
-                            <i class="fa-solid fa-house mr-2 ml-4"></i>
-                            <i class="fa-solid fa-chevron-right"></i>
-                            <span class="text-black ml-2">{{ batch.data.subdivision.name }}</span>
-                            <i class="fa-solid fa-chevron-right ml-2"></i>
-                            <span class="text-black ml-2">{{ batch.data.name }}</span>
+                        <p class="flex items-center text-sm text-[#4A4A4A] border-b pb-2">
+                            <Link href="/" class="flex items-center text-gray-400">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-4 h-4 mr-1">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                            </svg>
+                            <span>Inicio</span>
+                            </Link>
+                            <i class="fa-solid fa-chevron-right mx-2"></i>
+                            <Link v-if="batch.data.subdivision" :href="route('subdivisions.show', batch.data.subdivision.id)" class="flex items-center text-gray-400">
+                                <span>
+                                    {{ batch.data.subdivision.name }}
+                                </span>
+                            </Link>
+                            <i v-if="batch.data.subdivision" class="fa-solid fa-chevron-right mx-2"></i>
+                            <span class="text-black">
+                                {{ batch.data.name }}
+                            </span>
                         </p>
 
                         <div class="my-7">
                             <p class="font-bold text-lg mb-4 pl-4">Características</p>
 
-                            <div class="flex flex-wrap items-center border-b border-[#D9D9D9] pb-7 space-x-3 pl-4">
+                            <div class="flex flex-wrap items-center border-b border-[#D9D9D9] pb-7 space-x-3 pl-4 gap-y-2">
 
                                 <!-- Precio desde -->
-                                <div class="rounded-md border border-[#D9D9D9] flex items-center px-2 py-1">
+                                <div class="rounded-md border border-[#D9D9D9] flex items-center px-2 py-1 ml-3 md:ml-0">
                                     <i class="fa-solid fa-dollar-sign border-r border-[#D9D9D9] pr-1 text-lg"></i>
                                     <div class="flex flex-col justify-center px-3">
                                         <p class="text-sm text-[#4D4D4D]">Precio</p>
@@ -123,7 +147,9 @@
                                 </div>
 
                                 <!-- Vista previa -->
-                                <a v-if="batch.data.planos?.length > 0" :href="batch.data.planos[0]?.original_url" target="_blank" class="rounded-md border border-[#D9D9D9] flex items-center px-2 py-1 cursor-pointer">
+                                <a v-if="batch.data.planos?.length > 0" :href="batch.data.planos[0]?.original_url"
+                                    target="_blank"
+                                    class="rounded-md border border-[#D9D9D9] flex items-center px-2 py-1 cursor-pointer">
                                     <i class="fa-solid fa-photo-film border-r border-[#D9D9D9] pr-1 text-lg"></i>
                                     <div class="flex flex-col justify-center px-3">
                                         <p class="text-sm text-[#4D4D4D]">Vista previa</p>
@@ -140,22 +166,21 @@
                             </div>
 
                             <!-- Ubicación -->
-                            <div class="my-4 pl-4">
+                            <div v-if="batch.data.maps_url" class="my-4 pl-4">
                                 <p class="font-bold text-lg">Ubicación</p>
-                                
-                                <iframe class="mt-5 rounded-lg"
-                                    src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA0s1a7phLN0iaD6-UE7m4qP-z21pH0eSc&q=Eiffel+Tower+Paris+France"
-                                    width="600" height="380" frameborder="0" style="border:0; width: 100%;" allowfullscreen></iframe>
+                                <iframe class="mt-5 rounded-lg" :src="getEmbedMapUrl(batch.data.maps_url)" width="600"
+                                    height="380" frameborder="0" style="border: 0; width: 100%;" allowfullscreen></iframe>
                             </div>
                         </div>
                     </div>
 
                     <!-- contactar por whatsApp -->
-                    <div class="rounded-lg border border-[#D9D9D9DD] shadow-sm self-start py-3 px-6 mt-7">
+                    <div class="rounded-lg border border-[#D9D9D9DD] shadow-sm self-start py-3 px-6 mt-7 mb-5">
                         <p>Contacta con el vendedor para resolver tus dudas </p>
                         <div class="flex justify-center mt-5">
-                            <PrimaryButton> 
-                                <a href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página%20,%20me%20interesa%20su%20servicio!" target="_blank" rel="noopener noreferrer">Contactar por whatsapp</a>
+                            <PrimaryButton>
+                                <a href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página,%20me%20interesa%20comparar%20un%20terreno"
+                                    target="_blank" rel="noopener noreferrer">Contactar por whatsapp</a>
                             </PrimaryButton>
                         </div>
                     </div>
@@ -205,15 +230,6 @@
 <script>
 import { useForm, Link, Head } from "@inertiajs/vue3";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import axios from 'axios';
-
-// services images
-import s1 from "../../../../public/images/services1.png";
-import s2 from "../../../../public/images/services2.png";
-import s3 from "../../../../public/images/services3.png";
-import s4 from "../../../../public/images/services4.png";
-import s5 from "../../../../public/images/services5.png";
-import s6 from "../../../../public/images/services6.png";
 
 export default {
     data() {
@@ -234,32 +250,26 @@ export default {
                 {
                     title: "Deslinde de parcelas",
                     description: "Definimos de manera precisa las fronteras de tu parcela para garantizar la propiedad y el uso adecuado de la tierra.",
-                    image: s1,
                 },
                 {
                     title: "Planos topográficos",
                     description: "Brindamos una visión detallada y precisa del terreno. Ya sea para proyectos de construcción, planificación urbana o análisis del terreno.",
-                    image: s2,
                 },
                 {
                     title: "Obra civil",
                     description: "Desde el diseño hasta la construcción, gestionamos cada etapa del proceso con precisión y profesionalismo.",
-                    image: s3,
                 },
                 {
                     title: "Lotificaciones",
                     description: "Convertimos terrenos en comunidades planificadas, creamos espacios funcionales y atractivos ",
-                    image: s4,
                 },
                 {
                     title: "Diseño arquitectónico",
                     description: "Desde residencias hasta espacios comerciales, cada diseño es una expresión de tus necesidades y estilos. ",
-                    image: s5,
                 },
                 {
                     title: "Experiencia con acabados de lujo",
                     description: "Desde selecciones de materiales exclusivos hasta ejecución impecable, creamos ambientes que reflejan tu gusto refinado.",
-                    image: s6,
                 },
             ],
             lotes: [
@@ -274,13 +284,20 @@ export default {
     },
     props: {
         batch: Object,
-    },  
+    },
     methods: {
-        handlePlusImage(){
+        handlePlusImage() {
             this.currentImage === (this.batch.data.images?.length - 1) ? this.currentImage = 0 : this.currentImage += 1
         },
-        handleMinusImage(){
+        handleMinusImage() {
             this.currentImage === 0 ? this.currentImage = this.batch.data.images?.length - 1 : this.currentImage -= 1
+        },
+        getEmbedMapUrl(mapsUrl) {
+            // Asegurarte de que mapsUrl tenga el formato correcto
+            const formattedUrl = mapsUrl.replace('https://www.google.com/maps/place/', '');
+
+            // Agregar "/embed/v1/" y la key al inicio de la URL
+            return `https://www.google.com/maps/embed/v1/place?key=AIzaSyA0s1a7phLN0iaD6-UE7m4qP-z21pH0eSc&q=${formattedUrl}`;
         },
     },
     components: {
@@ -308,5 +325,4 @@ export default {
 
 html {
     scroll-behavior: smooth;
-}
-</style>
+}</style>

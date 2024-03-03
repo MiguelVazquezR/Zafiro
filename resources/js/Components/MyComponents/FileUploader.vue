@@ -2,7 +2,7 @@
     <div class="w-full">
         <input type="file" ref="fileInput" style="display: none" @change="handleFileInputChange" :multiple="multiple" :accept="getAcceptedFormat()" />
         <button type="button" @click="openFileBrowser">
-            <p class="flex items-center space-x-2 text-sm text-primary cursor-pointer flex-shrink-0 flex-grow-0">
+            <p class="flex items-center space-x-2 text-sm text-black cursor-pointer flex-shrink-0 flex-grow-0">
                 <i class="fa-solid fa-plus"></i>
                 <span>Subir archivos {{ multiple ? 'archivos' : 'archivo' }}</span>
                 <i class="fa-solid fa-paperclip"></i>

@@ -1,6 +1,6 @@
 <template>
     <AppLayout title="Nuevo lote">
-        <div class="lg:w-2/3 mx-auto rounded-md lg:border border-secondary p-5">
+        <div class="lg:w-[80%] mx-auto rounded-md lg:border border-secondary p-5">
             <h1 class="font-bold text-lg text-center lg:text-left">Agregar Lote</h1>
             <div class="lg:grid grid-cols-3 space-x-3 mt-3">
                 <div>
@@ -65,9 +65,14 @@
                         <FileUploader @files-selected="this.form.planos = $event" />
                     </div>
                     <div class="mt-3">
-                        <InputLabel value="Ubicación*" class="ml-3 mb-1" />
-                        <el-input v-model="form.address" placeholder="Escribe el ubicación" :maxlength="100" clearable />
+                        <InputLabel value="Dirección*" class="ml-3 mb-1" />
+                        <el-input v-model="form.address" placeholder="Escribe la dirección del lote" :maxlength="100" clearable />
                         <InputError :message="form.errors.address" />
+                    </div>
+                    <div class="mt-3">
+                        <InputLabel value="Url de maps" class="ml-3 mb-1" />
+                        <el-input v-model="form.maps_url" placeholder="Pega la url de google maps" :maxlength="700" clearable />
+                        <InputError :message="form.errors.maps_url" />
                     </div>
                     <div class="mt-3">
                         <InputLabel value="Descripción*" class="ml-3 mb-1" />
@@ -101,6 +106,7 @@ data() {
         price: null,
         surface: null,
         address: null,
+        maps_url: null,
         description: null,
         image_cover1: null,
         image_cover2: null,
