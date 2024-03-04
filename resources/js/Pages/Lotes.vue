@@ -55,18 +55,18 @@
         <main class="pt-14">
             <!-- home desktop-->
             <section class="hidden md:block mt-9 relative mb-20" id="Inicio">
-                <div class="rounded-[20px] h-[630px] relative">
+                <figure class="rounded-[20px] lg:h-[630px] md:[500px] relative">
                     <img class="mx-auto w-full h-full" src="../../../public/images/home_lotes.png">
 
-                    <div class="absolute bottom-10 left-28 h-1/2 w-[500px]">
+                    <div class="absolute top-44 lg:bottom-10 left-10 lg:left-28 h-1/2 w-[500px]">
                         <p class="text-white lg:text-3xl">EL SITIO IDEAL PARA ENCONTRAR EL TERRERNO PERFECTO PARA TI </p>
                         <p class="text-[#D9D9D9] text-3xl mt-5">TERRENOS EN VENTA </p>
                         <a href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página,%20me%20interesa%20comparar%20un%20terreno"
-                            class="ml-auto mr-2 mt-14 text-xl rounded-full border-2 border-primary text-black flex justify-center items-center py-1 px-5 bg-primary transition-all">
+                            class="ml-auto mr-2 mt-14 text-xl rounded-full border-2 border-primary text-black inline-flex justify-center items-center py-1 px-9 bg-primary transition-all">
                             Contáctanos
                         </a>
                     </div>
-                </div>
+                </figure>
             </section>
 
             <!-- home mobile-->
@@ -108,7 +108,7 @@
                     <i class="fa-solid fa-angle-down text-white bg-black rounded-full p-2 cursor-pointer"></i>
                 </div>
             </section>
-            <footer class="p-4 md:grid grid-cols-4 gap-3 text-white bg-[#1A1A1A] md:relative">
+            <footer class="p-4 md:grid md:grid-cols-3 lg:grid-cols-4 gap-3 text-white bg-[#1A1A1A] md:relative">
                 <figure class="h-full md:h-auto flex space-y-2">
                     <img class="h-16 md:h-1/3" src="../../../public/images/logo_light.png" />
                     <span class="font-bold text-primary text-xl">INGENIERÍA ZAFIRO</span>

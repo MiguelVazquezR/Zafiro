@@ -57,7 +57,7 @@
 
         <main class="pt-20">
 
-            <section class="lg:p-20 lg:mx-12 mx-2">
+            <section class="lg:p-20 md:p-4 lg:mx-12 mx-2">
                 <h1 class="font-bold text-3xl">Lotes {{ subdivision.data.type + ' en fraccionamiento "' + subdivision.data.name + '"' }}</h1>
                 <p class="text-sm text-[#4D4D4D] underline"><i class="fa-solid fa-location-dot mr-2"></i> Terrenos en {{
                     subdivision.data.address }}</p>
@@ -216,7 +216,7 @@
             </section>
 
             <!-- footer  -->
-            <footer class="p-4 md:grid grid-cols-4 gap-3 text-white bg-[#1A1A1A] md:relative">
+            <footer class="p-4 md:grid md:grid-cols-3 lg:grid-cols-4 gap-3 text-white bg-[#1A1A1A] md:relative">
                 <figure class="h-full md:h-auto flex md:flex-col items-center space-y-2">
                     <img class="h-16 md:h-auto" src="../../../../public/images/logo_light.png" />
                     <span class="font-bold text-primary text-xl">INGENIERÍA ZAFIRO</span>
