@@ -97,7 +97,7 @@
             <section class="bg-[#EDEDED] rounded-t-[70px] lg:px-32 p-2 lg:py-14">
                 <h2 class="py-9 text-lg lg:text-2xl ml-3 font-bold">Descubre los diferentes tamaños de terreno que tenemos para ti.
                 </h2>
-                <div class="md:grid lg:grid-cols-2 gap-x-4 gap-y-4 lg:mx-28 justify-center space-y-2 md:space-y-0">
+                <div class="md:grid lg:grid-cols-2 gap-4 lg:mx-10">
                     <BatchCard v-for="batch in batches.data" :key="batch" :batch="batch" />
                 </div>
                 <p v-if="loadingItems" class="text-xs my-4 text-center">
@@ -105,7 +105,9 @@
                 </p>
                 <div v-else-if="(total_batches > 2) && (batches.data.length < total_batches) && batches.data.length"
                     @click="fetchItemsByPage" class="text-center mt-7">
-                    <i class="fa-solid fa-angle-down text-white bg-black rounded-full p-2 cursor-pointer"></i>
+                    <button class="flex items-center justify-center text-white bg-black rounded-full w-6 h-6 mx-auto">
+                        <i class="fa-solid fa-angle-down"></i>
+                    </button>
                 </div>
             </section>
             <footer class="p-4 md:grid md:grid-cols-3 lg:grid-cols-4 gap-3 text-white bg-[#1A1A1A] md:relative">
@@ -169,7 +171,6 @@ export default {
             currentServiceIndex: null,
             showPreview: false,
             loadingItems: false,
-            currentPage: 1,
             services: [
                 {
                     title: "Deslinde de parcelas",
@@ -235,11 +236,10 @@ export default {
         async fetchItemsByPage() {
             try {
                 this.loadingItems = true;
-                const response = await axios.get(route('batches.get-by-page', this.currentPage));
+                const response = await axios.get(route('batches.get-by-page'));
 
                 if (response.status === 200) {
                     this.batches.data = [...this.batches.data, ...response.data.items];
-                    this.currentPage++;
                 }
             } catch (error) {
                 console.log(error)
