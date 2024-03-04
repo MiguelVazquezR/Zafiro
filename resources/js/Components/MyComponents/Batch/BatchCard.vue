@@ -19,10 +19,10 @@
         </figure>
 
         <div class="w-[315px]">
-            <p class="text-base text-right">{{ batch.subdivision.name }}</p>
+            <p class="text-base text-right">{{ batch.subdivision?.name }}</p>
             <p class="text-base text-[#4D4D4D] mt-2">Venta de terreno/lote</p>
             <p class="text-2xl font-bold">${{ batch.price.numberFormat }}</p>
-            <p class="text-[#4D4D4D]">Lotes {{ batch.subdivision.type }}</p>
+            <p class="text-[#4D4D4D]">Lotes {{ batch.subdivision?.type }}</p>
             <p class="text-[#4D4D4D] text-base mt-1"><i class="fa-solid fa-location-dot mr-2"></i>{{ batch.address }}</p>
             <p class="text-[#4D4D4D] text-base mt-1"><i class="fa-solid fa-ruler-horizontal mr-2"></i>{{ batch.surface }} m2</p>
         </div>

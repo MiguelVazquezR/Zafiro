@@ -1,6 +1,6 @@
 <template>
     <AppLayout title="Nuevo fraccionamiento">
-        <div class="lg:w-[80%] mx-auto rounded-md lg:border border-secondary p-5">
+        <div class="w-5/6 lg:w-[80%] mx-auto rounded-md lg:border border-secondary p-5">
             <h1 class="font-bold text-lg text-center lg:text-left">Agregar fraccionamiento</h1>
             <div class="lg:grid grid-cols-3 space-x-3 mt-3">
                 <div>
