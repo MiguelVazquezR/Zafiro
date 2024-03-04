@@ -1,6 +1,6 @@
 <template>
 <AppLayout title="Lotes">
-    <div class="grid xs:grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-4 lg:mx-42">
+    <div class="grid xs:grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-4 mx-4 mt-8 lg:mt-0 lg:mx-42">
         <BatchCard @delete-batch="deletebatch" v-for="batch in batches.data" :key="batch" :batch="batch" />
     </div>
 </AppLayout>
