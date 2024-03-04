@@ -31,7 +31,7 @@ class BatchController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:100',
-            'subdivision_id' => 'required',
+            'subdivision_id' => 'nullable',
             'address' => 'nullable|string',
             'maps_url' => 'nullable|string',
             'price' => 'required|numeric|min:0|max:9999999',
@@ -85,7 +85,7 @@ class BatchController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:100',
-            'subdivision_id' => 'required',
+            'subdivision_id' => 'nullable',
             'address' => 'nullable|string',
             'maps_url' => 'nullable|string',
             'price' => 'required|numeric|min:0|max:9999999',
@@ -111,7 +111,7 @@ class BatchController extends Controller
     {
         $request->validate([
         'name' => 'required|string|max:100',
-        'subdivision_id' => 'required',
+        'subdivision_id' => 'nullable',
         'address' => 'nullable|string',
         'maps_url' => 'nullable|string',
         'price' => 'required|numeric|min:0|max:9999999',
@@ -157,11 +157,11 @@ class BatchController extends Controller
     }
 
 
-    public function getItemsByPage($currentPage)
+    public function getItemsByPage()
     {
-        $offset = $currentPage * 2;
+        $offset = 2;
         $batches = BatchResource::collection(Batch::with(['media', 'subdivision'])->skip($offset)
-            ->take(2)
+            ->take(30)
             ->get());
 
         return response()->json(['items' => $batches]);
