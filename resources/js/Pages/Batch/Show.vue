@@ -60,7 +60,7 @@
             <section class="lg:p-20 md:p-4 lg:mx-12 mx-2">
                 <h1 class="font-bold text-3xl">{{ batch.data.name }}</h1>
                 <p class="text-sm text-[#4D4D4D] underline"><i class="fa-solid fa-location-dot mr-2"></i> Terreno en {{
-                    batch.data.subdivision.address }}</p>
+                    batch.data.subdivision?.address }}</p>
 
                 <!-- imagenes -->
                 <div class="lg:grid grid-cols-2 gap-9 mt-5 relative space-y-3 lg:space-y-0">
@@ -105,9 +105,9 @@
                             <span>Inicio</span>
                             </Link>
                             <i class="fa-solid fa-chevron-right mx-2"></i>
-                            <Link v-if="batch.data.subdivision" :href="route('subdivisions.show', batch.data.subdivision.id)" class="flex items-center text-gray-400">
+                            <Link v-if="batch.data.subdivision" :href="route('subdivisions.show', batch.data.subdivision?.id)" class="flex items-center text-gray-400">
                                 <span>
-                                    {{ batch.data.subdivision.name }}
+                                    {{ batch.data.subdivision?.name }}
                                 </span>
                             </Link>
                             <i v-if="batch.data.subdivision" class="fa-solid fa-chevron-right mx-2"></i>

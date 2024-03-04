@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->text('maps_url')->nullable();
             $table->text('description')->nullable();
-            $table->foreignId('subdivision_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('subdivision_id')->nullable()->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
