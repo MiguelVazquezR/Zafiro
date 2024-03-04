@@ -54,11 +54,11 @@
 
         <main class="pt-14">
             <!-- home desktop-->
-            <section class="hidden md:block mt-9 relative mb-48" id="Inicio">
+            <section class="hidden md:block mt-9 relative mb-20" id="Inicio">
                 <div class="rounded-[20px] h-[630px] relative">
-                    <img class="mx-auto w-full" src="../../../public/images/home_lotes.png">
+                    <img class="mx-auto w-full h-full" src="../../../public/images/home_lotes.png">
 
-                    <div class="absolute bottom-3 left-28 h-1/2 w-[500px]">
+                    <div class="absolute bottom-10 left-28 h-1/2 w-[500px]">
                         <p class="text-white lg:text-3xl">EL SITIO IDEAL PARA ENCONTRAR EL TERRERNO PERFECTO PARA TI </p>
                         <p class="text-[#D9D9D9] text-3xl mt-5">TERRENOS EN VENTA </p>
                         <a href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página,%20me%20interesa%20comparar%20un%20terreno"
@@ -85,7 +85,7 @@
             </section>
 
             <!-- Services -->
-            <section class="lg:mx-72 mx-5 relative mb-16 lg:mb-32 pt-0 lg:pt-10" id="Servicios">
+            <section class="lg:mx-72 mx-5 relative mb-16 lg:mb-32" id="Servicios">
                 <h2 class="font-bold my-5 lg:my-10 text-lg lg:text-2xl text-center">
                     Explora nuestros fraccionamientos y encuentra tu lote perfecto.</h2>
                 <div class="grid xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-4">

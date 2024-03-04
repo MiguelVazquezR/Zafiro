@@ -30,8 +30,8 @@
         <!-- mobile menu (hamburger) -->
         <div v-if="showMobileMenu"
             class="flex flex-col z-30 w-2/3 bg-[#262626] rounded-xl fixed top-24 right-5 border-white border py-1 text-white">
-            <button class="mx-1 py-2 hover:bg-[#FFD700] rounded-lg" @click="$inertia.visit('/')">LOTES</button>
-            <button class="mx-1 py-2 hover:bg-[#FFD700] rounded-lg" @click="$inertia.visit('/otros-servicios')">OTROS
+            <button class="mx-1 py-2 hover:bg-primary rounded-lg" @click="$inertia.visit('/')">LOTES</button>
+            <button class="mx-1 py-2 hover:bg-primary rounded-lg" @click="$inertia.visit('/otros-servicios')">OTROS
                 SERVICIOS</button>
         </div>
 
@@ -40,14 +40,14 @@
             class="flex items-center justify-between py-4 lg:px-10 px-6 w-full dark:bg-white">
             <div class="flex space-x-2 items-center">
                 <img src="../../../../public/images/logo_dark.png" class="h-14" alt="logo" />
-                <span class="font-bold text-[#FFD700] text-xl">INGENIERÍA ZAFIRO</span>
+                <span class="font-bold text-primary text-xl">INGENIERÍA ZAFIRO</span>
             </div>
             <button @click="showMobileMenu = !showMobileMenu" class="lg:hidden">
-                <i class="fa-solid fa-bars text-xl text-[#FFD700]"></i>
+                <i class="fa-solid fa-bars text-xl text-primary"></i>
             </button>
             <div class="mr-12 hidden lg:inline">
-                <button class="mx-2 rounded-sm px-1 py-px hover:bg-[#FFD700]" @click="$inertia.visit('/')">LOTES</button>
-                <button class="mx-2 rounded-sm px-1 py-px hover:bg-[#FFD700] transition-colors ease-linear duration-200"
+                <button class="mx-2 rounded-sm px-1 py-px hover:bg-primarylight" @click="$inertia.visit('/')">LOTES</button>
+                <button class="mx-2 rounded-sm px-1 py-px hover:bg-primarylight transition-colors ease-linear duration-200"
                     @click="$inertia.visit('/otros-servicios')">OTROS SERVICIOS</button>
                 <a href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página,%20me%20interesa%20comparar%20un%20terreno"
                     target="_blank" rel="noopener noreferrer">
@@ -194,18 +194,18 @@
             <footer class="p-4 md:grid grid-cols-4 gap-3 text-white bg-[#1A1A1A] md:relative">
                 <figure class="h-full md:h-auto flex md:flex-col items-center space-y-2">
                     <img class="h-16 md:h-auto" src="../../../../public/images/logo_light.png" />
-                    <span class="font-bold text-[#FFD700] text-xl">INGENIERÍA ZAFIRO</span>
+                    <span class="font-bold text-primary text-xl">INGENIERÍA ZAFIRO</span>
                 </figure>
                 <div class="flex flex-col">
-                    <h2 class="text-xl text-[#FFD700] font-bold mb-5">Venta de terrenos</h2>
+                    <h2 class="text-xl text-primary font-bold mb-5">Venta de terrenos</h2>
                     <li v-for="(lote, index) in lotes" :key="index">{{ lote.title }}</li>
                 </div>
                 <div class="flex flex-col">
-                    <h2 class="text-xl text-[#FFD700] font-bold mb-5">Servicios</h2>
+                    <h2 class="text-xl text-primary font-bold mb-5">Servicios</h2>
                     <li v-for="(service, index) in services" :key="index">{{ service.title }}</li>
                 </div>
                 <div class="flex flex-col mb-5">
-                    <h2 class="text-xl text-[#FFD700] font-bold mb-5">Contacto</h2>
+                    <h2 class="text-xl text-primary font-bold mb-5">Contacto</h2>
                     <p>
                         <i class="fa-solid fa-envelope mr-3"></i>
                         jose.rod@ingenieriazafiro.dtw.com.mx
