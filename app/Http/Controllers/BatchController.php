@@ -31,7 +31,7 @@ class BatchController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:100',
-            'subdivision_id' => 'required',
+            'subdivision_id' => 'nullable',
             'address' => 'nullable|string',
             'maps_url' => 'nullable|string',
             'price' => 'required|numeric|min:0|max:9999999',
@@ -85,7 +85,7 @@ class BatchController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:100',
-            'subdivision_id' => 'required',
+            'subdivision_id' => 'nullable',
             'address' => 'nullable|string',
             'maps_url' => 'nullable|string',
             'price' => 'required|numeric|min:0|max:9999999',
@@ -111,7 +111,7 @@ class BatchController extends Controller
     {
         $request->validate([
         'name' => 'required|string|max:100',
-        'subdivision_id' => 'required',
+        'subdivision_id' => 'nullable',
         'address' => 'nullable|string',
         'maps_url' => 'nullable|string',
         'price' => 'required|numeric|min:0|max:9999999',
