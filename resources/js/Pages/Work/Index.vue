@@ -1,25 +1,24 @@
-
 <template>
     <AppLayout title="Trabajos">
-        <template #header>
-            <div class="flex justify-between">
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    <i class="fa-solid fa-envelope text-gray-500 text-lg mr-2"></i>Trabajos
-                </h2>
-                <PrimaryButton @click="$inertia.get(route('works.create'))">+ Nuevo</PrimaryButton>
-            </div>
-        </template>
+        <div class="flex justify-between mx-4 lg:mx-20">
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                <i class="fa-solid fa-envelope text-gray-500 text-lg mr-2"></i>Trabajos
+            </h2>
+            <PrimaryButton @click="$inertia.get(route('works.create'))">+ Nuevo</PrimaryButton>
+        </div>
         <div class="lg:w-5/6 mx-auto mt-6">
             <div class="flex space-x-2 justify-end">
                 <el-popconfirm confirm-button-text="Si" cancel-button-text="No" icon-color="#FF0000"
                     title="¿Continuar con la eliminación?" @confirm="deleteSelections">
                     <template #reference>
-                        <el-button type="danger" plain class="mb-3" :disabled="disableMassiveActions">Eliminar</el-button>
+                        <el-button type="danger" plain class="mb-3"
+                            :disabled="disableMassiveActions">Eliminar</el-button>
                     </template>
                 </el-popconfirm>
             </div>
-            <el-table :data="works.data" @row-click="handleRowClick" max-height="450" style="width: 100%" @selection-change="handleSelectionChange"
-                ref="multipleTableRef" :row-class-name="tableRowClassName" class="cursor-pointer">
+            <el-table :data="works.data" @row-click="handleRowClick" max-height="450" style="width: 100%"
+                @selection-change="handleSelectionChange" ref="multipleTableRef" :row-class-name="tableRowClassName"
+                class="cursor-pointer">
                 <el-table-column type="selection" width="55" />
                 <el-table-column prop="folio" label="Folio" width="180" />
                 <el-table-column prop="town" label="Municipio" />

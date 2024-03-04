@@ -28,6 +28,7 @@ class SubdivisionResource extends JsonResource
             'maps_url' => $this->maps_url,
             'description' => $this->description,
             'amenities' => $this->amenities,
+            'soon' => $this->soon,
             'images' => $this->getMedia('images')->all(),
             'planos' => $this->getMedia('planos')->all(),
             'batches' => BatchResource::collection($this->whenLoaded('batches')),

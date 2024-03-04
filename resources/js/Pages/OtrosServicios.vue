@@ -8,10 +8,10 @@
         <div v-if="showPreview" @click="showPreview = false; currentServiceIndex = null;"
             class="fixed inset-0 flex justify-center items-center z-30">
             <div class="relative">
-                <h1 class="text-[#FFD700] my-9 text-3xl text-center">{{ services[currentServiceIndex].title }}</h1>
+                <h1 class="text-primary my-9 text-3xl text-center">{{ services[currentServiceIndex].title }}</h1>
                 <img class="w-[600px] mx-auto opacity-100" :src="services[currentServiceIndex].image">
                 <button @click="goToContact"
-                    class="mx-auto mt-11 text-2xl rounded-full border-2 border-[#FFD700] text-black dark:text-black flex justify-between items-center py-1 px-5 bg-[#FFD700] transition-all">
+                    class="mx-auto mt-11 text-2xl rounded-full border-2 border-primary text-black dark:text-black flex justify-between items-center py-1 px-5 bg-primary transition-all">
                     Contáctanos
                 </button>
             </div>
@@ -27,12 +27,12 @@
         <!-- mobile menu (hamburger) -->
         <div v-if="showMobileMenu"
             class="flex flex-col z-30 w-2/3 bg-[#262626] rounded-xl fixed top-24 right-5 border-white border py-1 text-white">
-            <button class="mx-1 py-2 hover:bg-[#FFD700] rounded-lg" @click="$inertia.visit('/')">LOTES</button>
-            <button class="mx-1 py-2 bg-[#FFD700] rounded-lg">OTROS SERVICIOS</button>
-            <!-- <button class="mx-1 py-2 hover:bg-[#FFD700] rounded-lg" @click="scrollToSection('InicioM')">Inicio</button>
-            <button class="mx-1 py-2 hover:bg-[#FFD700] rounded-lg" @click="scrollToSection('Servicios')">Servicios</button>
-            <button class="mx-1 py-2 hover:bg-[#FFD700] rounded-lg" @click="scrollToSection('Contacto')">Proyectos</button>
-            <button class="mx-1 py-2 hover:bg-[#FFD700] rounded-lg" @click="scrollToSection('Contacto')">Contacto</button> -->
+            <button class="mx-1 py-2 hover:bg-primary rounded-lg" @click="$inertia.visit('/')">LOTES</button>
+            <button class="mx-1 py-2 bg-primary rounded-lg">OTROS SERVICIOS</button>
+            <!-- <button class="mx-1 py-2 hover:bg-primary rounded-lg" @click="scrollToSection('InicioM')">Inicio</button>
+            <button class="mx-1 py-2 hover:bg-primary rounded-lg" @click="scrollToSection('Servicios')">Servicios</button>
+            <button class="mx-1 py-2 hover:bg-primary rounded-lg" @click="scrollToSection('Contacto')">Proyectos</button>
+            <button class="mx-1 py-2 hover:bg-primary rounded-lg" @click="scrollToSection('Contacto')">Contacto</button> -->
         </div>
 
         <!-- navbar -->
@@ -40,24 +40,24 @@
             class="flex items-center justify-between py-4 lg:px-10 px-6 w-full dark:bg-white">
             <div class="flex space-x-2 items-center">
                 <img src="../../../public/images/logo_dark.png" class="h-14" alt="logo" />
-                <span class="font-bold text-[#FFD700] text-xl">INGENIERÍA ZAFIRO</span>
+                <span class="font-bold text-primary text-xl">INGENIERÍA ZAFIRO</span>
             </div>
             <button @click="showMobileMenu = !showMobileMenu" class="lg:hidden">
-                <i class="fa-solid fa-bars text-xl text-[#FFD700]"></i>
+                <i class="fa-solid fa-bars text-xl text-primary"></i>
             </button>
             <div class="mr-12 hidden lg:inline">        
-                <button class="mx-2 rounded-sm px-1 py-px hover:bg-[#FFD700] transition-colors ease-linear duration-200" @click="$inertia.visit('/')">LOTES</button>
-                <button class="mx-2 rounded-sm px-1 py-px bg-[#FFD700]">OTROS SERVICIOS</button>
+                <button class="mx-2 rounded-sm px-1 py-px hover:bg-primarylight transition-colors ease-linear duration-200" @click="$inertia.visit('/')">LOTES</button>
+                <button class="mx-2 rounded-sm px-1 py-px bg-primarylight font-bold">OTROS SERVICIOS</button>
                 <a href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página%20,%20me%20interesa%20su%20servicio!" target="_blank" rel="noopener noreferrer">
                     <i class="fa-brands fa-whatsapp text-xl ml-2"></i>
                 </a>
-                <!-- <button class="mx-2 rounded-[10px] px-1 py-px hover:bg-[#FFD700] hover:text-white"
+                <!-- <button class="mx-2 rounded-[10px] px-1 py-px hover:bg-primary hover:text-white"
                     @click="scrollToSection('Inicio')">Inicio</button>
-                <button class="mx-2 rounded-[10px] px-1 py-px hover:bg-[#FFD700] hover:text-white"
+                <button class="mx-2 rounded-[10px] px-1 py-px hover:bg-primary hover:text-white"
                     @click="scrollToSection('Servicios')">Servicios</button>
-                <button class="mx-2 rounded-[10px] px-1 py-px hover:bg-[#FFD700] hover:text-white"
+                <button class="mx-2 rounded-[10px] px-1 py-px hover:bg-primary hover:text-white"
                     @click="scrollToSection('Contacto')">Proyectos</button>
-                <button class="mx-2 rounded-[10px] px-1 py-px hover:bg-[#FFD700] hover:text-white"
+                <button class="mx-2 rounded-[10px] px-1 py-px hover:bg-primary hover:text-white"
                     @click="scrollToSection('Contacto')">Contacto</button> -->
             </div>
         </nav>
@@ -79,7 +79,7 @@
                             <img class="h-[450px] mx-auto" :src="kirby[currentKirbyIndex].image">
                         </figure>
                         <div class="w-2/3 flex flex-col ml-5 pr-32 text-3xl">
-                            <h1 class="text-center text-[#FFD700] mb-8">{{ kirby[currentKirbyIndex].title }}</h1>
+                            <h1 class="text-center text-primary mb-8">{{ kirby[currentKirbyIndex].title }}</h1>
                             <p class="text-white text-justify">{{ kirby[currentKirbyIndex].description }}</p>
                         </div>
                         <div @click="currentKirbyIndex = currentKirbyIndex == (kirby.length - 1) ? 0 : currentKirbyIndex + 1"
@@ -91,7 +91,7 @@
                     </div>
                 </div>
                 <button @click="goToContact"
-                    class="ml-auto mr-14 mt-11 text-2xl rounded-full border-2 border-[#FFD700] text-black flex justify-between items-center py-1 px-5 bg-[#FFD700] transition-all">
+                    class="ml-auto mr-14 mt-11 text-2xl rounded-full border-2 border-primary text-black flex justify-between items-center py-1 px-5 bg-primary transition-all">
                     Contáctanos
                 </button>
             </section>
@@ -102,7 +102,7 @@
                     <img class="absolute -left-0 bottom-10 h-[160px]" src="../../../public/images/decoration_left.png">
                     <img class="absolute right-0 top-0 h-[300px]" src="../../../public/images/decoration_right.png">
                     <div class="flex flex-col items-center text-xl px-7 pt-7 h-1/2">
-                        <h1 class="text-center text-[#FFD700] mb-8">{{ kirby[currentKirbyIndex].title }}</h1>
+                        <h1 class="text-center text-primary mb-8">{{ kirby[currentKirbyIndex].title }}</h1>
                         <p class="text-white text-justify">{{ kirby[currentKirbyIndex].description }}</p>
                     </div>
                     <div class="flex h-1/2">
@@ -124,7 +124,7 @@
                     </div>
                 </div>
                 <button @click="goToContact"
-                    class=" ml-auto mr-5 mt-20 text-2xl rounded-full border-2 border-[#FFD700] dark:text-black text-black flex justify-between items-center py-1 px-5 bg-[#FFD700] transition-all">
+                    class=" ml-auto mr-5 mt-20 text-2xl rounded-full border-2 border-primary dark:text-black text-black flex justify-between items-center py-1 px-5 bg-primary transition-all">
                     Contáctanos
                 </button>
             </section>
@@ -136,7 +136,7 @@
                 <div class="grid xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-44">
                     <div v-for="(service, index) in services" :key="index"
                         class="bg-[#1A1A1A] rounded-[20px] px-5 pt-6  min-h-[326px] text-2xl relative">
-                        <h1 class="text-[#FFD700] text-center mb-3">{{ service.title }}</h1>
+                        <h1 class="text-primary text-center mb-3">{{ service.title }}</h1>
                         <p class="text-white text-justify">{{ service.description }}</p>
                         <figure @click="showPreview = true; currentServiceIndex = index;"
                             class="w-3/4 h-48 rounded-[20px] absolute -bottom-[104px] left-[12.5%] cursor-pointer">
@@ -153,7 +153,7 @@
             <!-- form -->
             <section class="lg:mx-24 md:mx-20 mx-1 mt-44 relative" id="Contacto">
                 <div class="lg:grid grid-cols-5 gap-9 mb-6">
-                    <div class="col-span-3 border-2 border-[#FFD700] rounded-[20px] py-10 px-5">
+                    <div class="col-span-3 border-2 border-primary rounded-[20px] py-10 px-5">
                         <div class="flex h-full">
                             <div @click="currentProyectIndex = currentProyectIndex == 0 ? (projects.length - 1) : currentProyectIndex - 1"
                                 class="w-8 h-11/12 lg:h-full mr-2 flex justify-center items-center cursor-pointer">
@@ -177,16 +177,16 @@
                         </div>
                     </div>
                     <form @submit.prevent="store" class="col-span-2 md:mt-12 lg:mt-0 mt-8 mx-8">
-                        <h2 class="font-bold mb-3 text-xl text-[#FFD700]">CONTÁCTANOS</h2>
+                        <h2 class="font-bold mb-3 text-xl text-primary">CONTÁCTANOS</h2>
                         <div class="mb-5">
-                            <label for="name">Nombre <span class="text-[#FFD700]">*</span></label>
+                            <label for="name">Nombre <span class="text-primary">*</span></label>
                             <input v-model="form.name" type="text" id="name" required ref="nameInput"
                                 class="active:ring-0 focus:ring-0 border-none outline-none bg-[#D9D9D9] block w-full text-[#808080] rounded-[10px] h-9"
                                 placeholder="Escribe tu nombre" />
                             <p class="text-red-600 text-xs" v-if="form.errors?.name">{{ form.errors?.name }}</p>
                         </div>
                         <div class="mb-5">
-                            <label for="phone">Teléfono <span class="text-[#FFD700]">*</span></label>
+                            <label for="phone">Teléfono <span class="text-primary">*</span></label>
                             <input v-model="form.phone" type="text" id="phone" required
                                 class="active:ring-0 focus:ring-0 border-none outline-none bg-[#D9D9D9] block w-full text-[#808080] rounded-[10px] h-9"
                                 placeholder="Escribe tu teléfono" />
@@ -208,14 +208,14 @@
                             <p class="text-red-600 text-xs" v-if="form.errors?.address">{{ form.errors?.address }}</p>
                         </div>
                         <div class="mb-5">
-                            <label for="address">Mensaje <span class="text-[#FFD700]">*</span></label>
+                            <label for="address">Mensaje <span class="text-primary">*</span></label>
                             <textarea v-model="form.message" rows="5" required
                                 class="active:ring-0 focus:ring-0 border-none outline-none bg-[#D9D9D9] block w-full text-[#808080] rounded-[10px]"
                                 placeholder="Dejános un mensaje "></textarea>
                             <p class="text-red-600 text-xs" v-if="form.errors?.message">{{ form.errors?.message }}</p>
                         </div>
                         <button type="submit"
-                            class="mx-auto mt-5 rounded-full border-2 border-[#FFD700] text-black flex justify-between items-center py-1 px-5 hover:bg-[#FFD700] transition-all">
+                            class="mx-auto mt-5 rounded-full border-2 border-primary text-black flex justify-between items-center py-1 px-5 hover:bg-primary transition-all">
                             Enviar
                             <i class="fa-solid fa-chevron-right ml-6"></i>
                         </button>
@@ -229,18 +229,18 @@
             <footer class="p-4 md:grid grid-cols-4 gap-3 text-white bg-[#1A1A1A] mt-24 md:relative">
                 <figure class="h-full md:h-auto flex md:flex-col items-center space-y-2">
                     <img class="h-16 md:h-auto" src="../../../public/images/logo_light.png" />
-                    <span class="font-bold text-[#FFD700] text-xl">INGENIERÍA ZAFIRO</span>
+                    <span class="font-bold text-primary text-xl">INGENIERÍA ZAFIRO</span>
                 </figure>
                 <div class="flex flex-col">
-                    <h2 class="text-xl text-[#FFD700] font-bold mb-5">Venta de terrenos</h2>
+                    <h2 class="text-xl text-primary font-bold mb-5">Venta de terrenos</h2>
                     <li v-for="(lote, index) in lotes" :key="index">{{ lote.title }}</li>
                 </div>
                 <div class="flex flex-col">
-                    <h2 class="text-xl text-[#FFD700] font-bold mb-5">Servicios</h2>
+                    <h2 class="text-xl text-primary font-bold mb-5">Servicios</h2>
                     <li v-for="(service, index) in services" :key="index">{{ service.title }}</li>
                 </div>
                 <div class="flex flex-col mb-5">
-                    <h2 class="text-xl text-[#FFD700] font-bold mb-5">Contacto</h2>
+                    <h2 class="text-xl text-primary font-bold mb-5">Contacto</h2>
                     <p>
                         <i class="fa-solid fa-envelope mr-3"></i>
                         jose.rod@ingenieriazafiro.dtw.com.mx

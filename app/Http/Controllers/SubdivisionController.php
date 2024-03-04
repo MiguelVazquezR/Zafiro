@@ -14,17 +14,14 @@ class SubdivisionController extends Controller
     {
         $subdivisions = SubdivisionResource::collection(Subdivision::with('media')->get());
 
-        // return $subdivisions;
         return inertia('Subdivision/Index', compact('subdivisions'));
     }
 
-    
     public function create()
     {
         return inertia('Subdivision/Create');
     }
 
-    
     public function store(Request $request)
     {
         $request->validate([
@@ -38,6 +35,7 @@ class SubdivisionController extends Controller
             'description' => 'nullable|string|max:800',
             'amenities' => 'nullable|array',
             'planos' => 'nullable|array',
+            'soon' => 'boolean',
         ]);
 
         $subdivision = Subdivision::create($request->all());
@@ -67,7 +65,6 @@ class SubdivisionController extends Controller
         $subdivision = SubdivisionResource::make(Subdivision::with(['media', 'batches.subdivision'])->find($subdivision_id));
         // $total_batches = Batch::where('subdivision_id', $subdivision_id)->count();
 
-        // return $subdivision;
         return inertia('Subdivision/Show', compact('subdivision'));
     }
 
@@ -93,6 +90,7 @@ class SubdivisionController extends Controller
             'description' => 'nullable|string|max:800',
             'amenities' => 'nullable|array',
             'planos' => 'nullable|array',
+            'soon' => 'boolean',
         ]);
 
         $subdivision->update($request->all());
@@ -120,6 +118,7 @@ class SubdivisionController extends Controller
             'description' => 'nullable|string|max:800',
             'amenities' => 'nullable|array',
             'planos' => 'nullable|array',
+            'soon' => 'boolean',
         ]);
 
         $subdivision->update($request->all());

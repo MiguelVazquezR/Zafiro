@@ -45,7 +45,7 @@
                             <InputLabel value="Tipo de lotes" class="ml-3 mb-1" />
                             <el-select class="w-full" v-model="form.type" clearable placeholder="Seleccione"
                                 no-data-text="No hay opciones disponibles" no-match-text="No se encontraron coincidencias">
-                                <el-option v-for="type in types" :key="type" :label="type" :value="type" />
+                                <el-option v-for="item in types" :key="item" :label="item" :value="item" />
                             </el-select>
                             <InputError :message="form.errors.type" />
                         </div>
@@ -113,7 +113,10 @@
                         </el-select>
                         <InputError :message="form.errors.amenities" />
                     </div>
-
+                    <label class="flex items-center mt-3">
+                        <Checkbox v-model:checked="form.soon" name="soon" />
+                        <span class="ml-2 text-sm text-gray-600">Próximamente</span>
+                    </label>
                 </div>
             </div>
             <div class="text-right mt-5 col-span-full">
@@ -130,6 +133,7 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import InputError from "@/Components/InputError.vue";
 import FileUploader from "@/Components/MyComponents/FileUploader.vue";
+import Checkbox from '@/Components/Checkbox.vue';
 import { useForm } from "@inertiajs/vue3";
 
 export default {
@@ -144,6 +148,7 @@ export default {
             maps_url: this.subdivision.maps_url,
             description: this.subdivision.description,
             amenities: this.subdivision.amenities,
+            soon: Boolean(this.subdivision.soon),
             image_cover1: null,
             image_cover2: null,
             image_cover3: null,
@@ -204,7 +209,8 @@ export default {
         PrimaryButton,
         FileUploader,
         InputLabel,
-        InputError
+        InputError,
+        Checkbox,
     },
     props: {
         subdivision: Object
