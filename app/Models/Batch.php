@@ -17,13 +17,14 @@ class Batch extends Model implements HasMedia
         'price',
         'surface',
         'address',
-        'maps_url',
+        'lon',
+        'lat',
         'description',
         'subdivision_id',
     ];
 
     //relationships
-    public function subdivision() :BelongsTo
+    public function subdivision(): BelongsTo
     {
         return $this->belongsTo(Subdivision::class);
     }

@@ -83,11 +83,17 @@
                         <InputLabel value="Planos" class="ml-3 mb-1 text-sm" />
                         <FileUploader @files-selected="this.form.planos = $event" />
                     </div>
-                    <div class="mt-3">
-                        <InputLabel value="Url de maps" class="ml-3 mb-1" />
-                        <el-input v-model="form.maps_url" placeholder="Pega la url de google maps" :maxlength="700"
-                            clearable />
-                        <InputError :message="form.errors.maps_url" />
+                    <div class="grid grid-cols-2 gap-2 mt-3">
+                        <div>
+                            <InputLabel value="Latitud" class="ml-3 mb-1" />
+                            <el-input v-model="form.lat" placeholder="Latitud" :maxlength="20" clearable />
+                            <InputError :message="form.errors.lat" />
+                        </div>
+                        <div>
+                            <InputLabel value="Longitud" class="ml-3 mb-1" />
+                            <el-input v-model="form.lon" placeholder="Longitud" :maxlength="20" clearable />
+                            <InputError :message="form.errors.lon" />
+                        </div>
                     </div>
                     <div class="mt-3">
                         <InputLabel value="Dirección*" class="ml-3 mb-1" />
@@ -145,7 +151,8 @@ export default {
             lowest_price: this.subdivision.lowest_price,
             lowest_surface: this.subdivision.lowest_surface,
             address: this.subdivision.address,
-            maps_url: this.subdivision.maps_url,
+            lat: this.subdivision.lat,
+            lon: this.subdivision.lon,
             description: this.subdivision.description,
             amenities: this.subdivision.amenities,
             soon: Boolean(this.subdivision.soon),

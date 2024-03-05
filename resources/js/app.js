@@ -7,8 +7,8 @@ import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 
-import Toast from "vue-toastification";
-import "vue-toastification/dist/index.css";
+// import Toast from "vue-toastification";
+// import "vue-toastification/dist/index.css";
 
 // Import the CSS or use your own!
 import "vue-toastification/dist/index.css";
@@ -18,9 +18,9 @@ import 'element-plus/dist/index.css'
 
 const appName = 'Ingeniería Zafiro';
 
-const options = {
-    // You can set your default options here
-};
+// const options = {
+//     // You can set your default options here
+// };
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
@@ -30,7 +30,7 @@ createInertiaApp({
             .use(plugin)
             .use(ZiggyVue)
             .use(ElementPlus)
-            .use(Toast, options)
+            // .use(Toast, options)
             .mount(el);
     },
     progress: {

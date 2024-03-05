@@ -79,11 +79,17 @@
                             :maxlength="100" clearable />
                         <InputError :message="form.errors.address" />
                     </div>
-                    <div class="mt-3">
-                        <InputLabel value="Url de maps" class="ml-3 mb-1" />
-                        <el-input v-model="form.maps_url" placeholder="Pega la url de google maps" :maxlength="700"
-                            clearable />
-                        <InputError :message="form.errors.maps_url" />
+                    <div class="grid grid-cols-2 gap-2 mt-3">
+                        <div>
+                            <InputLabel value="Latitud" class="ml-3 mb-1" />
+                            <el-input v-model="form.lat" placeholder="Latitud" :maxlength="20" clearable />
+                            <InputError :message="form.errors.lat" />
+                        </div>
+                        <div>
+                            <InputLabel value="Longitud" class="ml-3 mb-1" />
+                            <el-input v-model="form.lon" placeholder="Longitud" :maxlength="20" clearable />
+                            <InputError :message="form.errors.lon" />
+                        </div>
                     </div>
                     <div class="mt-3">
                         <InputLabel value="Descripción*" class="ml-3 mb-1" />
@@ -134,7 +140,8 @@ export default {
             lowest_price: null,
             lowest_surface: null,
             address: null,
-            maps_url: null,
+            lat: null,
+            lon: null,
             description: null,
             amenities: [],
             image_cover1: null,

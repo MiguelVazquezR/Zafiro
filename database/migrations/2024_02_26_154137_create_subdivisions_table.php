@@ -19,7 +19,8 @@ return new class extends Migration
             $table->unsignedDouble('lowest_price')->nullable();
             $table->unsignedFloat('lowest_surface')->nullable();
             $table->string('address');
-            $table->text('maps_url')->nullable();
+            $table->string('lat')->nullable();
+            $table->string('lon')->nullable();
             $table->text('description')->nullable();
             $table->json('amenities')->nullable();
             $table->boolean('soon')->default(false);
