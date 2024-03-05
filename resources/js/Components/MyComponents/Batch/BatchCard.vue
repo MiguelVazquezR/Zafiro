@@ -1,7 +1,7 @@
 <template>
     <div
-        class="bg-white rounded-xl border shadow-md p-3 h-[240px] flex space-x-4 cursor-pointer">
-        <figure class="bg-gray-300 rounded-[20px] h-full w-3/4 relative">
+        class="bg-white rounded-xl border shadow-md p-3 w-full h-[240px] flex space-x-4 cursor-pointer">
+        <figure class="bg-gray-300 rounded-[20px] h-full relative">
             <img class="object-cover h-full w-full rounded-[20px]" :src="batch.images[currentImage]?.original_url">
             <!-- Change image -->
             <div v-if="batch.images?.length > 1" class="absolute top-1/2 w-full flex justify-between items-center">
