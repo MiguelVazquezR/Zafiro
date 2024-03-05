@@ -97,8 +97,8 @@
             <section class="bg-[#EDEDED] rounded-t-[70px] lg:px-32 p-2 lg:py-14">
                 <h2 class="py-9 text-lg lg:text-2xl ml-3 font-bold">Descubre los diferentes tamaños de terreno que tenemos para ti.
                 </h2>
-                <div class="md:grid lg:grid-cols-2 gap-4 lg:mx-10">
-                    <BatchCard v-for="batch in batches.data" :key="batch" :batch="batch" />
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:mx-10 justify-center">
+                    <BatchCard class="mx-auto" v-for="batch in batchesLocal" :key="batch" :batch="batch" />
                 </div>
                 <p v-if="loadingItems" class="text-xs my-4 text-center">
                     Cargando <i class="fa-sharp fa-solid fa-circle-notch fa-spin ml-2 text-primary"></i>
@@ -171,6 +171,7 @@ export default {
             currentServiceIndex: null,
             showPreview: false,
             loadingItems: false,
+            batchesLocal: null,
             services: [
                 {
                     title: "Deslinde de parcelas",
@@ -239,7 +240,7 @@ export default {
                 const response = await axios.get(route('batches.get-by-page'));
 
                 if (response.status === 200) {
-                    this.batches.data = [...this.batches.data, ...response.data.items];
+                    this.batchesLocal = [...this.batchesLocal, ...response.data.items];
                 }
             } catch (error) {
                 console.log(error)
@@ -250,6 +251,7 @@ export default {
     },
     mounted() {
         window.addEventListener('scroll', this.handleScroll);
+        this.batchesLocal = this.batches.data;
     },
     beforeDestroy() {
         window.removeEventListener('scroll', this.handleScroll);

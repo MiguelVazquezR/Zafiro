@@ -1,5 +1,6 @@
 <template>
-    <div @click="$inertia.get(route('batches.show', batch.id))" class="bg-white rounded-xl border shadow-md p-3 w-[410px] md:w-[550px] h-[220px] flex space-x-4 cursor-pointer">
+<Link :href="route('batches.show', this.batch.id)">
+    <div class="bg-white rounded-xl border shadow-md p-3 w-[410px] md:w-[550px] h-[240px] flex space-x-4 cursor-pointer">
         <figure class="bg-gray-300 rounded-[20px] h-full w-3/4 relative">
             <img class="object-cover h-full w-full rounded-[20px]" :src="batch.images[currentImage]?.original_url" alt="">
             <!-- Change image -->
@@ -27,14 +28,19 @@
             <p class="text-[#4D4D4D] text-base mt-1"><i class="fa-solid fa-ruler-horizontal mr-2"></i>{{ batch.surface }} m2</p>
         </div>
     </div>
+</Link>
 </template>
 
 <script>
+import { Link } from "@inertiajs/vue3";
 export default {
 data(){
     return {
         currentImage: 0,
     }
+},
+components:{
+Link
 },
 props:{
     batch: Object
