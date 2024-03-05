@@ -226,21 +226,32 @@
                 </div>
             </section>
 
-            <footer class="p-4 md:grid md:grid-cols-3 lg:grid-cols-4 gap-3 text-white bg-[#1A1A1A] mt-24 md:relative">
-                <figure class="h-full md:h-auto flex md:flex-col items-center space-y-2">
-                    <img class="h-16 md:h-auto" src="../../../public/images/logo_light.png" />
-                    <span class="font-bold text-primary text-xl">INGENIERÍA ZAFIRO</span>
+            <footer class="p-4 md:grid md:grid-cols-3 lg:grid-cols-4 gap-3 text-white bg-[#1A1A1A] md:relative text-sm">
+                <figure class="h-full md:h-auto flex space-y-2">
+                    <img class="h-16 md:h-1/4" src="../../../public/images/logo_light.png" />
+                    <span class="lg:font-bold text-primary lg:text-xl">INGENIERÍA ZAFIRO</span>
                 </figure>
-                <div class="flex flex-col">
-                    <h2 class="text-xl text-primary font-bold mb-5">Venta de terrenos</h2>
+                <div class="flex flex-col lg:text-base">
+                    <h2 class="lg:text-xl text-primary lg:font-bold mb-5">Venta de terrenos</h2>
                     <li v-for="(lote, index) in lotes" :key="index">{{ lote.title }}</li>
+                    <div class="flex lg:hidden flex-col mb-5 mt-5">
+                        <h2 class="lg:text-xl text-primary lg:font-bold mb-5">Contacto</h2>
+                        <p class="flex items-center text-xs">
+                            <i class="fa-solid fa-envelope mr-3"></i>
+                            jose.rod@ingenieriazafiro.dtw.com.mx
+                        </p>
+                        <p>
+                            <i class="fa-solid fa-phone mr-2 text-xs"></i>
+                            3312517732
+                        </p>
+                    </div>
                 </div>
                 <div class="flex flex-col">
-                    <h2 class="text-xl text-primary font-bold mb-5">Servicios</h2>
+                    <h2 class="lg:text-xl text-primary lg:font-bold mb-5">Servicios</h2>
                     <li v-for="(service, index) in services" :key="index">{{ service.title }}</li>
                 </div>
-                <div class="flex flex-col mb-5">
-                    <h2 class="text-xl text-primary font-bold mb-5">Contacto</h2>
+                <div class="hidden lg:flex flex-col mb-5">
+                    <h2 class="lg:text-xl text-primary lg:font-bold mb-5">Contacto</h2>
                     <p>
                         <i class="fa-solid fa-envelope mr-3"></i>
                         jose.rod@ingenieriazafiro.dtw.com.mx
@@ -250,15 +261,17 @@
                         3312517732
                     </p>
                 </div>
-                <p class="col-span-full">
-                    <small>Copyrigth &copy; 2023 </small>
-                    <small class="block md:inline mb-5"> Ingeniería Zafiro. Todos los derechos reservados.</small>
-                </p>
-                <a href="https://dtw.com.mx" target="_blank"
-                    class="col-span-full flex justify-end items-center space-x-2 mr-24">
-                    <small>by Digtital Tech Work</small>
-                    <img class="w-6" src="../../../public/images/dtw_logo.png">
-                </a>
+                <div class="col-span-full flex-col justify-center md:flex-row flex items-center md:justify-between">
+                    <p class="flex mt-4">
+                        <small>Copyrigth &copy; 2023 </small>
+                        <small class="block md:inline"> Ingeniería Zafiro. Todos los derechos reservados.</small>
+                    </p>
+                    <a href="https://dtw.com.mx" target="_blank"
+                        class="flex justify-end items-center space-x-2 md:mr-24">
+                        <small>by Digtital Tech Work</small>
+                        <img class="w-6" src="../../../public/images/dtw_logo.png">
+                    </a>
+                </div>
             </footer>
         </main>
     </div>

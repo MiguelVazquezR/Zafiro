@@ -57,11 +57,11 @@
 
         <main class="pt-14">
             <!-- home desktop-->
-            <section class="hidden md:block mt-9 relative mb-8" id="Inicio">
+            <section class="hidden md:block mt-9 relative md:mb-8 lg:mb-16" id="Inicio">
                 <figure class="rounded-[20px] lg:h-[630px] md:h-full relative">
-                    <img class="mx-auto w-full object-cover" src="../../../public/images/home_lotes.png">
+                    <img class="mx-auto w-full h-full object-cover" src="../../../public/images/home_lotes.png">
 
-                    <div class="absolute bottom-20 lg:bottom-36 left-8 lg:left-28 h-1/2 w-1/2">
+                    <div class="absolute bottom-20 lg:bottom-36 left-8 lg:left-28 h-1/2 w-1/2 lg:w-1/3">
                         <p class="text-white lg:text-3xl">EL SITIO IDEAL PARA ENCONTRAR EL TERRERNO PERFECTO PARA TI
                         </p>
                         <p class="text-[#D9D9D9] lg:text-3xl mt-5">TERRENOS EN VENTA </p>
@@ -89,7 +89,7 @@
             </section>
 
             <!-- Services -->
-            <section class="lg:mx-72 mx-5 relative mb-16 lg:mb-32" id="Servicios">
+            <section class="lg:mx-36 md:mx-10 mx-5 relative mb-16 lg:mb-32" id="Servicios">
                 <h2 class="font-bold my-5 lg:my-10 text-lg lg:text-2xl text-center">
                     Explora nuestros fraccionamientos y encuentra tu lote perfecto.</h2>
                 <div class="grid xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-4">
@@ -98,7 +98,7 @@
                 </div>
             </section>
 
-            <section class="bg-[#EDEDED] rounded-t-[70px] lg:px-32 p-2 lg:py-14">
+            <section class="bg-[#EDEDED] rounded-t-[70px] lg:px-5 md:px-10 p-2 lg:py-14">
                 <h2 class="py-9 text-lg lg:text-2xl ml-3 font-bold">Descubre los diferentes tamaños de terreno que
                     tenemos para ti.
                 </h2>
@@ -150,13 +150,13 @@
                         3312517732
                     </p>
                 </div>
-                <div class="col-span-full flex items-center justify-between">
-                    <p class="col-span-full">
+                <div class="col-span-full flex-col justify-center md:flex-row flex items-center md:justify-between">
+                    <p class="flex mt-4">
                         <small>Copyrigth &copy; 2023 </small>
-                        <small class="block md:inline mb-5"> Ingeniería Zafiro. Todos los derechos reservados.</small>
+                        <small class="block md:inline"> Ingeniería Zafiro. Todos los derechos reservados.</small>
                     </p>
                     <a href="https://dtw.com.mx" target="_blank"
-                        class="col-span-full flex justify-end items-center space-x-2 mr-24">
+                        class="flex justify-end items-center space-x-2 md:mr-24">
                         <small>by Digtital Tech Work</small>
                         <img class="w-6" src="../../../public/images/dtw_logo.png">
                     </a>

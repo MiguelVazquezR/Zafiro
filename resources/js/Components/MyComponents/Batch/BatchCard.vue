@@ -1,6 +1,6 @@
 <template>
     <div
-        class="bg-white rounded-xl border shadow-md p-3 w-[410px] md:w-[550px] h-[240px] flex space-x-4 cursor-pointer">
+        class="bg-white rounded-xl border shadow-md p-3 h-[240px] flex space-x-4 cursor-pointer">
         <figure class="bg-gray-300 rounded-[20px] h-full w-3/4 relative">
             <img class="object-cover h-full w-full rounded-[20px]" :src="batch.images[currentImage]?.original_url">
             <!-- Change image -->
@@ -24,8 +24,8 @@
             </div>
         </figure>
 
-        <Link :href="route('batches.show', this.batch.id)">
-        <div class="w-[315px] text-sm">
+        <!-- <Link :href="route('batches.show', this.batch.id)"> -->
+        <div @click="$inertia.visit(route('batches.show', this.batch.id))" class="w-[315px] text-sm">
             <p class="text-right">{{ batch.subdivision?.name }}</p>
             <p class="text-[#4D4D4D] mt-2 text-base">Venta de terreno/lote</p>
             <p class="text-2xl font-bold">${{ batch.price.numberFormat }}</p>
@@ -33,7 +33,7 @@
             <p class="text-[#4D4D4D] mt-1"><i class="fa-solid fa-location-dot mr-2"></i>{{ batch.address }}</p>
             <p class="text-[#4D4D4D] mt-1"><i class="fa-solid fa-ruler-horizontal mr-2"></i>{{ batch.surface }} m2</p>
         </div>
-        </Link>
+        <!-- </Link> -->
     </div>
 </template>
 
