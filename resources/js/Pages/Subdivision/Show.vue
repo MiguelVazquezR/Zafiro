@@ -85,7 +85,7 @@
                                 :src="subdivision.data.images[4]?.original_url" alt="">
                         </figure>
                     </div>
-                    <button @click="showPreview = true" v-if="subdivision.data.images?.length > 5"
+                    <button @click="showPreview = true" v-if="subdivision.data.images?.length > 5 || true"
                         class="absolute -bottom-5 right-20 rounded-[10px] bg-white border border-[#D9D9D9] py-2 px-3">
                         Mostrar todas las fotos
                         <i class="fa-regular fa-images ml-2 text-xs"></i>
@@ -205,7 +205,7 @@
                     <div class="my-9 col-span-full">
                         <p class="text-lg font-bold">Lotes de {{ subdivision.data.name }} </p>
                         <div v-if="subdivision.data.batches?.length > 0"
-                            class="grid xs:grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-4 mt-7 lg:mx-24">
+                            class="grid xs:grid-cols-1 justify-center lg:grid-cols-2 gap-x-4 gap-y-4 mt-7 lg:mx-24">
                             <BatchCard v-for="batch in subdivision.data.batches" :key="batch" :batch="batch" />
                         </div>
                         <p class="text-sm text-gray-400 text-center" v-else>No hay lotes disponibles dentro de este

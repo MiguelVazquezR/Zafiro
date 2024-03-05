@@ -85,7 +85,7 @@
                                 alt="">
                         </figure>
                     </div>
-                    <button @click="showPreview = true" v-if="batch.data.images?.length > 5"
+                    <button @click="showPreview = true" v-if="batch.data.images?.length > 5 ||true"
                         class="absolute -bottom-5 right-20 rounded-[10px] bg-white border border-[#D9D9D9] py-2 px-3">
                         Mostrar todas las fotos
                         <i class="fa-regular fa-images ml-2 text-xs"></i>
