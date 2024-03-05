@@ -1,4 +1,5 @@
 <template>
+
     <Head :title="batch.data.name" />
     <div class="relative">
 
@@ -46,8 +47,10 @@
                 <i class="fa-solid fa-bars text-xl text-primary"></i>
             </button>
             <div class="mr-12 hidden lg:inline">
-                <button class="mx-2 rounded-sm px-1 py-px hover:bg-primarylight" @click="$inertia.visit('/')">LOTES</button>
-                <button class="mx-2 rounded-sm px-1 py-px hover:bg-primarylight transition-colors ease-linear duration-200"
+                <button class="mx-2 rounded-sm px-1 py-px hover:bg-primarylight"
+                    @click="$inertia.visit('/')">LOTES</button>
+                <button
+                    class="mx-2 rounded-sm px-1 py-px hover:bg-primarylight transition-colors ease-linear duration-200"
                     @click="$inertia.visit('/otros-servicios')">OTROS SERVICIOS</button>
                 <a href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página,%20me%20interesa%20comparar%20un%20terreno"
                     target="_blank" rel="noopener noreferrer">
@@ -60,7 +63,7 @@
             <section class="lg:p-20 md:p-4 lg:mx-12 mx-2">
                 <h1 class="font-bold text-3xl">{{ batch.data.name }}</h1>
                 <p class="text-sm text-[#4D4D4D] underline"><i class="fa-solid fa-location-dot mr-2"></i> Terreno en {{
-                    batch.data.subdivision?.address }}</p>
+        batch.data.subdivision?.address }}</p>
 
                 <!-- imagenes -->
                 <div class="lg:grid grid-cols-2 gap-9 mt-5 relative space-y-3 lg:space-y-0">
@@ -69,23 +72,23 @@
                     </figure>
                     <div class="grid grid-cols-2 gap-7 sm:mt-7 lg:mt-0">
                         <figure v-if="batch.data.images?.length > 1" class="w-full">
-                            <img class="object-cover rounded-xl w-full h-[286px]" :src="batch.data.images[1]?.original_url"
-                                alt="">
+                            <img class="object-cover rounded-xl w-full h-[286px]"
+                                :src="batch.data.images[1]?.original_url" alt="">
                         </figure>
                         <figure v-if="batch.data.images?.length > 2" class="w-full">
-                            <img class="object-cover rounded-xl w-full h-[286px]" :src="batch.data.images[2]?.original_url"
-                                alt="">
+                            <img class="object-cover rounded-xl w-full h-[286px]"
+                                :src="batch.data.images[2]?.original_url" alt="">
                         </figure>
                         <figure v-if="batch.data.images?.length > 3" class="w-full">
-                            <img class="object-cover rounded-xl w-full h-[286px]" :src="batch.data.images[3]?.original_url"
-                                alt="">
+                            <img class="object-cover rounded-xl w-full h-[286px]"
+                                :src="batch.data.images[3]?.original_url" alt="">
                         </figure>
                         <figure v-if="batch.data.images?.length > 4" class="w-full">
-                            <img class="object-cover rounded-xl w-full h-[286px]" :src="batch.data.images[4]?.original_url"
-                                alt="">
+                            <img class="object-cover rounded-xl w-full h-[286px]"
+                                :src="batch.data.images[4]?.original_url" alt="">
                         </figure>
                     </div>
-                    <button @click="showPreview = true" v-if="batch.data.images?.length > 5 ||true"
+                    <button @click="showPreview = true" v-if="batch.data.images?.length > 5 || true"
                         class="absolute -bottom-5 right-20 rounded-[10px] bg-white border border-[#D9D9D9] py-2 px-3">
                         Mostrar todas las fotos
                         <i class="fa-regular fa-images ml-2 text-xs"></i>
@@ -105,10 +108,12 @@
                             <span>Inicio</span>
                             </Link>
                             <i class="fa-solid fa-chevron-right mx-2"></i>
-                            <Link v-if="batch.data.subdivision" :href="route('subdivisions.show', batch.data.subdivision?.id)" class="flex items-center text-gray-400">
-                                <span>
-                                    {{ batch.data.subdivision?.name }}
-                                </span>
+                            <Link v-if="batch.data.subdivision"
+                                :href="route('subdivisions.show', batch.data.subdivision?.id)"
+                                class="flex items-center text-gray-400">
+                            <span>
+                                {{ batch.data.subdivision?.name }}
+                            </span>
                             </Link>
                             <i v-if="batch.data.subdivision" class="fa-solid fa-chevron-right mx-2"></i>
                             <span class="text-black">
@@ -119,10 +124,12 @@
                         <div class="my-7">
                             <p class="font-bold text-lg mb-4 pl-4">Características</p>
 
-                            <div class="flex flex-wrap items-center border-b border-[#D9D9D9] pb-7 space-x-3 pl-4 gap-y-2">
+                            <div
+                                class="flex flex-wrap items-center border-b border-[#D9D9D9] pb-7 space-x-3 pl-4 gap-y-2">
 
                                 <!-- Precio desde -->
-                                <div class="rounded-md border border-[#D9D9D9] flex items-center px-2 py-1 ml-3 md:ml-0">
+                                <div
+                                    class="rounded-md border border-[#D9D9D9] flex items-center px-2 py-1 ml-3 md:ml-0">
                                     <i class="fa-solid fa-dollar-sign border-r border-[#D9D9D9] pr-1 text-lg"></i>
                                     <div class="flex flex-col justify-center px-3">
                                         <p class="text-sm text-[#4D4D4D]">Precio</p>
@@ -167,11 +174,10 @@
                                 <p class="text-[#4D4D4D] mt-4">{{ batch.data.description }}</p>
                             </div>
 
-                            <!-- Ubicación -->
-                            <div v-if="batch.data.maps_url" class="my-4 pl-4">
+                            <!-- mapa -->
+                            <div v-if="batch.data.lon && batch.data.lat" class="my-4 pl-4">
                                 <p class="font-bold text-lg">Ubicación</p>
-                                <iframe class="mt-5 rounded-lg" :src="getEmbedMapUrl(batch.data.maps_url)" width="600"
-                                    height="380" frameborder="0" style="border: 0; width: 100%;" allowfullscreen></iframe>
+                                <div ref="map" style="height: 400px;"></div>
                             </div>
                         </div>
                     </div>
@@ -243,6 +249,11 @@ export default {
             message: null,
         });
         return {
+            // mapa
+            map: null,
+            marker: null,
+            coordinates: { lat: parseFloat(this.batch.data.lat), lng: parseFloat(this.batch.data.lon) },
+            // lotee
             form,
             isNavbarFixed: false,
             currentImage: 0,
@@ -307,12 +318,17 @@ export default {
         handleMinusImage() {
             this.currentImage === 0 ? this.currentImage = this.batch.data.images?.length - 1 : this.currentImage -= 1
         },
-        getEmbedMapUrl(mapsUrl) {
-            // Asegurarte de que mapsUrl tenga el formato correcto
-            const formattedUrl = mapsUrl.replace('https://www.google.com/maps/place/', '');
+        initMap() {
+            this.map = new google.maps.Map(this.$refs.map, {
+                center: this.coordinates,
+                zoom: 15,
+            });
 
-            // Agregar "/embed/v1/" y la key al inicio de la URL
-            return `https://www.google.com/maps/embed/v1/place?key=AIzaSyA0s1a7phLN0iaD6-UE7m4qP-z21pH0eSc&q=${formattedUrl}`;
+            this.marker = new google.maps.Marker({
+                position: this.coordinates,
+                map: this.map,
+                title: 'Ubicación',
+            });
         },
     },
     components: {
@@ -322,6 +338,11 @@ export default {
     },
     mounted() {
         window.addEventListener('scroll', this.handleScroll);
+        if (this.$refs.map) {
+            this.initMap();
+        } else {
+            console.error('Map element not found.');
+        }
     },
     beforeDestroy() {
         window.removeEventListener('scroll', this.handleScroll);
@@ -346,4 +367,5 @@ export default {
 
 html {
     scroll-behavior: smooth;
-}</style>
+}
+</style>

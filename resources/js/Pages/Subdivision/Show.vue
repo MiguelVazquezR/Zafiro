@@ -1,4 +1,5 @@
 <template>
+
     <Head :title="subdivision.data.name" />
     <div class="relative">
 
@@ -45,8 +46,10 @@
                 <i class="fa-solid fa-bars text-xl text-primary"></i>
             </button>
             <div class="mr-12 hidden lg:inline">
-                <button class="mx-2 rounded-sm px-1 py-px hover:bg-primarylight" @click="$inertia.visit('/')">LOTES</button>
-                <button class="mx-2 rounded-sm px-1 py-px hover:bg-primarylight transition-colors ease-linear duration-200"
+                <button class="mx-2 rounded-sm px-1 py-px hover:bg-primarylight"
+                    @click="$inertia.visit('/')">LOTES</button>
+                <button
+                    class="mx-2 rounded-sm px-1 py-px hover:bg-primarylight transition-colors ease-linear duration-200"
                     @click="$inertia.visit('/otros-servicios')">OTROS SERVICIOS</button>
                 <a href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página,%20me%20interesa%20comparar%20un%20terreno"
                     target="_blank" rel="noopener noreferrer">
@@ -58,14 +61,16 @@
         <main class="pt-20">
 
             <section class="lg:p-20 md:p-4 lg:mx-12 mx-2">
-                <h1 class="font-bold text-3xl">Lotes {{ subdivision.data.type + ' en fraccionamiento "' + subdivision.data.name + '"' }}</h1>
+                <h1 class="font-bold text-3xl">Lotes {{ subdivision.data.type + ' en fraccionamiento "' +
+        subdivision.data.name + '"' }}</h1>
                 <p class="text-sm text-[#4D4D4D] underline"><i class="fa-solid fa-location-dot mr-2"></i> Terrenos en {{
-                    subdivision.data.address }}</p>
+        subdivision.data.address }}</p>
 
                 <!-- imagenes -->
                 <div class="lg:grid grid-cols-2 gap-9 mt-5 relative space-y-3 lg:space-y-0">
                     <figure class="w-full h-[600px] flex justify-center">
-                        <img class="object-cover rounded-xl w-full" :src="subdivision.data.images[0]?.original_url" alt="">
+                        <img class="object-cover rounded-xl w-full" :src="subdivision.data.images[0]?.original_url"
+                            alt="">
                     </figure>
                     <div class="grid grid-cols-2 gap-7 sm:mt-7 lg:mt-0">
                         <figure v-if="subdivision.data.images?.length > 1" class="w-full">
@@ -97,12 +102,12 @@
                     <div class="col-span-3">
                         <p class="flex items-center text-sm text-[#4A4A4A] border-b pb-2">
                             <Link href="/" class="flex items-center text-gray-400">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                    stroke="currentColor" class="w-4 h-4 mr-1">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
-                                </svg>
-                                <span>Inicio</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-4 h-4 mr-1">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                            </svg>
+                            <span>Inicio</span>
                             </Link>
                             <i class="fa-solid fa-chevron-right mx-2"></i>
                             <span class="text-black">
@@ -113,14 +118,17 @@
                         <div class="my-7">
                             <p class="font-bold text-lg mb-4 pl-4">Características</p>
 
-                            <div class="flex flex-wrap items-center border-b border-[#D9D9D9] pb-7 space-x-3 pl-4 gap-y-2">
+                            <div
+                                class="flex flex-wrap items-center border-b border-[#D9D9D9] pb-7 space-x-3 pl-4 gap-y-2">
 
                                 <!-- Precio desde -->
-                                <div class="rounded-md border border-[#D9D9D9] flex items-center px-2 py-1 ml-3 md:ml-0">
+                                <div
+                                    class="rounded-md border border-[#D9D9D9] flex items-center px-2 py-1 ml-3 md:ml-0">
                                     <i class="fa-solid fa-dollar-sign border-r border-[#D9D9D9] pr-1 text-lg"></i>
                                     <div class="flex flex-col justify-center px-3">
                                         <p class="text-sm text-[#4D4D4D]">Precio desde</p>
-                                        <p class="text-base font-bold">{{ subdivision.data.lowest_price.numberFormat }} MXN
+                                        <p class="text-base font-bold">{{ subdivision.data.lowest_price.numberFormat }}
+                                            MXN
                                         </p>
                                     </div>
                                 </div>
@@ -175,18 +183,16 @@
                                 <p class="font-bold text-lg">Amenidades</p>
                                 <div class="flex items-center flex-wrap space-y-2 space-x-3 mt-4">
                                     <p v-for="amenity in subdivision.data.amenities" :key="amenity"
-                                        class="text-[#4D4D4D] py-2 px-3 rounded-lg border border-[#D9D9D9]"><i class="mr-3"
-                                            :class="getIcon(amenity)"></i>{{ amenity }}</p>
+                                        class="text-[#4D4D4D] py-2 px-3 rounded-lg border border-[#D9D9D9]"><i
+                                            class="mr-3" :class="getIcon(amenity)"></i>{{ amenity }}</p>
                                 </div>
                             </div>
 
-                            <!-- Ubicación -->
-                            <div v-if="subdivision.data.maps_url" class="my-4 pl-4">
+                            <!-- mapa -->
+                            <div v-if="subdivision.data.lon && subdivision.data.lat" class="my-4 pl-4">
                                 <p class="font-bold text-lg">Ubicación</p>
-                                <iframe class="mt-5 rounded-lg" :src="getEmbedMapUrl(subdivision.data.maps_url)" width="600"
-                                    height="380" frameborder="0" style="border: 0; width: 100%;" allowfullscreen></iframe>
+                                <div ref="map" style="height: 400px;"></div>
                             </div>
-
                         </div>
                     </div>
 
@@ -269,6 +275,11 @@ export default {
             message: null,
         });
         return {
+            // mapa
+            map: null,
+            marker: null,
+            coordinates: { lat: parseFloat(this.subdivision.data.lat), lng: parseFloat(this.subdivision.data.lon) },
+            // fraccionamieto
             form,
             isNavbarFixed: false,
             showMobileMenu: false,
@@ -348,12 +359,17 @@ export default {
         handleMinusImage() {
             this.currentImage === 0 ? this.currentImage = this.subdivision.data.images?.length - 1 : this.currentImage -= 1
         },
-        getEmbedMapUrl(mapsUrl) {
-            // Asegurarte de que mapsUrl tenga el formato correcto
-            const formattedUrl = mapsUrl.replace('https://www.google.com/maps/place/', '');
+        initMap() {
+            this.map = new google.maps.Map(this.$refs.map, {
+                center: this.coordinates,
+                zoom: 15,
+            });
 
-            // Agregar "/embed/v1/" y la key al inicio de la URL
-            return `https://www.google.com/maps/embed/v1/place?key=AIzaSyA0s1a7phLN0iaD6-UE7m4qP-z21pH0eSc&q=${formattedUrl}`;
+            this.marker = new google.maps.Marker({
+                position: this.coordinates,
+                map: this.map,
+                title: 'Ubicación',
+            });
         },
     },
     components: {
@@ -364,6 +380,11 @@ export default {
     },
     mounted() {
         window.addEventListener('scroll', this.handleScroll);
+        if (this.$refs.map) {
+            this.initMap();
+        } else {
+            console.error('Map element not found.');
+        }
     },
     beforeDestroy() {
         window.removeEventListener('scroll', this.handleScroll);

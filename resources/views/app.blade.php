@@ -12,7 +12,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
         {{-- maps api --}}
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA0s1a7phLN0iaD6-UE7m4qP-z21pH0eSc&q"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCI4qjNLENehFjFj4-d7AfkNzFwh6BAzA&libraries=places"></script>
 
         <!-- Scripts -->
         @routes

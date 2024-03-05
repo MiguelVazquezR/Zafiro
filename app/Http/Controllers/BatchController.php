@@ -33,7 +33,8 @@ class BatchController extends Controller
             'name' => 'required|string|max:100',
             'subdivision_id' => 'nullable',
             'address' => 'nullable|string',
-            'maps_url' => 'nullable|string',
+            'lon' => 'nullable|string',
+            'lat' => 'nullable|string',
             'price' => 'required|numeric|min:0|max:9999999',
             'surface' => 'required|numeric|min:0|max:9999999',
             'description' => 'nullable|string|max:800',
@@ -87,7 +88,8 @@ class BatchController extends Controller
             'name' => 'required|string|max:100',
             'subdivision_id' => 'nullable',
             'address' => 'nullable|string',
-            'maps_url' => 'nullable|string',
+            'lon' => 'nullable|string',
+            'lat' => 'nullable|string',
             'price' => 'required|numeric|min:0|max:9999999',
             'surface' => 'required|numeric|min:0|max:9999999',
             'description' => 'nullable|string|max:800',
@@ -99,7 +101,7 @@ class BatchController extends Controller
 
         $images = ['cleared_cover1', 'cleared_cover2', 'cleared_cover3', 'cleared_cover4', 'cleared_cover5', 'cleared_cover6', 'cleared_cover7', 'cleared_cover8'];
 
-        if (collect($images)->contains(fn($image) => $request->$image == true)) {
+        if (collect($images)->contains(fn ($image) => $request->$image == true)) {
             $batch->clearMediaCollection('images');
         }
 
@@ -110,15 +112,16 @@ class BatchController extends Controller
     public function updateWithMedia(Request $request, Batch $batch)
     {
         $request->validate([
-        'name' => 'required|string|max:100',
-        'subdivision_id' => 'nullable',
-        'address' => 'nullable|string',
-        'maps_url' => 'nullable|string',
-        'price' => 'required|numeric|min:0|max:9999999',
-        'surface' => 'required|numeric|min:0|max:9999999',
-        'description' => 'nullable|string|max:800',
-        'amenities' => 'nullable|array',
-        'planos' => 'nullable|array',
+            'name' => 'required|string|max:100',
+            'subdivision_id' => 'nullable',
+            'address' => 'nullable|string',
+            'lon' => 'nullable|string',
+            'lat' => 'nullable|string',
+            'price' => 'required|numeric|min:0|max:9999999',
+            'surface' => 'required|numeric|min:0|max:9999999',
+            'description' => 'nullable|string|max:800',
+            'amenities' => 'nullable|array',
+            'planos' => 'nullable|array',
         ]);
 
         $batch->update($request->all());
@@ -126,20 +129,20 @@ class BatchController extends Controller
         // update images. Clear all then attach all
         $images = ['image_cover1', 'image_cover2', 'image_cover3', 'image_cover4', 'image_cover5', 'image_cover6', 'image_cover7', 'image_cover8'];
 
-        if (collect($images)->contains(fn($image) => $request->hasFile($image))) {
+        if (collect($images)->contains(fn ($image) => $request->hasFile($image))) {
             $batch->clearMediaCollection('images');
         }
 
-         // Lógica para guardar las imagenes
-         $collections = ['cover1', 'cover2', 'cover3', 'cover4', 'cover5', 'cover6', 'cover7', 'cover8'];
+        // Lógica para guardar las imagenes
+        $collections = ['cover1', 'cover2', 'cover3', 'cover4', 'cover5', 'cover6', 'cover7', 'cover8'];
 
-         foreach ($collections as $collection) {
-             $inputName = 'image_' . $collection;
- 
-             if ($request->hasFile($inputName)) {
-                 $batch->addMediaFromRequest($inputName)->toMediaCollection('images');
-             }
-         }
+        foreach ($collections as $collection) {
+            $inputName = 'image_' . $collection;
+
+            if ($request->hasFile($inputName)) {
+                $batch->addMediaFromRequest($inputName)->toMediaCollection('images');
+            }
+        }
 
         // Lógica para guardar los planos
         if ($request->hasFile('planos')) {
@@ -150,7 +153,7 @@ class BatchController extends Controller
         return to_route('batches.index');
     }
 
-    
+
     public function destroy(Batch $batch)
     {
         $batch->delete();
