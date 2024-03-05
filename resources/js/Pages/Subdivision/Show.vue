@@ -21,15 +21,15 @@
         </div>
 
         <!-- whatsapp button -->
-        <a class="md:hidden z-50 w-14 h-14 lg:w-20 lg:h-20 rounded-full bg-green-600 shadow-md shadow-green-800/100 flex items-center justify-center fixed bottom-3 right-3 hover:scale-105"
-            href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página%20,%20me%20interesa%20su%20servicio!"
+        <a class="lg:hidden z-50 w-14 h-14 lg:w-20 lg:h-20 rounded-full bg-green-600 shadow-md shadow-green-800/100 flex items-center justify-center fixed bottom-3 right-3 hover:scale-105"
+            href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página,%20me%20interesa%20comparar%20un%20terreno"
             target="_blank" rel="noopener noreferrer">
             <i class="fa-brands fa-beat fa-whatsapp text-2xl lg:text-4xl text-gray-100"></i>
         </a>
 
         <!-- mobile menu (hamburger) -->
         <div v-if="showMobileMenu"
-            class="flex flex-col z-30 w-2/3 bg-[#262626] rounded-xl fixed top-24 right-5 border-white border py-1 text-white">
+            class="flex flex-col z-50 bg-[#262626] rounded-xl w-2/3 md:w-1/3 fixed top-24 md:top-20 right-5 border-white border py-1 text-white">
             <button class="mx-1 py-2 hover:bg-primary rounded-lg" @click="$inertia.visit('/')">LOTES</button>
             <button class="mx-1 py-2 hover:bg-primary rounded-lg" @click="$inertia.visit('/otros-servicios')">OTROS
                 SERVICIOS</button>
@@ -72,7 +72,7 @@
                         <img class="object-cover rounded-xl w-full" :src="subdivision.data.images[0]?.original_url"
                             alt="">
                     </figure>
-                    <div class="grid grid-cols-2 gap-7 sm:mt-7 lg:mt-0">
+                    <div class="grid grid-cols-2 gap-7 pt-4 lg:pt-0">
                         <figure v-if="subdivision.data.images?.length > 1" class="w-full">
                             <img class="object-cover rounded-xl w-full h-[286px]"
                                 :src="subdivision.data.images[1]?.original_url" alt="">
@@ -81,11 +81,11 @@
                             <img class="object-cover rounded-xl w-full h-[286px]"
                                 :src="subdivision.data.images[2]?.original_url" alt="">
                         </figure>
-                        <figure v-if="subdivision.data.images?.length > 3" class="w-full">
+                        <figure v-if="subdivision.data.images?.length > 3" class="w-full hidden lg:block">
                             <img class="object-cover rounded-xl w-full h-[286px]"
                                 :src="subdivision.data.images[3]?.original_url" alt="">
                         </figure>
-                        <figure v-if="subdivision.data.images?.length > 4" class="w-full">
+                        <figure v-if="subdivision.data.images?.length > 4" class="w-full hidden lg:block">
                             <img class="object-cover rounded-xl w-full h-[286px]"
                                 :src="subdivision.data.images[4]?.original_url" alt="">
                         </figure>

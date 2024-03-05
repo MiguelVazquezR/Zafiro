@@ -1,11 +1,13 @@
 <template>
+
     <Head title="Bienvenido" />
     <div class="relative">
 
         <div v-if="showPreview" class="fixed inset-0 bg-black opacity-90 z-20"></div>
 
         <!-- Imagen centrada sin opacidad -->
-        <div v-if="showPreview" @click="showPreview = false" class="fixed inset-0 flex justify-center items-center z-30">
+        <div v-if="showPreview" @click="showPreview = false"
+            class="fixed inset-0 flex justify-center items-center z-30">
             <div class="relative">
                 <h1 class="text-primary my-9 text-3xl text-center">{{ services[currentServiceIndex].title }}</h1>
                 <img class="w-[400px] mx-auto opacity-100" :src="services[currentServiceIndex].image">
@@ -17,15 +19,15 @@
         </div>
 
         <!-- whatsapp button -->
-        <a class="md:hidden z-50 w-14 h-14 lg:w-20 lg:h-20 rounded-full bg-green-600 shadow-md shadow-green-800/100 flex items-center justify-center fixed bottom-3 right-3 hover:scale-105"
-            href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página%20,%20me%20interesa%20su%20servicio!"
+        <a class="lg:hidden z-50 w-14 h-14 lg:w-20 lg:h-20 rounded-full bg-green-600 shadow-md shadow-green-800/100 flex items-center justify-center fixed bottom-3 right-3 hover:scale-105"
+            href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página,%20me%20interesa%20comparar%20un%20terreno"
             target="_blank" rel="noopener noreferrer">
             <i class="fa-brands fa-beat fa-whatsapp text-2xl lg:text-4xl text-gray-100"></i>
         </a>
 
         <!-- mobile menu (hamburger) -->
         <div v-if="showMobileMenu"
-            class="flex flex-col z-30 w-2/3 bg-[#262626] rounded-xl fixed top-24 right-5 border-white border py-1 text-white">
+            class="flex flex-col z-50 bg-[#262626] rounded-xl w-2/3 md:w-1/3 fixed top-24 md:top-20 right-5 border-white border py-1 text-white">
             <button class="mx-1 py-2 bg-primary rounded-lg">LOTES</button>
             <button class="mx-1 py-2 hover:bg-primary rounded-lg" @click="$inertia.visit('/otros-servicios')">OTROS
                 SERVICIOS</button>
@@ -43,7 +45,8 @@
             </button>
             <div class="mr-12 hidden lg:inline">
                 <button class="mx-2 rounded-sm px-2 py-px bg-primarylight font-bold">LOTES</button>
-                <button class="mx-2 rounded-sm px-1 py-px hover:bg-primarylight transition-colors ease-linear duration-200"
+                <button
+                    class="mx-2 rounded-sm px-1 py-px hover:bg-primarylight transition-colors ease-linear duration-200"
                     @click="$inertia.visit('/otros-servicios')">OTROS SERVICIOS</button>
                 <a href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página%20,%20me%20interesa%20su%20servicio!"
                     target="_blank" rel="noopener noreferrer">
@@ -54,15 +57,16 @@
 
         <main class="pt-14">
             <!-- home desktop-->
-            <section class="hidden md:block mt-9 relative mb-20" id="Inicio">
-                <figure class="rounded-[20px] lg:h-[630px] md:h-[450px] relative">
-                    <img class="mx-auto w-full h-full" src="../../../public/images/home_lotes.png">
+            <section class="hidden md:block mt-9 relative mb-8" id="Inicio">
+                <figure class="rounded-[20px] lg:h-[630px] md:h-full relative">
+                    <img class="mx-auto w-full object-cover" src="../../../public/images/home_lotes.png">
 
-                    <div class="absolute top-44 lg:bottom-10 left-8 lg:left-28 h-1/2 w-[500px]">
-                        <p class="text-white lg:text-3xl">EL SITIO IDEAL PARA ENCONTRAR EL TERRERNO PERFECTO PARA TI </p>
-                        <p class="text-[#D9D9D9] text-3xl mt-5">TERRENOS EN VENTA </p>
+                    <div class="absolute bottom-20 lg:bottom-36 left-8 lg:left-28 h-1/2 w-1/2">
+                        <p class="text-white lg:text-3xl">EL SITIO IDEAL PARA ENCONTRAR EL TERRERNO PERFECTO PARA TI
+                        </p>
+                        <p class="text-[#D9D9D9] lg:text-3xl mt-5">TERRENOS EN VENTA </p>
                         <a href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página,%20me%20interesa%20comparar%20un%20terreno"
-                            class="ml-auto mr-2 mt-14 text-xl rounded-full border-2 border-primary text-black inline-flex justify-center items-center py-1 px-9 bg-primary transition-all">
+                            class="ml-auto mr-2 mt-14 lg:text-xl rounded-full border-2 border-primary text-black inline-flex justify-center items-center py-1 px-4 lg:px-9 bg-primary transition-all">
                             Contáctanos
                         </a>
                     </div>
@@ -95,7 +99,8 @@
             </section>
 
             <section class="bg-[#EDEDED] rounded-t-[70px] lg:px-32 p-2 lg:py-14">
-                <h2 class="py-9 text-lg lg:text-2xl ml-3 font-bold">Descubre los diferentes tamaños de terreno que tenemos para ti.
+                <h2 class="py-9 text-lg lg:text-2xl ml-3 font-bold">Descubre los diferentes tamaños de terreno que
+                    tenemos para ti.
                 </h2>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:mx-10 justify-center">
                     <BatchCard class="mx-auto" v-for="batch in batchesLocal" :key="batch" :batch="batch" />
@@ -110,21 +115,32 @@
                     </button>
                 </div>
             </section>
-            <footer class="p-4 md:grid md:grid-cols-3 lg:grid-cols-4 gap-3 text-white bg-[#1A1A1A] md:relative">
+            <footer class="p-4 md:grid md:grid-cols-3 lg:grid-cols-4 gap-3 text-white bg-[#1A1A1A] md:relative text-sm">
                 <figure class="h-full md:h-auto flex space-y-2">
-                    <img class="h-16 md:h-1/3" src="../../../public/images/logo_light.png" />
-                    <span class="font-bold text-primary text-xl">INGENIERÍA ZAFIRO</span>
+                    <img class="h-16 md:h-1/4" src="../../../public/images/logo_light.png" />
+                    <span class="lg:font-bold text-primary lg:text-xl">INGENIERÍA ZAFIRO</span>
                 </figure>
-                <div class="flex flex-col">
-                    <h2 class="text-xl text-primary font-bold mb-5">Venta de terrenos</h2>
+                <div class="flex flex-col lg:text-base">
+                    <h2 class="lg:text-xl text-primary lg:font-bold mb-5">Venta de terrenos</h2>
                     <li v-for="(lote, index) in lotes" :key="index">{{ lote.title }}</li>
+                    <div class="flex lg:hidden flex-col mb-5 mt-5">
+                        <h2 class="lg:text-xl text-primary lg:font-bold mb-5">Contacto</h2>
+                        <p class="flex items-center text-xs">
+                            <i class="fa-solid fa-envelope mr-3"></i>
+                            jose.rod@ingenieriazafiro.dtw.com.mx
+                        </p>
+                        <p>
+                            <i class="fa-solid fa-phone mr-2 text-xs"></i>
+                            3312517732
+                        </p>
+                    </div>
                 </div>
                 <div class="flex flex-col">
-                    <h2 class="text-xl text-primary font-bold mb-5">Servicios</h2>
+                    <h2 class="lg:text-xl text-primary lg:font-bold mb-5">Servicios</h2>
                     <li v-for="(service, index) in services" :key="index">{{ service.title }}</li>
                 </div>
-                <div class="flex flex-col mb-5">
-                    <h2 class="text-xl text-primary font-bold mb-5">Contacto</h2>
+                <div class="hidden lg:flex flex-col mb-5">
+                    <h2 class="lg:text-xl text-primary lg:font-bold mb-5">Contacto</h2>
                     <p>
                         <i class="fa-solid fa-envelope mr-3"></i>
                         jose.rod@ingenieriazafiro.dtw.com.mx
@@ -134,15 +150,17 @@
                         3312517732
                     </p>
                 </div>
-                <p class="col-span-full">
-                    <small>Copyrigth &copy; 2023 </small>
-                    <small class="block md:inline mb-5"> Ingeniería Zafiro. Todos los derechos reservados.</small>
-                </p>
-                <a href="https://dtw.com.mx" target="_blank"
-                    class="col-span-full flex justify-end items-center space-x-2 mr-24">
-                    <small>by Digtital Tech Work</small>
-                    <img class="w-6" src="../../../public/images/dtw_logo.png">
-                </a>
+                <div class="col-span-full flex items-center justify-between">
+                    <p class="col-span-full">
+                        <small>Copyrigth &copy; 2023 </small>
+                        <small class="block md:inline mb-5"> Ingeniería Zafiro. Todos los derechos reservados.</small>
+                    </p>
+                    <a href="https://dtw.com.mx" target="_blank"
+                        class="col-span-full flex justify-end items-center space-x-2 mr-24">
+                        <small>by Digtital Tech Work</small>
+                        <img class="w-6" src="../../../public/images/dtw_logo.png">
+                    </a>
+                </div>
             </footer>
         </main>
     </div>
