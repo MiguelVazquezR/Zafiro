@@ -1,6 +1,14 @@
 <template>
 
-    <Head :title="subdivision.data.name" />
+    <Head>
+        <title>{{ subdivision.data.name }}</title>
+        <meta name="description"
+            content="Descubre soluciones inmobiliarias integrales con ingeniería zafiro. Expertos en venta de terrenos, topografía, obra civil, diseño arquitectónico y acabados de lujo. Con años de experiencia, garantizamos precisión y satisfacción. ¡Transforma tus proyectos con nosotros!">
+        <meta name="keywords"
+            content="ingeniería, construcción, materiales, terreno, lote, fraccionamientos, obras, casas, residencias, industria, medicion, topografía, cimientos, drenaje, calles, gps, deslinde, prcelas, hectáreas, lotificación, cimentación, demolición, Mecanica de suelos, cimbrado, losas, estructura">
+        <meta name="robots" content="index">
+        <meta name="author" content="DTW">
+    </Head>
     <div class="relative">
 
         <div v-if="showPreview" class="fixed inset-0 bg-black opacity-90 z-20"></div>
@@ -22,7 +30,7 @@
 
         <!-- whatsapp button -->
         <a class="lg:hidden z-50 w-14 h-14 lg:w-20 lg:h-20 rounded-full bg-green-600 shadow-md shadow-green-800/100 flex items-center justify-center fixed bottom-3 right-3 hover:scale-105"
-            href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página,%20me%20interesa%20comparar%20un%20terreno"
+            href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página,%20me%20interesa%20comprar%20un%20terreno"
             target="_blank" rel="noopener noreferrer">
             <i class="fa-brands fa-beat fa-whatsapp text-2xl lg:text-4xl text-gray-100"></i>
         </a>
@@ -51,7 +59,7 @@
                 <button
                     class="mx-2 rounded-sm px-1 py-px hover:bg-primarylight transition-colors ease-linear duration-200"
                     @click="$inertia.visit('/otros-servicios')">OTROS SERVICIOS</button>
-                <a href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página,%20me%20interesa%20comparar%20un%20terreno"
+                <a href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página,%20me%20interesa%20comprar%20un%20terreno"
                     target="_blank" rel="noopener noreferrer">
                     <i class="fa-brands fa-whatsapp text-xl ml-2"></i>
                 </a>
