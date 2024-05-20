@@ -152,7 +152,7 @@ export default {
             price: this.work.price,
             start_date: this.date,
             description: this.work.description,
-            payments: this.work.payments,
+            payments: this.work.payments ?? [{ concept: null, amount: null }],
         });
 
         return {
@@ -188,6 +188,9 @@ export default {
             this.form.payments.push(newPayment);
         },
         update() {
+            if (this.form.payments.some(item => item.conept == null || item.amount == null)) {
+                this.form.payments = null;
+            }
             this.form.put(route('works.update', this.work), {
                 onSuccess: () => {
                     this.$notify({
