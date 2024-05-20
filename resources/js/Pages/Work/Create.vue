@@ -31,7 +31,7 @@
             </div>
 
             <!-- form -->
-            <div class="bg-white rounded-xl shadow-lg px-5 py-3 mt-6">
+            <div class="bg-white rounded-xl shadow-lg px-5 py-3 my-6">
                 <form @submit.prevent="store()" class="lg:grid grid-cols-2 gap-4 space-y-3 lg:space-y-0">
                     <div>
                         <label class="text-sm">Nombre de cliente</label>
@@ -41,25 +41,27 @@
                     </div>
                     <div>
                         <label class="text-sm">Municipio</label>
-                        <input v-model="form.town" type="text"
+                        <input v-model="form.town" type="text" name="town" autocomplete="town"
                             class="active:ring-0 focus:ring-0 border-none outline-none bg-[#D9D9D9] block w-full text-[#808080] rounded-[10px] h-9">
                         <InputError :message="form.errors.town" />
                     </div>
                     <div>
                         <label class="text-sm">Ejido</label>
-                        <input v-model="form.ejido" type="text"
+                        <input v-model="form.ejido" type="text" name="ejido" autocomplete="ejido"
                             class="active:ring-0 focus:ring-0 border-none outline-none bg-[#D9D9D9] block w-full text-[#808080] rounded-[10px] h-9">
                         <InputError :message="form.errors.ejido" />
                     </div>
                     <div>
                         <label class="text-sm">Tipo de trabajo</label>
-                        <select v-model="form.work_type"
+                        <input v-model="form.work_type" type="text"
+                            class="active:ring-0 focus:ring-0 border-none outline-none bg-[#D9D9D9] block w-full text-[#808080] rounded-[10px] h-9">
+                        <!-- <select v-model="form.work_type"
                             class="active:ring-0 focus:ring-0 border-none outline-none bg-[#D9D9D9] block w-full text-[#808080] rounded-[10px] h-9">
                             <option value="Levantamiento" selected>Levantamiento</option>
                             <option value="Lotificacion">Lotificacion</option>
                             <option value="Subdivisión">Subdivisión</option>
                             <option value="Deslinde">Deslinde</option>
-                        </select>
+                        </select> -->
                         <InputError :message="form.errors.ejido" />
                     </div>
                     <div>
@@ -86,8 +88,46 @@
                             class="active:ring-0 focus:ring-0 border-none outline-none bg-[#D9D9D9] block w-full text-[#808080] rounded-[10px]">
                         <InputError :message="form.errors.start_date" />
                     </div>
+                    <div class="col-span-full">
+                        <label class="text-sm">Descripción</label>
+                        <textarea v-model="form.description" rows="4"
+                            class="active:ring-0 focus:ring-0 border-none outline-none bg-[#D9D9D9] block w-full text-[#808080] rounded-[10px]">
+                        </textarea>
+                        <InputError :message="form.errors.description" />
+                    </div>
+                    <h2 class="font-bold text-base pt-3 col-span-full">Pagos</h2>
+                    <section class="col-span-full">
+                        <div v-for="(item, index) in form.payments" :key="index"
+                            class="col-span-full flex items-center space-x-2">
+                            <div class="w-[75%]">
+                                <label class="text-sm">Concepto</label>
+                                <input v-model="form.payments[index].concept" type="text"
+                                    class="active:ring-0 focus:ring-0 border-none outline-none bg-[#D9D9D9] block w-full text-[#808080] rounded-[10px] h-9">
+                            </div>
+                            <div class="w-[20%]">
+                                <label class="text-sm">Monto</label>
+                                <input v-model="form.payments[index].amount" type="number"
+                                    class="active:ring-0 focus:ring-0 border-none outline-none bg-[#D9D9D9] block w-full text-[#808080] rounded-[10px] h-9">
+                            </div>
+                            <el-popconfirm v-if="form.payments.length > 1" confirm-button-text="Si"
+                                cancel-button-text="No" icon-color="#FD8827" title="¿Remover?"
+                                @confirm="deletePayment(index)" class="w-[5%]">
+                                <template #reference>
+                                    <button type="button"
+                                        class="text-primary text-sm w-6 h-6 self-end mb-1 hover:bg-gray-100 rounded-full">
+                                        <i class="fa-regular fa-trash-can"></i>
+                                    </button>
+                                </template>
+                            </el-popconfirm>
+                        </div>
+                        <div class="flex justify-center mt-4">
+                            <button @click="addPayment()" type="button" class="text-xs text-black underline">
+                                + Agregar otro pago
+                            </button>
+                        </div>
+                    </section>
                     <div class="flex justify-end mt-3 col-span-full">
-                        <PrimaryButton :disabled="loading">Guardar</PrimaryButton>
+                        <PrimaryButton :disabled="form.processing">Guardar</PrimaryButton>
                     </div>
                 </form>
             </div>
@@ -111,7 +151,9 @@ export default {
             customer_name: null,
             area: null,
             price: null,
+            description: null,
             start_date: null,
+            payments: [{ concept: null, amount: null }],
         });
 
         return {
@@ -134,6 +176,13 @@ export default {
         }
     },
     methods: {
+        deletePayment(index) {
+            this.form.payments.splice(index, 1);
+        },
+        addPayment() {
+            const newPayment = { concept: null, amount: null };
+            this.form.payments.push(newPayment);
+        },
         calcItemsInLocalStorage() {
             this.localStorageItems = JSON.parse(localStorage.getItem('formData'));
         },

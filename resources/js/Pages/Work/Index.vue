@@ -20,7 +20,32 @@
                 @selection-change="handleSelectionChange" ref="multipleTableRef" :row-class-name="tableRowClassName"
                 class="cursor-pointer">
                 <el-table-column type="selection" width="55" />
-                <el-table-column prop="folio" label="Folio" width="180" />
+                <el-table-column prop="folio" label="Folio" width="110" />
+                <el-table-column label="Pagos" width="180">
+                    <template #default="scope">
+                        <div class="flex items-center">
+                            <p class="mr-2 mt-px">
+                                <el-tooltip v-if="workIsPaid(scope.row)" content="Liquidado" placement="top">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-green-600">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="m4.5 12.75 6 6 9-13.5" />
+                                    </svg>
+                                </el-tooltip>
+                                <el-tooltip v-else content="Esperando liquidación" placement="top">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-amber-600">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                    </svg>
+                                </el-tooltip>
+                            </p>
+                            <span>{{ scope.row.payments?.length ?? 0 }} pagos (${{
+                                calcTotalPaid(scope.row).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") }})</span>
+                        </div>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="price" label="Costo" />
                 <el-table-column prop="town" label="Municipio" />
                 <el-table-column prop="ejido" label="Ejido" />
                 <el-table-column prop="work_type" label="Trabajo" />
@@ -56,6 +81,16 @@ export default {
         },
     },
     methods: {
+        workIsPaid(work) {
+            return this.calcTotalPaid(work) >= work.raw_price;
+        },
+        calcTotalPaid(work) {
+            if (!work.payments?.length) return 0;
+
+            return work.payments?.reduce((acc, item) => {
+                return acc += item.amount;
+            }, 0);
+        },
         handleRowClick(row) {
             this.$inertia.get(route('works.edit', row));
         },
@@ -70,37 +105,29 @@ export default {
         },
         async deleteSelections() {
             try {
+                const indexesToDelete = this.$refs.multipleTableRef.value.map(item => item.id);
                 const response = await axios.post(route('works.massive-delete', {
-                    works: this.$refs.multipleTableRef.value
+                    works: indexesToDelete
                 }));
 
-                if (response.status == 200) {
-                    // let indexes = [];
-                    this.toast.success(response.data.message);
+                if (response.status === 200) {
+                    // remover los trabajos eliminados
+                    this.works.data = this.works.data.filter(element => !indexesToDelete.includes(element.id));
 
-                    // update list of works
-                    let deletedIndexes = [];
-                    this.works.data.forEach((message, index) => {
-                        if (this.$refs.multipleTableRef.value.includes(message)) {
-                            deletedIndexes.push(index);
-                        }
+                    this.$notify({
+                        title: "Correcto",
+                        message: "",
+                        type: "success",
                     });
 
-                    // Ordenar los índices de forma descendente para evitar problemas de desplazamiento al eliminar elementos
-                    deletedIndexes.sort((a, b) => b - a);
-
-                    // Eliminar mensajes por índice
-                    for (const index of deletedIndexes) {
-                        this.works.data.splice(index, 1);
-                    }
-
-                } else {
-                    this.toast.error(response.data.message);
                 }
-
             } catch (err) {
-                this.toast.error(err);
                 console.log(err);
+                this.$notify({
+                    title: "Problema al eliminar registro(s)",
+                    message: "",
+                    type: "error",
+                });
             }
         },
         tableRowClassName({ row, rowIndex }) {
