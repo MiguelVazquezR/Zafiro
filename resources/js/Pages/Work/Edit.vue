@@ -188,7 +188,7 @@ export default {
             this.form.payments.push(newPayment);
         },
         update() {
-            if (this.form.payments.some(item => item.conept == null || item.amount == null)) {
+            if (this.form.payments.some(item => item.concept == null || item.amount == null)) {
                 this.form.payments = null;
             }
             this.form.put(route('works.update', this.work), {
