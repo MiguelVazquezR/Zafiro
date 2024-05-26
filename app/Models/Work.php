@@ -16,12 +16,15 @@ class Work extends Model
         'customer_name',
         'price',
         'area',
+        'description',
+        'payments',
         'work_type',
         'start_date',
     ];
 
     protected $casts = [
         'start_date' => 'date',
+        'payments' => 'array',
     ];
     
 }

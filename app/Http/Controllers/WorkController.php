@@ -28,6 +28,8 @@ class WorkController extends Controller
             'parcel_number' => 'required|string|max:255',
             'customer_name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
+            'description' => 'nullable|string',
+            'payments' => 'nullable|array',
             'area' => 'required|numeric|min:0',
             'work_type' => 'required|string|max:255',
             'start_date' => 'required|date',
@@ -57,6 +59,8 @@ class WorkController extends Controller
             'parcel_number' => 'required|string|max:255',
             'customer_name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
+            'description' => 'nullable|string',
+            'payments' => 'nullable|array',
             'area' => 'required|numeric|min:0',
             'work_type' => 'required|string|max:255',
             'start_date' => 'required|date',
@@ -74,10 +78,7 @@ class WorkController extends Controller
 
     public function massiveDelete(Request $request)
     {
-        foreach ($request->works as $work) {
-            $work = Work::find($work['id']);
-            $work->delete();
-        }
+        Work::whereIn('id', $request->works)->delete();
 
         return response()->json(['message' => 'trabajo(s) eliminado(s)']);
     }

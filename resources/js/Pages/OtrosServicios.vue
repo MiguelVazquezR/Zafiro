@@ -1,5 +1,14 @@
 <template>
-    <Head title="Bienvenido" />
+
+    <Head>
+        <title>Otros servicios</title>
+        <meta name="description"
+            content="Descubre soluciones inmobiliarias integrales con ingeniería zafiro. Expertos en venta de terrenos, topografía, obra civil, diseño arquitectónico y acabados de lujo. Con años de experiencia, garantizamos precisión y satisfacción. ¡Transforma tus proyectos con nosotros!">
+        <meta name="keywords"
+            content="ingeniería, construcción, materiales, terreno, lote, fraccionamientos, obras, casas, residencias, industria, medicion, topografía, cimientos, drenaje, calles, gps, deslinde, prcelas, hectáreas, lotificación, cimentación, demolición, Mecanica de suelos, cimbrado, losas, estructura">
+        <meta name="robots" content="index">
+        <meta name="author" content="DTW">
+    </Head>
     <div class="relative">
 
         <div v-if="showPreview" class="fixed inset-0 bg-black opacity-90 z-20"></div>
@@ -9,7 +18,7 @@
             class="fixed inset-0 flex justify-center items-center z-30">
             <div class="relative">
                 <h1 class="text-primary my-9 text-3xl text-center">{{ services[currentServiceIndex].title }}</h1>
-                <img class="w-[600px] mx-auto opacity-100" :src="services[currentServiceIndex].image">
+                <img class="w-[600px] mx-auto opacity-100" :src="services[currentServiceIndex].image" alt="imagen de personas trabajando">
                 <button @click="goToContact"
                     class="mx-auto mt-11 text-2xl rounded-full border-2 border-primary text-black dark:text-black flex justify-between items-center py-1 px-5 bg-primary transition-all">
                     Contáctanos
@@ -18,7 +27,7 @@
         </div>
 
         <!-- whatsapp button -->
-        <a class="md:hidden z-50 w-14 h-14 lg:w-20 lg:h-20 rounded-full bg-green-600 shadow-md shadow-green-800/100 flex items-center justify-center fixed bottom-3 right-3 hover:scale-105"
+        <a class="lg:hidden z-50 w-14 h-14 lg:w-20 lg:h-20 rounded-full bg-green-600 shadow-md shadow-green-800/100 flex items-center justify-center fixed bottom-3 right-3 hover:scale-105"
             href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página%20,%20me%20interesa%20su%20servicio!"
             target="_blank" rel="noopener noreferrer">
             <i class="fa-brands fa-beat fa-whatsapp text-2xl lg:text-4xl text-gray-100"></i>
@@ -26,7 +35,7 @@
 
         <!-- mobile menu (hamburger) -->
         <div v-if="showMobileMenu"
-            class="flex flex-col z-30 w-2/3 bg-[#262626] rounded-xl fixed top-24 right-5 border-white border py-1 text-white">
+            class="flex flex-col z-50 bg-[#262626] rounded-xl w-2/3 md:w-1/3 fixed top-24 md:top-20 right-5 border-white border py-1 text-white">
             <button class="mx-1 py-2 hover:bg-primary rounded-lg" @click="$inertia.visit('/')">LOTES</button>
             <button class="mx-1 py-2 bg-primary rounded-lg">OTROS SERVICIOS</button>
             <!-- <button class="mx-1 py-2 hover:bg-primary rounded-lg" @click="scrollToSection('InicioM')">Inicio</button>
@@ -39,16 +48,19 @@
         <nav :class="['navbar', { 'fixed-navbar': isNavbarFixed }]"
             class="flex items-center justify-between py-4 lg:px-10 px-6 w-full dark:bg-white">
             <div class="flex space-x-2 items-center">
-                <img src="../../../public/images/logo_dark.png" class="h-14" alt="logo" />
+                <img src="../../../public/images/logo_dark.png" class="h-14" alt="logo de ingenieria zafiro. Mapa blanco y un marcador de posición similar al de google maps" />
                 <span class="font-bold text-primary text-xl">INGENIERÍA ZAFIRO</span>
             </div>
             <button @click="showMobileMenu = !showMobileMenu" class="lg:hidden">
                 <i class="fa-solid fa-bars text-xl text-primary"></i>
             </button>
-            <div class="mr-12 hidden lg:inline">        
-                <button class="mx-2 rounded-sm px-1 py-px hover:bg-primarylight transition-colors ease-linear duration-200" @click="$inertia.visit('/')">LOTES</button>
+            <div class="mr-12 hidden lg:inline">
+                <button
+                    class="mx-2 rounded-sm px-1 py-px hover:bg-primarylight transition-colors ease-linear duration-200"
+                    @click="$inertia.visit('/')">LOTES</button>
                 <button class="mx-2 rounded-sm px-1 py-px bg-primarylight font-bold">OTROS SERVICIOS</button>
-                <a href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página%20,%20me%20interesa%20su%20servicio!" target="_blank" rel="noopener noreferrer">
+                <a href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página%20,%20me%20interesa%20su%20servicio!"
+                    target="_blank" rel="noopener noreferrer">
                     <i class="fa-brands fa-whatsapp text-xl ml-2"></i>
                 </a>
                 <!-- <button class="mx-2 rounded-[10px] px-1 py-px hover:bg-primary hover:text-white"
@@ -66,8 +78,8 @@
             <!-- home desktop-->
             <section class="hidden md:block lg:mx-24 mx-1 mt-9 relative mb-24" id="Inicio">
                 <div class="bg-[#1A1A1A] rounded-[20px] h-[400px] relative">
-                    <img class="absolute left-0 top-0" src="../../../public/images/decoration_left.png">
-                    <img class="absolute right-0 top-0 h-[400px]" src="../../../public/images/decoration_right.png">
+                    <img class="absolute left-0 top-0" src="../../../public/images/decoration_left.png" alt="lineas amarillas para decoración">
+                    <img class="absolute right-0 top-0 h-[400px]" src="../../../public/images/decoration_right.png" alt="lineas amarillas para decoración">
                     <div class="flex h-full py-24">
                         <div @click="currentKirbyIndex = currentKirbyIndex == 0 ? (kirby.length - 1) : currentKirbyIndex - 1"
                             class="w-8 h-full mr-2 flex justify-center items-center cursor-pointer">
@@ -99,8 +111,8 @@
             <!-- home mobile-->
             <section class="md:hidden mx-4 mt-9 relative mb-16" id="InicioM">
                 <div class="bg-[#1A1A1A] rounded-[20px] h-[450px] relative">
-                    <img class="absolute -left-0 bottom-10 h-[160px]" src="../../../public/images/decoration_left.png">
-                    <img class="absolute right-0 top-0 h-[300px]" src="../../../public/images/decoration_right.png">
+                    <img class="absolute -left-0 bottom-10 h-[160px]" src="../../../public/images/decoration_left.png" alt="lineas amarillas para decoración">
+                    <img class="absolute right-0 top-0 h-[300px]" src="../../../public/images/decoration_right.png" alt="lineas amarillas para decoración">
                     <div class="flex flex-col items-center text-xl px-7 pt-7 h-1/2">
                         <h1 class="text-center text-primary mb-8">{{ kirby[currentKirbyIndex].title }}</h1>
                         <p class="text-white text-justify">{{ kirby[currentKirbyIndex].description }}</p>
@@ -113,7 +125,7 @@
                             </button>
                         </div>
                         <figure class="w-full z-20 rounded-2xl">
-                            <img class="h-[300px] rounded-2xl mx-auto" :src="kirby[currentKirbyIndex].image">
+                            <img class="h-[300px] rounded-2xl mx-auto" :src="kirby[currentKirbyIndex].image" alt="imagen de personas trabajando en obra civil">
                         </figure>
                         <div @click="currentKirbyIndex = currentKirbyIndex == (kirby.length - 1) ? 0 : currentKirbyIndex + 1"
                             class="w-8 h-full ml-2 flex justify-center items-center cursor-pointer">
@@ -140,13 +152,13 @@
                         <p class="text-white text-justify">{{ service.description }}</p>
                         <figure @click="showPreview = true; currentServiceIndex = index;"
                             class="w-3/4 h-48 rounded-[20px] absolute -bottom-[104px] left-[12.5%] cursor-pointer">
-                            <img class="h-48 w-full rounded-[20px]" :src="service.image">
+                            <img class="h-48 w-full rounded-[20px]" :src="service.image" alt="imagen que representa uno de los servicios de ingenieria zafiro">
                             <div
                                 class="w-6 h-6 rounded-full bg-black opacity-50 flex items-center justify-center absolute bottom-3 right-4">
                                 <i class="fa-solid fa-magnifying-glass-plus text-white text-xs"></i>
                             </div>
                         </figure>
-                    </div>  
+                    </div>
                 </div>
             </section>
 
@@ -162,7 +174,7 @@
                                 </button>
                             </div>
                             <figure class="w-1/2">
-                                <img :src="projects[currentProyectIndex].image">
+                                <img :src="projects[currentProyectIndex].image" alt="imagen que muestra a personas trabajando en proyecto de obra">
                             </figure>
                             <div class="w-1/2 flex flex-col ml-5 justify-start text-3xl">
                                 <h1 class="text-center font-bold mb-12 lg:mb-32">PROYECTOS</h1>
@@ -197,7 +209,7 @@
                             <select v-model="form.service" id="service"
                                 class="active:ring-0 focus:ring-0 border-none outline-none bg-[#D9D9D9] block w-full text-[#808080] rounded-[10px]">
                                 <option v-for="(service, index) in services" :key="index" :value="service.title">{{
-                                    service.title }}</option>
+            service.title }}</option>
                             </select>
                         </div>
                         <div class="mb-5">
@@ -226,21 +238,32 @@
                 </div>
             </section>
 
-            <footer class="p-4 md:grid md:grid-cols-3 lg:grid-cols-4 gap-3 text-white bg-[#1A1A1A] mt-24 md:relative">
-                <figure class="h-full md:h-auto flex md:flex-col items-center space-y-2">
-                    <img class="h-16 md:h-auto" src="../../../public/images/logo_light.png" />
-                    <span class="font-bold text-primary text-xl">INGENIERÍA ZAFIRO</span>
+            <footer class="p-4 md:grid md:grid-cols-3 lg:grid-cols-4 gap-3 text-white bg-[#1A1A1A] md:relative text-sm">
+                <figure class="h-full md:h-auto flex space-y-2">
+                    <img class="h-16 md:h-1/4" src="../../../public/images/logo_light.png" alt="logo de ingenieria zafiro. Mapa blanco y un marcador de posición similar al de google maps" />
+                    <span class="lg:font-bold text-primary lg:text-xl">INGENIERÍA ZAFIRO</span>
                 </figure>
-                <div class="flex flex-col">
-                    <h2 class="text-xl text-primary font-bold mb-5">Venta de terrenos</h2>
+                <div class="flex flex-col lg:text-base">
+                    <h2 class="lg:text-xl text-primary lg:font-bold mb-5">Venta de terrenos</h2>
                     <li v-for="(lote, index) in lotes" :key="index">{{ lote.title }}</li>
+                    <div class="flex lg:hidden flex-col mb-5 mt-5">
+                        <h2 class="lg:text-xl text-primary lg:font-bold mb-5">Contacto</h2>
+                        <p class="flex items-center text-xs">
+                            <i class="fa-solid fa-envelope mr-3"></i>
+                            jose.rod@ingenieriazafiro.dtw.com.mx
+                        </p>
+                        <p>
+                            <i class="fa-solid fa-phone mr-2 text-xs"></i>
+                            3312517732
+                        </p>
+                    </div>
                 </div>
                 <div class="flex flex-col">
-                    <h2 class="text-xl text-primary font-bold mb-5">Servicios</h2>
+                    <h2 class="lg:text-xl text-primary lg:font-bold mb-5">Servicios</h2>
                     <li v-for="(service, index) in services" :key="index">{{ service.title }}</li>
                 </div>
-                <div class="flex flex-col mb-5">
-                    <h2 class="text-xl text-primary font-bold mb-5">Contacto</h2>
+                <div class="hidden lg:flex flex-col mb-5">
+                    <h2 class="lg:text-xl text-primary lg:font-bold mb-5">Contacto</h2>
                     <p>
                         <i class="fa-solid fa-envelope mr-3"></i>
                         jose.rod@ingenieriazafiro.dtw.com.mx
@@ -250,15 +273,17 @@
                         3312517732
                     </p>
                 </div>
-                <p class="col-span-full">
-                    <small>Copyrigth &copy; 2023 </small>
-                    <small class="block md:inline mb-5"> Ingeniería Zafiro. Todos los derechos reservados.</small>
-                </p>
-                <a href="https://dtw.com.mx" target="_blank"
-                    class="col-span-full flex justify-end items-center space-x-2 mr-24">
-                    <small>by Digtital Tech Work</small>
-                    <img class="w-6" src="../../../public/images/dtw_logo.png">
-                </a>
+                <div class="col-span-full flex-col justify-center md:flex-row flex items-center md:justify-between">
+                    <p class="flex mt-4">
+                        <small>Copyrigth &copy; 2023 </small>
+                        <small class="block md:inline"> Ingeniería Zafiro. Todos los derechos reservados.</small>
+                    </p>
+                    <a href="https://dtw.com.mx" target="_blank"
+                        class="flex justify-end items-center space-x-2 md:mr-24">
+                        <small>by Digtital Tech Work</small>
+                        <img class="w-6" src="../../../public/images/dtw_logo.png" alt="logo de agencia de programación DTW. Dos peces formando el jing jang uno de color negro y otro de color morado">
+                    </a>
+                </div>
             </footer>
         </main>
     </div>
@@ -436,7 +461,7 @@ export default {
     },
     components: {
         InputError,
-    },  
+    },
     mounted() {
         window.addEventListener('scroll', this.handleScroll);
         this.toast = useToast();

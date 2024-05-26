@@ -32,12 +32,12 @@
             <p class="text-black text-2xl font-bold mt-px"> ${{ subdivision.lowest_price.numberFormat }}</p>
             <p class="text-[#4D4D4D] text-sm mt-px"><i class="fa-solid fa-location-dot mr-2"></i>{{ subdivision.address
                 }}</p>
-            <p class="text-[#4D4D4D] text-sm mt-px"><i class="fa-solid fa-ruler-horizontal mr-2"></i>{{
+            <p class="text-[#4D4D4D] text-sm mt-px"><i class="fa-solid fa-ruler-horizontal mr-2"></i>Desde {{
         subdivision.lowest_surface }} m2</p>
             <p class="text-[#4D4D4D] text-sm mt-px">Disponibles: {{ subdivision.batches_availables }}</p>
         </div>
     </section>
-    <section v-else class="rounded-[20px] border shadow-md h-[420px] text-xl relative cursor-pointer bg-gray1A relative">
+    <section v-else class="rounded-[20px] border shadow-md h-[420px] text-xl cursor-pointer bg-gray1A relative">
         <div class="flex flex-col text-center items-center justify-center h-[90%]">
             <h1 class="text-primary font-bold">PROXIMAMENTE</h1>
             <p class="text-white">Fraccionamiento "{{ subdivision.name }}"</p>

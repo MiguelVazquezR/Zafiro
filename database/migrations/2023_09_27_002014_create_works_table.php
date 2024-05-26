@@ -21,6 +21,8 @@ return new class extends Migration
             $table->date('start_date');
             $table->unsignedFloat('area');
             $table->unsignedFloat('price');
+            $table->text('description')->nullable();
+            $table->json('payments')->nullable();
             $table->timestamps();
         });
     }

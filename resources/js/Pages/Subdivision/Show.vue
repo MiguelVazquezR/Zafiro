@@ -1,6 +1,14 @@
 <template>
 
-    <Head :title="subdivision.data.name" />
+    <Head>
+        <title>{{ subdivision.data.name }}</title>
+        <meta name="description"
+            content="Descubre soluciones inmobiliarias integrales con ingeniería zafiro. Expertos en venta de terrenos, topografía, obra civil, diseño arquitectónico y acabados de lujo. Con años de experiencia, garantizamos precisión y satisfacción. ¡Transforma tus proyectos con nosotros!">
+        <meta name="keywords"
+            content="ingeniería, construcción, materiales, terreno, lote, fraccionamientos, obras, casas, residencias, industria, medicion, topografía, cimientos, drenaje, calles, gps, deslinde, prcelas, hectáreas, lotificación, cimentación, demolición, Mecanica de suelos, cimbrado, losas, estructura">
+        <meta name="robots" content="index">
+        <meta name="author" content="DTW">
+    </Head>
     <div class="relative">
 
         <div v-if="showPreview" class="fixed inset-0 bg-black opacity-90 z-20"></div>
@@ -21,15 +29,15 @@
         </div>
 
         <!-- whatsapp button -->
-        <a class="md:hidden z-50 w-14 h-14 lg:w-20 lg:h-20 rounded-full bg-green-600 shadow-md shadow-green-800/100 flex items-center justify-center fixed bottom-3 right-3 hover:scale-105"
-            href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página%20,%20me%20interesa%20su%20servicio!"
+        <a class="lg:hidden z-50 w-14 h-14 lg:w-20 lg:h-20 rounded-full bg-green-600 shadow-md shadow-green-800/100 flex items-center justify-center fixed bottom-3 right-3 hover:scale-105"
+            href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página,%20me%20interesa%20comprar%20un%20terreno"
             target="_blank" rel="noopener noreferrer">
             <i class="fa-brands fa-beat fa-whatsapp text-2xl lg:text-4xl text-gray-100"></i>
         </a>
 
         <!-- mobile menu (hamburger) -->
         <div v-if="showMobileMenu"
-            class="flex flex-col z-30 w-2/3 bg-[#262626] rounded-xl fixed top-24 right-5 border-white border py-1 text-white">
+            class="flex flex-col z-50 bg-[#262626] rounded-xl w-2/3 md:w-1/3 fixed top-24 md:top-20 right-5 border-white border py-1 text-white">
             <button class="mx-1 py-2 hover:bg-primary rounded-lg" @click="$inertia.visit('/')">LOTES</button>
             <button class="mx-1 py-2 hover:bg-primary rounded-lg" @click="$inertia.visit('/otros-servicios')">OTROS
                 SERVICIOS</button>
@@ -51,7 +59,7 @@
                 <button
                     class="mx-2 rounded-sm px-1 py-px hover:bg-primarylight transition-colors ease-linear duration-200"
                     @click="$inertia.visit('/otros-servicios')">OTROS SERVICIOS</button>
-                <a href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página,%20me%20interesa%20comparar%20un%20terreno"
+                <a href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página,%20me%20interesa%20comprar%20un%20terreno"
                     target="_blank" rel="noopener noreferrer">
                     <i class="fa-brands fa-whatsapp text-xl ml-2"></i>
                 </a>
@@ -72,7 +80,7 @@
                         <img class="object-cover rounded-xl w-full" :src="subdivision.data.images[0]?.original_url"
                             alt="">
                     </figure>
-                    <div class="grid grid-cols-2 gap-7 sm:mt-7 lg:mt-0">
+                    <div class="grid grid-cols-2 gap-7 pt-4 lg:pt-0">
                         <figure v-if="subdivision.data.images?.length > 1" class="w-full">
                             <img class="object-cover rounded-xl w-full h-[286px]"
                                 :src="subdivision.data.images[1]?.original_url" alt="">
@@ -81,11 +89,11 @@
                             <img class="object-cover rounded-xl w-full h-[286px]"
                                 :src="subdivision.data.images[2]?.original_url" alt="">
                         </figure>
-                        <figure v-if="subdivision.data.images?.length > 3" class="w-full">
+                        <figure v-if="subdivision.data.images?.length > 3" class="w-full hidden lg:block">
                             <img class="object-cover rounded-xl w-full h-[286px]"
                                 :src="subdivision.data.images[3]?.original_url" alt="">
                         </figure>
-                        <figure v-if="subdivision.data.images?.length > 4" class="w-full">
+                        <figure v-if="subdivision.data.images?.length > 4" class="w-full hidden lg:block">
                             <img class="object-cover rounded-xl w-full h-[286px]"
                                 :src="subdivision.data.images[4]?.original_url" alt="">
                         </figure>
@@ -222,21 +230,32 @@
             </section>
 
             <!-- footer  -->
-            <footer class="p-4 md:grid md:grid-cols-3 lg:grid-cols-4 gap-3 text-white bg-[#1A1A1A] md:relative">
-                <figure class="h-full md:h-auto flex md:flex-col items-center space-y-2">
-                    <img class="h-16 md:h-auto" src="../../../../public/images/logo_light.png" />
-                    <span class="font-bold text-primary text-xl">INGENIERÍA ZAFIRO</span>
+            <footer class="p-4 md:grid md:grid-cols-3 lg:grid-cols-4 gap-3 text-white bg-[#1A1A1A] md:relative text-sm">
+                <figure class="h-full md:h-auto flex space-y-2">
+                    <img class="h-16 md:h-1/4" src="../../../../public/images/logo_light.png" />
+                    <span class="lg:font-bold text-primary lg:text-xl">INGENIERÍA ZAFIRO</span>
                 </figure>
-                <div class="flex flex-col">
-                    <h2 class="text-xl text-primary font-bold mb-5">Venta de terrenos</h2>
+                <div class="flex flex-col lg:text-base">
+                    <h2 class="lg:text-xl text-primary lg:font-bold mb-5">Venta de terrenos</h2>
                     <li v-for="(lote, index) in lotes" :key="index">{{ lote.title }}</li>
+                    <div class="flex lg:hidden flex-col mb-5 mt-5">
+                        <h2 class="lg:text-xl text-primary lg:font-bold mb-5">Contacto</h2>
+                        <p class="flex items-center text-xs">
+                            <i class="fa-solid fa-envelope mr-3"></i>
+                            jose.rod@ingenieriazafiro.dtw.com.mx
+                        </p>
+                        <p>
+                            <i class="fa-solid fa-phone mr-2 text-xs"></i>
+                            3312517732
+                        </p>
+                    </div>
                 </div>
                 <div class="flex flex-col">
-                    <h2 class="text-xl text-primary font-bold mb-5">Servicios</h2>
+                    <h2 class="lg:text-xl text-primary lg:font-bold mb-5">Servicios</h2>
                     <li v-for="(service, index) in services" :key="index">{{ service.title }}</li>
                 </div>
-                <div class="flex flex-col mb-5">
-                    <h2 class="text-xl text-primary font-bold mb-5">Contacto</h2>
+                <div class="hidden lg:flex flex-col mb-5">
+                    <h2 class="lg:text-xl text-primary lg:font-bold mb-5">Contacto</h2>
                     <p>
                         <i class="fa-solid fa-envelope mr-3"></i>
                         jose.rod@ingenieriazafiro.dtw.com.mx
@@ -246,15 +265,17 @@
                         3312517732
                     </p>
                 </div>
-                <p class="col-span-full">
-                    <small>Copyrigth &copy; 2023 </small>
-                    <small class="block md:inline mb-5"> Ingeniería Zafiro. Todos los derechos reservados.</small>
-                </p>
-                <a href="https://dtw.com.mx" target="_blank"
-                    class="col-span-full flex justify-end items-center space-x-2 mr-24">
-                    <small>by Digtital Tech Work</small>
-                    <img class="w-6" src="../../../../public/images/dtw_logo.png">
-                </a>
+                <div class="col-span-full flex-col justify-center md:flex-row flex items-center md:justify-between">
+                    <p class="flex mt-4">
+                        <small>Copyrigth &copy; 2023 </small>
+                        <small class="block md:inline"> Ingeniería Zafiro. Todos los derechos reservados.</small>
+                    </p>
+                    <a href="https://dtw.com.mx" target="_blank"
+                        class="flex justify-end items-center space-x-2 md:mr-24">
+                        <small>by Digtital Tech Work</small>
+                        <img class="w-6" src="../../../../public/images/dtw_logo.png">
+                    </a>
+                </div>
             </footer>
         </main>
     </div>

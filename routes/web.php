@@ -59,6 +59,7 @@ Route::middleware([
 Route::resource('works', WorkController::class)->middleware('auth');
 Route::get('works/{work_id}/invoice', [WorkController::class, 'showInvoice'])->middleware('auth')->name('works.invoice');
 Route::post('works/massive-store', [WorkController::class, 'massiveStore'])->middleware('auth')->name('works.massive-store');
+Route::post('works/massive-delete', [WorkController::class, 'massiveDelete'])->name('works.massive-delete');
 
 // ** messages routes **
 Route::resource('messages', MessageController::class)->except('show')->middleware('auth');
