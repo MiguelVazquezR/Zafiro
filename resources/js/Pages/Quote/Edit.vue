@@ -88,7 +88,7 @@ quote: Object
 },
 methods:{
     update() {
-        this.form.put(route("quotes.update"), {
+        this.form.put(route("quotes.update", this.quote), {
             onSuccess: () => {
                 this.$notify({
                 title: "Correcto",

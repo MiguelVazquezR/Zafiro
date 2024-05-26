@@ -18,7 +18,7 @@
             <p>{{ quote.data.client }}</p>
 
             <p class="font-bold mt-7 mb-4">Descriipcón de los servicios</p>
-            <p>{{ quote.data.description }}</p>
+            <p style="white-space: pre-line;">{{ quote.data.description }}</p>
 
             <p class="font-bold mt-7 mb-2">Costo</p>
             <p>{{ quote.data.price }}</p>
