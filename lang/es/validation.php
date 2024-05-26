@@ -209,5 +209,6 @@ return [
         'lowest_surface' => 'superficie desde',
         'surface' => 'superficie',
         'subdivision_id' => 'fraccionamiento',
+        'payment_conditions' => 'condiciones de pago',
     ],
 ];
