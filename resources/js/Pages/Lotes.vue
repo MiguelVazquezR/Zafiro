@@ -148,11 +148,12 @@
                         <small>Copyrigth &copy; 2023 </small>
                         <small class="block md:inline"> Ingeniería Zafiro. Todos los derechos reservados.</small>
                     </p>
-                    <a href="https://dtw.com.mx" target="_blank"
-                        class="flex justify-end items-center space-x-2 md:mr-24">
-                        <small>by Digtital Tech Work</small>
-                        <img class="w-6" src="../../../public/images/dtw_logo.png" alt="logo de agencia de programación DTW. Dos peces formando el jing jang uno de color negro y otro de color morado">
-                    </a>
+                    <figure class="mt-4 cursor-pointer w-1/2 ">
+                        <a class="flex justify-end items-center" href="https://app.dtw.com.mx/" target="_blank">
+                            <p class="text-white text-xl">BY</p>
+                            <img class="w-20 lg:w-[10%]" src="@/../../public/images/DTW_logo_blanco.png" alt="">
+                        </a>
+                    </figure>
                 </div>
             </footer>
         </main>
@@ -183,32 +184,32 @@ export default {
             showPreview: false,
             loadingItems: false,
             batchesLocal: null,
-            // services: [
-            //     {
-            //         title: "Deslinde de parcelas",
-            //         description: "Definimos de manera precisa las fronteras de tu parcela para garantizar la propiedad y el uso adecuado de la tierra.",
-            //     },
-            //     {
-            //         title: "Planos topográficos",
-            //         description: "Brindamos una visión detallada y precisa del terreno. Ya sea para proyectos de construcción, planificación urbana o análisis del terreno.",
-            //     },
-            //     {
-            //         title: "Obra civil",
-            //         description: "Desde el diseño hasta la construcción, gestionamos cada etapa del proceso con precisión y profesionalismo.",
-            //     },
-            //     {
-            //         title: "Lotificaciones",
-            //         description: "Convertimos terrenos en comunidades planificadas, creamos espacios funcionales y atractivos ",
-            //     },
-            //     {
-            //         title: "Diseño arquitectónico",
-            //         description: "Desde residencias hasta espacios comerciales, cada diseño es una expresión de tus necesidades y estilos. ",
-            //     },
-            //     {
-            //         title: "Experiencia con acabados de lujo",
-            //         description: "Desde selecciones de materiales exclusivos hasta ejecución impecable, creamos ambientes que reflejan tu gusto refinado.",
-            //     },
-            // ],
+            services: [
+                {
+                    title: "Deslinde de parcelas",
+                    description: "Definimos de manera precisa las fronteras de tu parcela para garantizar la propiedad y el uso adecuado de la tierra.",
+                },
+                {
+                    title: "Planos topográficos",
+                    description: "Brindamos una visión detallada y precisa del terreno. Ya sea para proyectos de construcción, planificación urbana o análisis del terreno.",
+                },
+                {
+                    title: "Obra civil",
+                    description: "Desde el diseño hasta la construcción, gestionamos cada etapa del proceso con precisión y profesionalismo.",
+                },
+                {
+                    title: "Lotificaciones",
+                    description: "Convertimos terrenos en comunidades planificadas, creamos espacios funcionales y atractivos ",
+                },
+                {
+                    title: "Diseño arquitectónico",
+                    description: "Desde residencias hasta espacios comerciales, cada diseño es una expresión de tus necesidades y estilos. ",
+                },
+                {
+                    title: "Experiencia con acabados de lujo",
+                    description: "Desde selecciones de materiales exclusivos hasta ejecución impecable, creamos ambientes que reflejan tu gusto refinado.",
+                },
+            ],
             lotes: [
                 {
                     title: 'Fraccionamiento "Los Arrayanes"',

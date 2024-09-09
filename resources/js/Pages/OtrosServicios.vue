@@ -278,11 +278,12 @@
                         <small>Copyrigth &copy; 2023 </small>
                         <small class="block md:inline"> Ingeniería Zafiro. Todos los derechos reservados.</small>
                     </p>
-                    <a href="https://dtw.com.mx" target="_blank"
-                        class="flex justify-end items-center space-x-2 md:mr-24">
-                        <small>by Digtital Tech Work</small>
-                        <img class="w-6" src="../../../public/images/dtw_logo.png" alt="logo de agencia de programación DTW. Dos peces formando el jing jang uno de color negro y otro de color morado">
-                    </a>
+                    <figure class="mt-4 cursor-pointer w-1/2 ">
+                        <a class="flex justify-end items-center" href="https://app.dtw.com.mx/" target="_blank">
+                            <p class="text-white text-xl">BY</p>
+                            <img class="w-20 lg:w-[10%]" src="@/../../public/images/DTW_logo_blanco.png" alt="">
+                        </a>
+                    </figure>
                 </div>
             </footer>
         </main>
