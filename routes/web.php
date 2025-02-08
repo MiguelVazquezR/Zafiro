@@ -93,3 +93,8 @@ Route::get('/route-cache', function () {
     Artisan::call('route:cache');
     return 'routes cached!.';
 });
+
+Route::get('/storage-link', function () {
+    Artisan::call('storage:link');
+    return 'media linked!.';
+});
