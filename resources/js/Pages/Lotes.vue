@@ -144,12 +144,12 @@
                     </p>
                 </div>
                 <div class="col-span-full flex-col justify-center md:flex-row flex items-center md:justify-between">
-                    <p class="flex mt-4">
-                        <small>Copyrigth &copy; 2023 </small>
+                    <p class="flex mt-4 space-x-1">
+                        <small>Copyrigth &copy; {{ currentYear }} </small>
                         <small class="block md:inline"> Ingeniería Zafiro. Todos los derechos reservados.</small>
                     </p>
                     <figure class="mt-4 cursor-pointer w-1/2 ">
-                        <a class="flex justify-end items-center" href="https://app.dtw.com.mx/" target="_blank">
+                        <a class="flex justify-end items-center" href="https://dtw.com.mx/" target="_blank">
                             <p class="text-white text-xl">BY</p>
                             <img class="w-20 lg:w-[10%]" src="@/../../public/images/DTW_logo_blanco.png" alt="">
                         </a>
@@ -178,6 +178,7 @@ export default {
         });
         return {
             form,
+            currentYear: new Date().getFullYear(), //año dinamico para footer
             isNavbarFixed: false,
             showMobileMenu: false,
             currentServiceIndex: null,
