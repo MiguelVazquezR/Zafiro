@@ -1,8 +1,15 @@
 <template>
-    <div
-        class="bg-white rounded-xl border shadow-md p-3 w-full h-[240px] flex space-x-4 cursor-pointer">
-        <figure class="bg-gray-300 rounded-[20px] h-full relative">
-            <img class="object-cover h-full w-full rounded-[20px]" :src="batch.images[currentImage]?.original_url">
+    <div class="bg-white rounded-xl border shadow-md p-3 w-full h-[240px] flex space-x-4 cursor-pointer">
+        <figure class="bg-gray-300 rounded-[20px] h-full w-full relative">
+            <img v-if="batch.images?.length" class="object-contain h-full w-full rounded-[20px]"
+                :src="batch.images[currentImage]?.original_url">
+            <div v-else class="flex items-center justify-center bg-gray-300 h-full rounded-[20px]">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-24 h-24 text-gray-400">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                </svg>
+            </div>
             <!-- Change image -->
             <div v-if="batch.images?.length > 1" class="absolute top-1/2 w-full flex justify-between items-center">
                 <i @click.stop="handleMinusImage()"
@@ -11,7 +18,7 @@
                     class="fa-solid fa-angle-right text-white text-sm px-[13px] py-2 rounded-full bg-black/60 hover:scale-105"></i>
             </div>
             <!-- Actions -->
-            <div v-if="$page.props.auth?.user?.id" class="flex items-center space-x-2 absolute top-2 right-2">
+            <div v-if="$page.props.auth?.user?.id" class="flex items-center space-x-2 absolute top-1 left-1">
                 <i @click.stop="$inertia.get(route('batches.edit', batch.id))"
                     class="fa-solid fa-pencil text-white text-sm pl-[9px] pt-[6px] w-8 h-8 rounded-full bg-black/60 hover:scale-105"></i>
                 <el-popconfirm confirm-button-text="Si" cancel-button-text="No" icon-color="#C30303" title="¿Continuar?"
