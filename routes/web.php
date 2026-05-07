@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BatchController;
+use App\Http\Controllers\FinanceController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\SubdivisionController;
@@ -8,7 +9,10 @@ use App\Http\Controllers\WorkController;
 use App\Http\Resources\BatchResource;
 use App\Http\Resources\SubdivisionResource;
 use App\Models\Batch;
+use App\Models\Message;
+use App\Models\Quote;
 use App\Models\Subdivision;
+use App\Models\Work;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -52,8 +56,44 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
+        return Inertia::render('Dashboard', [
+            'worksCount' => Work::count(),
+            'quotesCount' => Quote::count(),
+            'messagesCount' => Message::where('status', 0)->count(),
+            'batchesCount' => Batch::count(),
+        ]);
     })->name('dashboard');
+
+    // ==========================================
+    // RUTAS DEL NUEVO MÓDULO DE FINANZAS
+    // ==========================================
+    Route::prefix('finanzas')->name('finanzas.')->group(function () {
+        // Vista principal (Aquí cargarás tu archivo .blade.php con React)
+        Route::get('/', [FinanceController::class, 'index'])->name('index');
+
+        // Endpoints API para el frontend en React
+        Route::get('/data', [FinanceController::class, 'getAllData'])->name('data'); // Trae todo inicial (entries, expenses, etc)
+
+        // Trámites
+        Route::post('/entries', [FinanceController::class, 'storeEntry'])->name('entries.store');
+        Route::put('/entries/{financeEntry}', [FinanceController::class, 'updateEntry'])->name('entries.update');
+        Route::delete('/entries/{financeEntry}', [FinanceController::class, 'destroyEntry'])->name('entries.destroy');
+        Route::post('/entries/{financeEntry}/status', [FinanceController::class, 'updateStatus'])->name('entries.update-status');
+
+        // Pagos / Abonos
+        Route::post('/payments', [FinanceController::class, 'storePayment'])->name('payments.store');
+
+        // Gastos
+        Route::post('/expenses', [FinanceController::class, 'storeExpense'])->name('expenses.store');
+        Route::delete('/expenses/{financeExpense}', [FinanceController::class, 'destroyExpense'])->name('expenses.destroy');
+
+        // Servicios
+        Route::post('/services', [FinanceController::class, 'storeService'])->name('services.store');
+        Route::delete('/services/{financeService}', [FinanceController::class, 'destroyService'])->name('services.destroy');
+
+        // Facturación / IVA
+        Route::post('/invoices', [FinanceController::class, 'storeInvoice'])->name('invoices.store');
+    });
 });
 
 // ** works routes **

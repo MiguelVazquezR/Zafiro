@@ -19,7 +19,7 @@ class BatchResource extends JsonResource
             'name' => $this->name,
             'price' => [
                 'raw' => $this->price,
-                'numberFormat' => number_format($this->price),
+                'numberFormat' => $this->price,
             ],
             'surface' => $this->surface,
             'address' => $this->address,

@@ -1,103 +1,80 @@
 <template>
     <AppLayout title="Editar cotización">
-        <div class="w-5/6 lg:w-[80%] mx-auto rounded-md lg:border border-[#D9D9D9] p-5">
-            <h1 class="font-bold text-lg text-center lg:text-left">Editar cotización</h1>
-
-            <form @submit.prevent="update" class="mt-3">
-                <div class="mt-3">
-                    <InputLabel value="Nombre del cliente" class="ml-3 mb-1" />
-                    <el-input v-model="form.client" placeholder="Ej. Gerardo Villa" :maxlength="255" clearable />
-                    <InputError :message="form.errors.client" />
+        <div class="max-w-4xl mx-auto space-y-6">
+            
+            <!-- Encabezado de la página -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 px-2">
+                <div class="flex items-center gap-4">
+                    <el-button @click="router.get(route('quotes.index'))" circle class="!border-none !bg-gray-100 hover:!bg-gray-200">
+                        <el-icon><ArrowLeft /></el-icon>
+                    </el-button>
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-900 tracking-tight">Editar cotización</h2>
+                        <p class="text-sm text-gray-500 font-medium mt-0.5">Modifica los detalles de este presupuesto</p>
+                    </div>
                 </div>
-
-                <div class="mt-3">
-                    <InputLabel value="Nombre de la cotización (opcional)" class="ml-3 mb-1" />
-                    <el-input v-model="form.name" placeholder="Ej. Levantamiento" :maxlength="255" clearable />
-                    <InputError :message="form.errors.name" />
+                
+                <!-- Badge visualizando el estado actual -->
+                <div>
+                    <span v-if="quote.status === 'Esperando autorización del cliente'" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-amber-100 text-amber-700 shadow-sm">
+                        <el-icon size="14"><Clock /></el-icon> Pendiente de autorización
+                    </span>
+                    <span v-else-if="quote.status === 'Autorizada'" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-green-100 text-green-700 shadow-sm">
+                        <el-icon size="14"><Check /></el-icon> Cotización Autorizada
+                    </span>
+                    <span v-else-if="quote.status === 'Rechazada'" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-red-100 text-red-700 shadow-sm">
+                        <el-icon size="14"><Close /></el-icon> Cotización Rechazada
+                    </span>
                 </div>
+            </div>
 
-                <div class="mt-3">
-                    <InputLabel value="Descripción de los servicios*" class="ml-3 mb-1" />
-                    <el-input v-model="form.description" :autosize="{ minRows: 3, maxRows: 5 }" type="textarea"
-                                placeholder="Describe los servicios que cubre essta cotización" :maxlength="800" show-word-limit clearable />
-                    <InputError :message="form.errors.description" />
-                </div>
+            <!-- Formulario Reutilizable -->
+            <QuoteForm :form="form" @submit="update">
+                <template #actions>
+                    <el-button @click="router.get(route('quotes.index'))" class="!rounded-xl !border-none !bg-gray-100 hover:!bg-gray-200 !text-gray-700 font-bold px-6">
+                        Cancelar
+                    </el-button>
+                    <el-button type="primary" native-type="submit" :loading="form.processing" class="!rounded-xl !bg-indigo-600 hover:!bg-indigo-700 !border-none font-bold px-8 shadow-md">
+                        Guardar Cambios
+                    </el-button>
+                </template>
+            </QuoteForm>
 
-                <div class="w-1/2 mt-3">
-                    <InputLabel value="Costo*" class="ml-3 mb-1 text-sm" />
-                    <el-input v-model="form.price" placeholder="0"
-                    :formatter="(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
-                    :parser="(value) => value.replace(/\$\s?|(,*)/g, '')">
-                        <template #prefix>
-                            <i class="fa-solid fa-dollar-sign pr-2 border-r-2"></i>
-                        </template>
-                    </el-input>
-                    <InputError :message="form.errors.price" />
-                </div>
-
-                <div class="w-full mt-3">
-                    <InputLabel value="Condiciones de pago*" class="ml-3 mb-1" />
-                    <el-select class="w-full" v-model="form.payment_conditions" clearable placeholder="Seleccione"
-                    no-data-text="No hay opciones disponibles" no-match-text="No se encontraron coincidencias">
-                    <el-option v-for="item in paymentConditions" :key="item" :label="item" :value="item" />
-                    </el-select>
-                    <InputError :message="form.errors.payment_conditions" />
-                </div>
-
-                <div class="mt-7 text-right">
-                    <PrimaryButton :disabled="form.processing">Guardar cambios</PrimaryButton>
-                </div>
-            </form>
         </div>
     </AppLayout>
 </template>
 
-<script>
+<script setup>
+import { router, useForm } from '@inertiajs/vue3';
 import AppLayout from "@/Layouts/AppLayout.vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
-import InputLabel from "@/Components/InputLabel.vue";
-import InputError from "@/Components/InputError.vue";
-import { useForm } from "@inertiajs/vue3";
+import QuoteForm from './Partials/QuoteForm.vue';
+import { ElNotification } from 'element-plus';
+import { ArrowLeft, Clock, Check, Close } from '@element-plus/icons-vue';
 
-export default {
-data() {
-    const form = useForm({
-        client: this.quote.client,
-        name: this.quote.name,
-        description: this.quote.description,
-        price: this.quote.price,
-        payment_conditions: this.quote.payment_conditions,
-    });
-
-    return {
-        form,
-        paymentConditions: [
-            'Pago a una sola exhibición',
-            '2 pagos (50% de anticipo al inicio y 50% al finalizar el trabajo)'
-        ]
+const props = defineProps({
+    quote: {
+        type: Object,
+        required: true
     }
-},
-components:{
-AppLayout,
-PrimaryButton,
-InputLabel,
-InputError
-},
-props:{
-quote: Object
-},
-methods:{
-    update() {
-        this.form.put(route("quotes.update", this.quote), {
-            onSuccess: () => {
-                this.$notify({
-                title: "Correcto",
-                message: "Se ha creado la cotización",
-                type: "success",
-                });
-            },
-        });
-    },
-}
-}
+});
+
+const form = useForm({
+    client: props.quote.client,
+    name: props.quote.name,
+    description: props.quote.description,
+    price: props.quote.price,
+    payment_conditions: props.quote.payment_conditions,
+});
+
+const update = () => {
+    form.put(route('quotes.update', props.quote.id), {
+        onSuccess: () => {
+            ElNotification({
+                title: 'Correcto',
+                message: 'La cotización se ha actualizado',
+                type: 'success',
+            });
+        },
+    });
+};
 </script>

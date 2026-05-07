@@ -1,207 +1,364 @@
 <template>
-<AppLayout title="Cotizaciones">
-    <section class="flex items-center justify-between p-3 md:p-9">
-        <div class="flex items-center space-x-3">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <mask id="mask0_10395_184" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="20" height="20">
-                    <rect width="20" height="20" fill="#D9D9D9"/>
-                </mask>
-                <g mask="url(#mask0_10395_184)">
-                    <path d="M2.5 15.8307L6.25 9.9974L2.5 4.16406H12.5C12.7778 4.16406 13.0382 4.22656 13.2812 4.35156C13.5243 4.47656 13.7222 4.65017 13.875 4.8724L17.5 9.9974L13.875 15.1224C13.7222 15.3446 13.5243 15.5182 13.2812 15.6432C13.0382 15.7682 12.7778 15.8307 12.5 15.8307H2.5ZM5.54167 14.1641H12.5L15.4583 9.9974L12.5 5.83073H5.54167L8.25 9.9974L5.54167 14.1641Z" fill="#1C1B1F"/>
-                </g>
-            </svg>
-            <h1>Cotizaciones</h1>
-        </div>
-
-        <PrimaryButton @click="$inertia.get(route('quotes.create'))"><i class="fa-solid fa-plus"></i> Nuevo</PrimaryButton>
-    </section>
-
-    <div class="lg:w-5/6 mx-auto mt-1">
-        <div class="flex justify-between">
-            <!-- pagination -->
-            <div>
-                <el-pagination @current-change="handlePagination" layout="prev, pager, next"
-                    :total="quotes.data.length" />
-            </div>
-            <!-- buttons -->
-            <div class="flex space-x-2 justify-end">
-                <el-popconfirm confirm-button-text="Si" cancel-button-text="No" icon-color="#FF0000"
-                    title="¿Continuar con la eliminación?" @confirm="deleteSelections">
-                    <template #reference>
-                        <el-button type="danger" plain class="mb-3"
-                            :disabled="disableMassiveActions">Eliminar</el-button>
-                    </template>
-                </el-popconfirm>
-            </div>
-        </div>
-
-        <el-table :data="quotes.data" @row-click="handleRowClick" max-height="450" style="width: 100%"
-            @selection-change="handleSelectionChange" ref="multipleTableRef" :row-class-name="tableRowClassName"
-            class="cursor-pointer">
-            <el-table-column type="selection" width="55" />
-            <el-table-column prop="folio" label="Folio" width="100" />
-            <el-table-column prop="name" label="Nombre" width="250">
-                <template #default="scope">
-                    <div class="flex items-center">
-                        <p class="mr-2 mt-px">
-                            <el-tooltip v-if="scope.row.status === 'Esperando autorización del cliente'" content="Esperando autorización del cliente" placement="top">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-amber-600">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                                </svg>
-                            </el-tooltip>
-                            <el-tooltip v-else-if="scope.row.status === 'Autorizada'" content="Autorizada" placement="top">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-green-600">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-                                </svg>
-                            </el-tooltip>
-                            <el-tooltip v-else-if="scope.row.status === 'Rechazada'" content="Rechazada" placement="top">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-red-600">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                            </el-tooltip>
-                            <el-tooltip v-else content="Estado desconocido" placement="top">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-gray-600">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.75v14.5m7-7H5" />
-                                </svg>
-                            </el-tooltip>
-                        </p>
-                        <span>{{ scope.row.name }}</span>
+    <AppLayout title="Cotizaciones">
+        
+        <!-- Contenedor Principal (Estilo One UI) -->
+        <div class="max-w-7xl mx-auto space-y-6">
+            
+            <!-- Encabezado de la página -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 px-2">
+                <div class="flex items-center gap-3">
+                    <div class="p-3 bg-indigo-100 text-indigo-600 rounded-2xl">
+                        <el-icon size="24"><Document /></el-icon>
                     </div>
-                </template>
-            </el-table-column>
-            <el-table-column prop="client" label="Cliente" width="250" />
-            <el-table-column prop="price" label="Costo" />
-            <el-table-column prop="created_at" label="Registrado el" width="200" />
-            <el-table-column align="right">
-                <template #default="scope">
-                    <el-dropdown trigger="click" @command="handleCommand">
-                        <button @click.stop
-                            class="el-dropdown-link mr-3 justify-center items-center size-8 rounded-full text-black hover:bg-gray2 transition-all duration-200 ease-in-out">
-                            <i class="fa-solid fa-ellipsis-vertical"></i>
-                        </button>
-                        <template #dropdown>
-                            <el-dropdown-menu>
-                                <el-dropdown-item :command="'show-' + scope.row.id">Ver</el-dropdown-item>
-                                <el-dropdown-item :command="'edit-' + scope.row.id">Editar</el-dropdown-item>
-                                <el-dropdown-item :command="'pendent-' + scope.row.id">Esperando autorización del cliente</el-dropdown-item>
-                                <el-dropdown-item :command="'authorized-' + scope.row.id">Autorizada</el-dropdown-item>
-                                <el-dropdown-item :command="'rejected-' + scope.row.id">Rechazada</el-dropdown-item>
-                            </el-dropdown-menu>
-                        </template>
-                    </el-dropdown>
-                </template>
-            </el-table-column>
-        </el-table>
-    </div>
-</AppLayout>
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-900 tracking-tight">Cotizaciones</h2>
+                        <p class="text-sm text-gray-500 font-medium mt-0.5">Gestión de presupuestos y solicitudes</p>
+                    </div>
+                </div>
+                
+                <el-button 
+                    @click="router.get(route('quotes.create'))" 
+                    type="primary" 
+                    class="one-ui-btn !rounded-xl !border-none !bg-indigo-600 !text-white hover:!bg-indigo-700 shadow-md">
+                    <el-icon class="mr-2"><Plus /></el-icon>
+                    Nueva Cotización
+                </el-button>
+            </div>
 
+            <!-- Tarjeta Principal Blanca -->
+            <div class="bg-white rounded-[24px] shadow-sm border border-gray-100 overflow-hidden p-6 transition-all">
+                
+                <!-- Barra de Acciones (Botones y Paginación) -->
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+                    <!-- Paginación Nativa -->
+                    <div v-if="quotes.data.length > 0">
+                        <el-pagination 
+                            @current-change="handlePagination" 
+                            layout="prev, pager, next"
+                            :total="quotes.total || quotes.data.length"
+                            :page-size="quotes.per_page || 10"
+                            class="!p-0"
+                        />
+                    </div>
+                    
+                    <div class="flex items-center gap-4 w-full md:w-auto justify-between md:justify-end">
+                        <div class="text-sm font-semibold text-gray-500">
+                            <span v-if="selectedQuotes.length > 0" class="text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">
+                                {{ selectedQuotes.length }} seleccionado(s)
+                            </span>
+                        </div>
+
+                        <el-popconfirm 
+                            confirm-button-text="Sí, eliminar" 
+                            cancel-button-text="Cancelar" 
+                            confirm-button-type="danger"
+                            icon-color="#f56c6c"
+                            title="¿Continuar con la eliminación?" 
+                            @confirm="deleteSelections"
+                            width="250"
+                        >
+                            <template #reference>
+                                <el-button 
+                                    type="danger" 
+                                    class="one-ui-btn !rounded-xl !border-none !bg-red-50 !text-red-600 hover:!bg-red-100" 
+                                    :disabled="disableMassiveActions">
+                                    <el-icon class="mr-2"><Delete /></el-icon>
+                                    Eliminar
+                                </el-button>
+                            </template>
+                        </el-popconfirm>
+                    </div>
+                </div>
+
+                <!-- Tabla de Element Plus (One UI Style) -->
+                <el-table 
+                    :data="localQuotes" 
+                    @row-click="handleRowClick" 
+                    max-height="600" 
+                    style="width: 100%"
+                    @selection-change="handleSelectionChange" 
+                    ref="multipleTableRef"
+                    class="one-ui-table cursor-pointer"
+                >
+                    <el-table-column type="selection" width="55" align="center" />
+                    
+                    <el-table-column prop="folio" label="Folio" width="100">
+                        <template #default="{ row }">
+                            <span class="font-mono bg-gray-100 px-2 py-1 rounded-md text-gray-700 text-xs font-bold">{{ row.folio }}</span>
+                        </template>
+                    </el-table-column>
+                    
+                    <el-table-column prop="name" label="Nombre" min-width="250">
+                        <template #default="{ row }">
+                            <div class="flex flex-col justify-center">
+                                <span class="font-bold text-gray-800">{{ row.name }}</span>
+                                <div class="mt-1">
+                                    <!-- Badges de Estado -->
+                                    <span v-if="row.status === 'Esperando autorización del cliente'" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-700">
+                                        <el-icon><Clock /></el-icon> Pendiente
+                                    </span>
+                                    <span v-else-if="row.status === 'Autorizada'" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-700">
+                                        <el-icon><Check /></el-icon> Autorizada
+                                    </span>
+                                    <span v-else-if="row.status === 'Rechazada'" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-100 text-red-700">
+                                        <el-icon><Close /></el-icon> Rechazada
+                                    </span>
+                                    <span v-else class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-gray-100 text-gray-700">
+                                        {{ row.status }}
+                                    </span>
+                                </div>
+                            </div>
+                        </template>
+                    </el-table-column>
+                    
+                    <el-table-column prop="client" label="Cliente" min-width="200">
+                        <template #default="{ row }">
+                            <span class="text-gray-600 font-medium">{{ row.client }}</span>
+                        </template>
+                    </el-table-column>
+                    
+                    <el-table-column prop="price" label="Costo" width="140">
+                        <template #default="{ row }">
+                            <span class="font-bold text-gray-800">${{ formatCurrency(row.price) }}</span>
+                        </template>
+                    </el-table-column>
+                    
+                    <el-table-column prop="created_at" label="Registrado" width="140" />
+                    
+                    <el-table-column align="right" width="80" fixed="right">
+                        <template #default="{ row }">
+                            <el-dropdown trigger="click" @command="handleCommand" placement="bottom-end">
+                                <button @click.stop class="flex items-center justify-center w-8 h-8 rounded-full text-gray-500 hover:bg-gray-100 transition-colors focus:outline-none">
+                                    <el-icon><MoreFilled /></el-icon>
+                                </button>
+                                <template #dropdown>
+                                    <el-dropdown-menu class="one-ui-dropdown">
+                                        <el-dropdown-item :command="'show-' + row.id">
+                                            <el-icon><View /></el-icon> Ver detalles
+                                        </el-dropdown-item>
+                                        <el-dropdown-item :command="'edit-' + row.id">
+                                            <el-icon><EditPen /></el-icon> Editar
+                                        </el-dropdown-item>
+                                        
+                                        <el-dropdown-item divided disabled class="!text-[10px] !font-bold !text-gray-400 uppercase tracking-wider">
+                                            Cambiar Estado
+                                        </el-dropdown-item>
+                                        <el-dropdown-item :command="'pendent-' + row.id" class="!text-amber-600">
+                                            <el-icon><Clock /></el-icon> Marcar Pendiente
+                                        </el-dropdown-item>
+                                        <el-dropdown-item :command="'authorized-' + row.id" class="!text-green-600">
+                                            <el-icon><Check /></el-icon> Marcar Autorizada
+                                        </el-dropdown-item>
+                                        <el-dropdown-item :command="'rejected-' + row.id" class="!text-red-600">
+                                            <el-icon><Close /></el-icon> Marcar Rechazada
+                                        </el-dropdown-item>
+                                    </el-dropdown-menu>
+                                </template>
+                            </el-dropdown>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
+            
+        </div>
+    </AppLayout>
 </template>
 
-<script>
+<script setup>
+import { ref, computed } from 'vue';
+import { router } from '@inertiajs/vue3';
 import AppLayout from "@/Layouts/AppLayout.vue";
-import PrimaryButton from '@/Components/PrimaryButton.vue';
 import axios from 'axios';
+import { ElNotification } from 'element-plus';
 
-export default {
-data() {
-    return {
-        disableMassiveActions: true,
-        toast: null,
+// Iconos de Element Plus
+import { 
+    Document,
+    Plus,
+    Delete,
+    Clock,
+    Check,
+    Close,
+    MoreFilled,
+    View,
+    EditPen
+} from '@element-plus/icons-vue';
+
+// Props
+const props = defineProps({
+    quotes: {
+        type: Object,
+        required: true,
+        default: () => ({ data: [] })
     }
-},
-components:{
-AppLayout,
-PrimaryButton,
-},
-props:{
-    quotes: Object
-},
-methods:{
-    handleCommand(command) {
-        const commandName = command.split('-')[0];
-        const rowId = command.split('-')[1];
+});
 
-        if ( commandName == 'pendent' || commandName == 'authorized' || commandName == 'rejected' ) {
-            this.updateStatus(commandName, rowId);
+// Estado Reactivo Local
+const localQuotes = ref([...props.quotes.data]);
+const selectedQuotes = ref([]);
+const multipleTableRef = ref(null);
+
+// Computed
+const disableMassiveActions = computed(() => selectedQuotes.value.length === 0);
+
+// Utilidades
+const formatCurrency = (amount) => {
+    return Number(amount || 0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
+// Acciones de Tabla
+const handleSelectionChange = (val) => {
+    selectedQuotes.value = val;
+};
+
+const handleRowClick = (row) => {
+    router.get(route('quotes.show', row.id || row));
+};
+
+const handlePagination = (page) => {
+    // Si tu backend maneja paginación estándar, esto navega con el parámetro de página.
+    router.get(route('quotes.index', { page }));
+};
+
+// Acciones de Dropdown
+const handleCommand = (command) => {
+    const [commandName, rowId] = command.split('-');
+
+    if (['pendent', 'authorized', 'rejected'].includes(commandName)) {
+        updateStatus(commandName, rowId);
+    } else {
+        router.get(route(`quotes.${commandName}`, rowId));
+    }
+};
+
+// Acciones HTTP
+const deleteSelections = async () => {
+    try {
+        const indexesToDelete = selectedQuotes.value.map(item => item.id);
+        const response = await axios.post(route('quotes.massive-delete', {
+            quotes: selectedQuotes.value // Tu código enviaba los objetos completos, lo mantenemos igual
+        }));
+
+        if (response.status === 200) {
+            // Filtrar reactivamente la lista local
+            localQuotes.value = localQuotes.value.filter(item => !indexesToDelete.includes(item.id));
+            multipleTableRef.value.clearSelection();
+
+            ElNotification({
+                title: 'Éxito',
+                message: response.data.message || 'Cotizaciones eliminadas exitosamente.',
+                type: 'success'
+            });
         } else {
-            this.$inertia.get(route('quotes.' + commandName, rowId));
-        }
-    },
-    handleRowClick(row) {
-        this.$inertia.get(route('quotes.show', row));
-    },
-    handleSelectionChange(val) {
-        this.$refs.multipleTableRef.value = val;
-
-        if (!this.$refs.multipleTableRef.value.length) {
-            this.disableMassiveActions = true;
-        } else {
-            this.disableMassiveActions = false;
-        }
-    },
-    async deleteSelections() {
-        try {
-            const response = await axios.post(route('quotes.massive-delete', {
-                quotes: this.$refs.multipleTableRef.value
-            }));
-
-            if (response.status == 200) {
-                this.$notify({
-                    title: 'Éxito',
-                    message: response.data.message,
-                    type: 'success'
-                });
-
-                // update list of companies
-                let deletedIndexes = [];
-                this.quotes.data.forEach((quote, index) => {
-                    if (this.$refs.multipleTableRef.value.includes(quote)) {
-                        deletedIndexes.push(index);
-                    }
-                });
-
-                // Ordenar los índices de forma descendente para evitar problemas de desplazamiento al eliminar elementos
-                deletedIndexes.sort((a, b) => b - a);
-
-                // Eliminar clientes por índice
-                for (const index of deletedIndexes) {
-                    this.quotes.data.splice(index, 1);
-                }
-
-            } else {
-                this.$notify({
-                    title: 'Algo salió mal',
-                    message: response.data.message,
-                    type: 'error'
-                });
-            }
-
-        } catch (err) {
-            this.$notify({
+            ElNotification({
                 title: 'Algo salió mal',
-                message: err.message,
+                message: response.data.message,
                 type: 'error'
             });
-            console.log(err);
         }
-    },
-    async updateStatus(status, quoteId) {
-        try {
-            const response = await axios.put(route('quotes.update-status', quoteId), {status: status});
-            if ( response.status === 200 ) {
-
-                //buscaa la cotización modificada
-                const indexQuote = this.quotes.data.findIndex(item => item.id == quoteId);
-
-                //en caso de encontrarla la actualiza
-                if ( indexQuote != -1 ) {
-                    this.quotes.data[indexQuote].status = response.data.item;
-                }
-            }
-        } catch (error) {
-            console.log(error);
-        }
+    } catch (err) {
+        ElNotification({
+            title: 'Error del sistema',
+            message: err.message || 'Ocurrió un error al procesar la solicitud.',
+            type: 'error'
+        });
+        console.error(err);
     }
-}
-}
+};
+
+const updateStatus = async (statusCommand, quoteId) => {
+    try {
+        const response = await axios.put(route('quotes.update-status', quoteId), { status: statusCommand });
+        
+        if (response.status === 200) {
+            // Actualizar reactivamente el estado en la lista local
+            const indexQuote = localQuotes.value.findIndex(item => item.id == quoteId);
+            
+            if (indexQuote !== -1) {
+                // Asumimos que el backend devuelve el string de estado final en response.data.item
+                localQuotes.value[indexQuote].status = response.data.item;
+                
+                ElNotification({
+                    title: 'Estado actualizado',
+                    message: 'El estado de la cotización se cambió exitosamente.',
+                    type: 'success'
+                });
+            }
+        }
+    } catch (error) {
+        ElNotification({
+            title: 'Error',
+            message: 'No se pudo actualizar el estado.',
+            type: 'error'
+        });
+        console.error(error);
+    }
+};
 </script>
+
+<style scoped>
+/* Estilos One UI para la Tabla de Element Plus */
+:deep(.one-ui-table) {
+    --el-table-border-color: transparent;
+    --el-table-header-bg-color: #f8fafc;
+    --el-table-header-text-color: #64748b;
+    --el-table-row-hover-bg-color: #f1f5f9;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+/* Encabezados de la tabla */
+:deep(.el-table__header th) {
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    padding: 16px 0;
+    border-bottom: 1px solid #f1f5f9 !important;
+}
+
+/* Celdas de la tabla */
+:deep(.el-table__body td) {
+    padding: 16px 0;
+    border-bottom: 1px solid #f8fafc !important;
+    transition: background-color 0.2s ease;
+}
+
+/* Quitar la línea inferior por defecto */
+:deep(.el-table__inner-wrapper::before) {
+    display: none;
+}
+
+/* Botones con estilo píldora */
+.one-ui-btn {
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    transition: all 0.2s ease;
+}
+
+/* Ajuste sutil de los checkbox */
+:deep(.el-checkbox__inner) {
+    border-radius: 6px;
+    width: 18px;
+    height: 18px;
+}
+:deep(.el-checkbox__inner::after) {
+    height: 9px;
+    left: 6px;
+    top: 2px;
+}
+
+/* Dropdown One UI */
+:deep(.one-ui-dropdown) {
+    border-radius: 16px !important;
+    padding: 8px !important;
+}
+:deep(.one-ui-dropdown .el-dropdown-menu__item) {
+    border-radius: 10px;
+    margin-bottom: 2px;
+    font-weight: 600;
+}
+:deep(.one-ui-dropdown .el-dropdown-menu__item:hover) {
+    background-color: #f1f5f9;
+}
+</style>

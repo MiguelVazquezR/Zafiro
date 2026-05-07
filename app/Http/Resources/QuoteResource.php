@@ -21,7 +21,7 @@ class QuoteResource extends JsonResource
             'client' => $this->client,
             'description' => $this->description,
             'status' => $this->status,
-            'price' => '$' . number_format($this->price),
+            'price' => $this->price,
             'price_raw' => $this->price,
             'payment_conditions' => $this->payment_conditions,
             'created_at' => $this->created_at?->isoFormat('DD MMM, YYYY - h:mm A')

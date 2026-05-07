@@ -18,7 +18,7 @@ class WorkResource extends JsonResource
             'parcel_number' => $this->parcel_number,
             'customer_name' => $this->customer_name,
             'area' => $this->area,
-            'price' => '$' . number_format($this->price, 2),
+            'price' => $this->price,
             'raw_price' => $this->price,
             'description' => $this->description,
             'payments' => $this->payments,

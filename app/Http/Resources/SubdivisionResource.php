@@ -21,7 +21,7 @@ class SubdivisionResource extends JsonResource
             'batches_availables' => $this->batches_availables,
             'lowest_price' => [
                 'raw' => $this->lowest_price,
-                'numberFormat' => number_format($this->lowest_price),
+                'numberFormat' => $this->lowest_price,
             ],
             'lowest_surface' => $this->lowest_surface,
             'address' => $this->address,

@@ -3,21 +3,29 @@ import { ref } from 'vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import ApplicationMark from '@/Components/ApplicationMark.vue';
 import Banner from '@/Components/Banner.vue';
-import Dropdown from '@/Components/Dropdown.vue';
-import DropdownLink from '@/Components/DropdownLink.vue';
-import NavLink from '@/Components/NavLink.vue';
-import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import SideNav from '@/Components/MyComponents/SideNav.vue';
+
+// Iconos de Element Plus
+import { 
+    Menu as MenuIcon,
+    ArrowDown,
+    User,
+    Key,
+    SwitchButton,
+    OfficeBuilding,
+    Plus
+} from '@element-plus/icons-vue';
 
 defineProps({
     title: String,
 });
 
-const showingNavigationDropdown = ref(false);
+// Control del menú lateral móvil
+const mobileDrawer = ref(false);
 
-const switchToTeam = (team) => {
+const switchToTeam = (teamId) => {
     router.put(route('current-team.update'), {
-        team_id: team.id,
+        team_id: teamId,
     }, {
         preserveState: false,
     });
@@ -26,276 +34,170 @@ const switchToTeam = (team) => {
 const logout = () => {
     router.post(route('logout'));
 };
+
+// Manejador de acciones del menú de usuario de Element Plus
+const handleUserCommand = (command) => {
+    if (command === 'logout') {
+        logout();
+    } else if (command === 'profile') {
+        router.get(route('profile.show'));
+    } else if (command === 'api') {
+        router.get(route('api-tokens.index'));
+    }
+};
+
+// Manejador de acciones de Equipos
+const handleTeamCommand = (command) => {
+    if (command === 'create') {
+        router.get(route('teams.create'));
+    } else if (command === 'settings') {
+        // En Inertia a veces necesitamos el ID actual, pero asumiremos que vas a la config general o la config del equipo actual
+        // Aquí puedes ajustar la ruta según cómo Jetstream maneje tu setup.
+        router.get(route('teams.show', 1)); // Reemplazar '1' con el ID dinámico si es necesario
+    } else {
+        // Si el comando es un ID de equipo, cambiamos a ese equipo
+        switchToTeam(command);
+    }
+};
 </script>
 
 <template>
-    <div>
-
+    <div class="app-wrapper bg-[#fcfdff] min-h-screen flex font-sans">
         <Head :title="title" />
-
         <Banner />
 
-        <div class="min-h-screen bg-gray-100">
-            <nav class="bg-white border-b border-gray-100">
-                <!-- Primary Navigation Menu -->
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="flex justify-between h-16">
-                        <div class="flex">
-                            <!-- Logo -->
-                            <div class="shrink-0 flex items-center">
-                                <Link :href="route('dashboard')">
-                                <ApplicationMark class="block h-9 w-auto" />
-                                </Link>
-                            </div>
+        <!-- Menú Lateral Escritorio (Fijo a la izquierda) -->
+        <div class="hidden md:block sticky top-0 h-screen z-20">
+            <SideNav />
+        </div>
 
-                            <!-- Navigation Links -->
-                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                                    Dashboard
-                                </NavLink>
-                                <NavLink :href="route('messages.index')" :active="route().current('messages.*')">
-                                    Mensajes
-                                </NavLink>
-                                <NavLink :href="route('works.index')" :active="route().current('works.*')">
-                                    Trabajos
-                                </NavLink>
-                                <NavLink :href="route('quotes.index')" :active="route().current('quotes.*')">
-                                    Cotizaciones
-                                </NavLink>
-                            </div>
+        <!-- Contenedor Principal -->
+        <div class="flex-1 flex flex-col min-w-0 transition-all duration-300">
+            
+            <!-- Topbar (Navegación Superior) -->
+            <header class="h-20 px-4 md:px-8 flex items-center justify-between sticky top-0 z-10 bg-white/70 backdrop-blur-xl border-b border-gray-100">
+                <div class="flex items-center gap-4">
+                    <!-- Botón Hamburguesa (Solo Móvil) -->
+                    <el-button class="md:!hidden !border-none !bg-gray-100 hover:!bg-gray-200" circle @click="mobileDrawer = true">
+                        <el-icon size="20"><MenuIcon /></el-icon>
+                    </el-button>
+
+                    <!-- Logo -->
+                    <Link :href="route('dashboard')" class="flex items-center">
+                        <ApplicationMark class="block h-10 w-auto" />
+                    </Link>
+                </div>
+
+                <!-- Acciones de Usuario y Equipos -->
+                <div class="flex items-center gap-3 md:gap-5">
+                    
+                    <!-- Selector de Equipos (Element Plus Dropdown) -->
+                    <el-dropdown v-if="$page.props.jetstream.hasTeamFeatures" trigger="click" @command="handleTeamCommand" placement="bottom-end">
+                        <div class="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-gray-100 cursor-pointer transition-colors border border-gray-100">
+                            <span class="text-sm font-semibold text-gray-600 hidden sm:block">
+                                {{ $page.props.auth.user.current_team.name }}
+                            </span>
+                            <el-icon class="text-gray-400"><ArrowDown /></el-icon>
                         </div>
-
-                        <div class="hidden sm:flex sm:items-center sm:ml-6">
-                            <div class="ml-3 relative">
-                                <!-- Teams Dropdown -->
-                                <Dropdown v-if="$page.props.jetstream.hasTeamFeatures" align="right" width="60">
-                                    <template #trigger>
-                                        <span class="inline-flex rounded-md">
-                                            <button type="button"
-                                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150">
-                                                {{ $page.props.auth.user.current_team.name }}
-
-                                                <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                                    fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                                    stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
-                                                </svg>
-                                            </button>
-                                        </span>
-                                    </template>
-
-                                    <template #content>
-                                        <div class="w-60">
-                                            <!-- Team Management -->
-                                            <template v-if="$page.props.jetstream.hasTeamFeatures">
-                                                <div class="block px-4 py-2 text-xs text-gray-400">
-                                                    Manage Team
-                                                </div>
-
-                                                <!-- Team Settings -->
-                                                <DropdownLink
-                                                    :href="route('teams.show', $page.props.auth.user.current_team)">
-                                                    Team Settings
-                                                </DropdownLink>
-
-                                                <DropdownLink v-if="$page.props.jetstream.canCreateTeams"
-                                                    :href="route('teams.create')">
-                                                    Create New Team
-                                                </DropdownLink>
-
-                                                <!-- Team Switcher -->
-                                                <template v-if="$page.props.auth.user.all_teams.length > 1">
-                                                    <div class="border-t border-gray-200" />
-
-                                                    <div class="block px-4 py-2 text-xs text-gray-400">
-                                                        Switch Teams
-                                                    </div>
-
-                                                    <template v-for="team in $page.props.auth.user.all_teams"
-                                                        :key="team.id">
-                                                        <form @submit.prevent="switchToTeam(team)">
-                                                            <DropdownLink as="button">
-                                                                <div class="flex items-center">
-                                                                    <svg v-if="team.id == $page.props.auth.user.current_team_id"
-                                                                        class="mr-2 h-5 w-5 text-green-400"
-                                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                                        viewBox="0 0 24 24" stroke-width="1.5"
-                                                                        stroke="currentColor">
-                                                                        <path stroke-linecap="round"
-                                                                            stroke-linejoin="round"
-                                                                            d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                                    </svg>
-
-                                                                    <div>{{ team.name }}</div>
-                                                                </div>
-                                                            </DropdownLink>
-                                                        </form>
-                                                    </template>
-                                                </template>
-                                            </template>
+                        <template #dropdown>
+                            <el-dropdown-menu class="one-ui-dropdown">
+                                <el-dropdown-item disabled class="!text-xs !font-bold !text-gray-400 uppercase tracking-wider">Gestionar Equipo</el-dropdown-item>
+                                <el-dropdown-item command="settings"><el-icon><OfficeBuilding /></el-icon> Configuración de equipo</el-dropdown-item>
+                                <el-dropdown-item v-if="$page.props.jetstream.canCreateTeams" command="create" divided><el-icon><Plus /></el-icon> Crear Nuevo Equipo</el-dropdown-item>
+                                
+                                <template v-if="$page.props.auth.user.all_teams.length > 1">
+                                    <el-dropdown-item divided disabled class="!text-xs !font-bold !text-gray-400 uppercase tracking-wider">Cambiar de Equipo</el-dropdown-item>
+                                    <el-dropdown-item v-for="team in $page.props.auth.user.all_teams" :key="team.id" :command="team.id">
+                                        <div class="flex items-center justify-between w-full gap-4">
+                                            <span>{{ team.name }}</span>
+                                            <div v-if="team.id == $page.props.auth.user.current_team_id" class="w-2 h-2 rounded-full bg-emerald-500"></div>
                                         </div>
-                                    </template>
-                                </Dropdown>
+                                    </el-dropdown-item>
+                                </template>
+                            </el-dropdown-menu>
+                        </template>
+                    </el-dropdown>
+
+                    <!-- Menú de Perfil (Element Plus Dropdown) -->
+                    <el-dropdown trigger="click" @command="handleUserCommand" placement="bottom-end">
+                        <div class="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity p-1 bg-white rounded-full shadow-sm border border-gray-100">
+                            <img v-if="$page.props.jetstream.managesProfilePhotos" 
+                                 class="h-9 w-9 rounded-full object-cover" 
+                                 :src="$page.props.auth.user.profile_photo_url" 
+                                 :alt="$page.props.auth.user.name">
+                            <div v-else class="h-9 w-9 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold">
+                                {{ $page.props.auth.user.name.charAt(0) }}
                             </div>
-
-                            <!-- Settings Dropdown -->
-                            <div class="ml-3 relative">
-                                <Dropdown align="right" width="48">
-
-                                    <template #trigger>
-                                        <button v-if="$page.props.jetstream.managesProfilePhotos"
-                                            class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
-                                            <img class="h-8 w-8 rounded-full object-cover"
-                                                :src="$page.props.auth.user.profile_photo_url"
-                                                :alt="$page.props.auth.user.name">
-                                        </button>
-
-                                        <span v-else class="inline-flex rounded-md">
-                                            <button type="button"
-                                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150">
-                                                {{ $page.props.auth.user.name }}
-
-                                                <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                                    fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                                    stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                                                </svg>
-                                            </button>
-                                        </span>
-                                    </template>
-
-                                    <template #content>
-                                        <!-- Account Management -->
-                                        <div class="block px-4 py-2 text-xs text-gray-400">
-                                            Cuenta
-                                        </div>
-
-                                        <DropdownLink :href="route('profile.show')">
-                                            Perfil
-                                        </DropdownLink>
-
-                                        <DropdownLink v-if="$page.props.jetstream.hasApiFeatures"
-                                            :href="route('api-tokens.index')">
-                                            API Tokens
-                                        </DropdownLink>
-
-                                        <div class="border-t border-gray-200" />
-
-                                        <!-- Authentication -->
-                                        <form @submit.prevent="logout">
-                                            <DropdownLink as="button">
-                                                Cerrar sesion
-                                            </DropdownLink>
-                                        </form>
-                                    </template>
-                                </Dropdown>
-                            </div>
+                            <span class="font-bold text-gray-700 hidden sm:block pr-2 text-sm">{{ $page.props.auth.user.name }}</span>
                         </div>
+                        <template #dropdown>
+                            <el-dropdown-menu class="one-ui-dropdown min-w-[200px]">
+                                <el-dropdown-item disabled class="!text-xs !font-bold !text-gray-400 uppercase tracking-wider">Cuenta</el-dropdown-item>
+                                <el-dropdown-item command="profile"><el-icon><User /></el-icon> Mi Perfil</el-dropdown-item>
+                                <el-dropdown-item v-if="$page.props.jetstream.hasApiFeatures" command="api"><el-icon><Key /></el-icon> API Tokens</el-dropdown-item>
+                                <el-dropdown-item command="logout" divided class="!text-red-500"><el-icon><SwitchButton /></el-icon> Cerrar sesión</el-dropdown-item>
+                            </el-dropdown-menu>
+                        </template>
+                    </el-dropdown>
 
-                        <!-- Hamburger -->
-                        <div class="-mr-2 flex items-center sm:hidden">
-                            <button
-                                class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
-                                @click="showingNavigationDropdown = !showingNavigationDropdown">
-                                <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                                    <path
-                                        :class="{ 'hidden': showingNavigationDropdown, 'inline-flex': !showingNavigationDropdown }"
-                                        stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M4 6h16M4 12h16M4 18h16" />
-                                    <path
-                                        :class="{ 'hidden': !showingNavigationDropdown, 'inline-flex': showingNavigationDropdown }"
-                                        stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
                 </div>
+            </header>
 
-                <!-- Responsive Navigation Menu -->
-                <div :class="{ 'block': showingNavigationDropdown, 'hidden': !showingNavigationDropdown }"
-                    class="sm:hidden">
-                    <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                            Dashboard
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink :href="route('messages.index')" :active="route().current('messages.*')">
-                            Mensajes
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink :href="route('works.index')" :active="route().current('works.*')">
-                            Trabajos
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink :href="route('subdivisions.create')"
-                            :active="route().current('subdivisions.create')">
-                            Nuevo fraccionamiento
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink :href="route('subdivisions.index')"
-                            :active="route().current('subdivisions.index')">
-                            Lista de fraccionamientos
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink :href="route('batches.create')" :active="route().current('batches.create')">
-                            Nuevo lote
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink :href="route('batches.index')" :active="route().current('batches.index')">
-                            Lista de lotes
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink :href="route('quotes.index')" :active="route().current('quotes.index')">
-                            Cotizaciones
-                        </ResponsiveNavLink>
-                    </div>
-
-                    <!-- Responsive Settings Options -->
-                    <div class="pt-4 pb-1 border-t border-gray-200">
-                        <div class="flex items-center px-4">
-                            <div v-if="$page.props.jetstream.managesProfilePhotos" class="shrink-0 mr-3">
-                                <img class="h-10 w-10 rounded-full object-cover"
-                                    :src="$page.props.auth.user.profile_photo_url" :alt="$page.props.auth.user.name">
-                            </div>
-
-                            <div>
-                                <div class="font-medium text-base text-gray-800">
-                                    {{ $page.props.auth.user.name }}
-                                </div>
-                                <div class="font-medium text-sm text-gray-500">
-                                    {{ $page.props.auth.user.email }}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="mt-3 space-y-1">
-                            <ResponsiveNavLink :href="route('profile.show')" :active="route().current('profile.show')">
-                                Profile
-                            </ResponsiveNavLink>
-
-                            <!-- Authentication -->
-                            <form method="POST" @submit.prevent="logout">
-                                <ResponsiveNavLink as="button">
-                                    Cerrar sesion
-                                </ResponsiveNavLink>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </nav>
-
-            <!-- Page Heading -->
-            <!-- <header v-if="$slots.header" class="bg-white shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    <slot name="header" />
-                </div>
-            </header> -->
-
-            <!-- Page Content -->
-            <main class="lg:grid grid-cols-7 lg:space-x-7 mt-12">
-                <div class="hidden md:block">
-                    <SideNav />
-                </div>
-                <div class="col-span-6">
-                    <slot />
-                </div>
+            <!-- Contenido Dinámico de la Página -->
+            <main class="flex-1 p-4 md:p-8">
+                <!-- Envolvemos el slot principal en un contenedor flotante para ese look "Burbuja" general si se desea,
+                     o dejamos que las vistas hijas decidan. Lo dejamos limpio por defecto para máxima compatibilidad. -->
+                <slot />
             </main>
         </div>
+
+        <!-- Drawer (Menú Lateral Móvil) -->
+        <el-drawer v-model="mobileDrawer" title="Navegación" direction="ltr" size="280px" class="one-ui-drawer md:hidden">
+            <!-- Renderizamos TODO el SideNav dentro del Drawer y cerramos el drawer al cambiar de ruta -->
+            <SideNav :isMobile="true" @close-drawer="mobileDrawer = false" />
+        </el-drawer>
+
     </div>
 </template>
+
+<style scoped>
+/* Sobrescribir estilos de Element Plus para los menús desplegables (Dropdowns) para hacerlos "One UI" */
+:deep(.one-ui-dropdown) {
+    border-radius: 16px !important;
+    padding: 8px !important;
+    box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1) !important;
+    border: 1px solid #f1f3f5 !important;
+}
+
+:deep(.one-ui-dropdown .el-dropdown-menu__item) {
+    border-radius: 12px;
+    margin-bottom: 2px;
+    padding: 10px 16px;
+    font-weight: 600;
+    color: #495057;
+    transition: all 0.2s ease;
+}
+
+:deep(.one-ui-dropdown .el-dropdown-menu__item:hover) {
+    background-color: #f1f3f5;
+    color: #212529;
+}
+
+:deep(.one-ui-dropdown .el-dropdown-menu__item--divided) {
+    margin-top: 6px;
+    border-top: 1px solid #f1f3f5;
+}
+
+/* Modificaciones para el Drawer (Menú lateral en móvil) */
+:deep(.one-ui-drawer .el-drawer__header) {
+    margin-bottom: 0;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #f1f3f5;
+    font-weight: 800;
+    color: #212529;
+}
+
+:deep(.one-ui-drawer) {
+    border-radius: 0 24px 24px 0 !important;
+}
+</style>
