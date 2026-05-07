@@ -75,7 +75,7 @@ const handleTeamCommand = (command) => {
         <div class="flex-1 flex flex-col min-w-0 transition-all duration-300">
             
             <!-- Topbar (Navegación Superior) -->
-            <header class="h-20 px-4 md:px-8 flex items-center justify-between sticky top-0 z-10 bg-white/70 backdrop-blur-xl border-b border-gray-100">
+            <header class="h-20 px-4 md:px-8 flex items-center justify-between sticky top-0 z-20 bg-white/70 backdrop-blur-xl border-b border-gray-100">
                 <div class="flex items-center gap-4">
                     <!-- Botón Hamburguesa (Solo Móvil) -->
                     <el-button class="md:!hidden !border-none !bg-gray-100 hover:!bg-gray-200" circle @click="mobileDrawer = true">

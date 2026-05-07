@@ -1,293 +1,293 @@
 <template>
-
     <Head>
-        <title>Lotes / terrenos</title>
-        <meta name="description"
-            content="Descubre soluciones inmobiliarias integrales con ingeniería zafiro. Expertos en venta de terrenos, topografía, obra civil, diseño arquitectónico y acabados de lujo. Con años de experiencia, garantizamos precisión y satisfacción. ¡Transforma tus proyectos con nosotros!">
-        <meta name="keywords"
-            content="ingeniería, construcción, materiales, terreno, lote, fraccionamientos, obras, casas, residencias, industria, medicion, topografía, cimientos, drenaje, calles, gps, deslinde, prcelas, hectáreas, lotificación, cimentación, demolición, Mecanica de suelos, cimbrado, losas, estructura">
+        <title>Ingeniería Zafiro | Lotes y Terrenos</title>
+        <meta name="description" content="Descubre soluciones inmobiliarias integrales con ingeniería zafiro. Expertos en venta de terrenos, topografía, obra civil, diseño arquitectónico y acabados de lujo.">
+        <meta name="keywords" content="ingeniería, construcción, materiales, terreno, lote, fraccionamientos, obras, casas, residencias, industria, medicion, topografía, cimientos, drenaje, calles, gps, deslinde">
         <meta name="robots" content="index">
         <meta name="author" content="DTW">
     </Head>
 
-    <div class="relative">
-        <!-- whatsapp button -->
-        <a class="lg:hidden z-50 w-14 h-14 lg:w-20 lg:h-20 rounded-full bg-green-600 shadow-md shadow-green-800/100 flex items-center justify-center fixed bottom-3 right-3 hover:scale-105"
+    <div class="relative bg-slate-50 min-h-screen font-sans selection:bg-primary selection:text-black">
+        
+        <!-- Botón Flotante de WhatsApp -->
+        <a class="z-50 w-14 h-14 lg:w-16 lg:h-16 rounded-full bg-green-500 shadow-lg shadow-green-500/30 flex items-center justify-center fixed bottom-6 right-6 hover:scale-110 hover:bg-green-400 transition-all duration-300"
             href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página,%20me%20interesa%20comprar%20un%20terreno"
-            target="_blank" rel="noopener noreferrer">
-            <i class="fa-brands fa-beat fa-whatsapp text-2xl lg:text-4xl text-gray-100"></i>
+            target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">
+            <i class="fa-brands fa-whatsapp text-3xl lg:text-4xl text-white"></i>
         </a>
 
-        <!-- mobile menu (hamburger) -->
-        <div v-if="showMobileMenu"
-            class="flex flex-col z-50 bg-[#262626] rounded-xl w-2/3 md:w-1/3 fixed top-24 md:top-20 right-5 border-white border py-1 text-white">
-            <button class="mx-1 py-2 bg-primary rounded-lg">LOTES</button>
-            <button class="mx-1 py-2 hover:bg-primary rounded-lg" @click="$inertia.visit('/otros-servicios')">OTROS
-                SERVICIOS</button>
-        </div>
+        <!-- Navegación Superior -->
+        <nav :class="['fixed top-0 w-full z-40 transition-all duration-300', isNavbarFixed ? 'bg-white/90 backdrop-blur-md shadow-sm py-2' : 'bg-transparent py-4']">
+            <div class="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex space-x-3 items-center cursor-pointer" @click="$inertia.visit('/')">
+                    <img src="../../../public/images/logo_dark.png" class="h-10 lg:h-12 drop-shadow-sm transition-transform hover:scale-105" alt="Ingeniería Zafiro Logo" />
+                    <span class="font-black text-primary text-xl tracking-tight hidden sm:block">INGENIERÍA ZAFIRO</span>
+                </div>
 
-        <!-- navbar -->
-        <nav :class="['navbar', { 'fixed-navbar': isNavbarFixed }]"
-            class="flex items-center justify-between py-4 lg:px-10 px-6 w-full dark:bg-white">
-            <div class="flex space-x-2 items-center">
-                <img src="../../../public/images/logo_dark.png" class="h-14" alt="logo" />
-                <span class="font-bold text-primary text-xl">INGENIERÍA ZAFIRO</span>
+                <!-- Botón Menú Móvil -->
+                <button @click="showMobileMenu = !showMobileMenu" class="lg:hidden text-2xl text-slate-800 p-2 focus:outline-none">
+                    <i :class="showMobileMenu ? 'fa-solid fa-xmark' : 'fa-solid fa-bars'"></i>
+                </button>
+
+                <!-- Enlaces Escritorio -->
+                <div class="hidden lg:flex items-center space-x-2">
+                    <button class="px-5 py-2 rounded-xl bg-primary/10 text-primary font-bold transition-colors">
+                        LOTES EN VENTA
+                    </button>
+                    <button @click="$inertia.visit('/otros-servicios')" class="px-5 py-2 rounded-xl text-slate-600 font-semibold hover:bg-slate-100 transition-colors">
+                        OTROS SERVICIOS
+                    </button>
+                    <a href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página%20,%20me%20interesa%20su%20servicio!"
+                        target="_blank" rel="noopener noreferrer" class="ml-4 w-10 h-10 flex items-center justify-center rounded-full bg-slate-100 hover:bg-green-50 text-slate-600 hover:text-green-500 transition-colors">
+                        <i class="fa-brands fa-whatsapp text-xl"></i>
+                    </a>
+                </div>
             </div>
-            <button @click="showMobileMenu = !showMobileMenu" class="lg:hidden">
-                <i class="fa-solid fa-bars text-xl text-primary"></i>
-            </button>
-            <div class="mr-12 hidden lg:inline">
-                <button class="mx-2 rounded-sm px-2 py-px bg-primarylight font-bold">LOTES</button>
-                <button
-                    class="mx-2 rounded-sm px-1 py-px hover:bg-primarylight transition-colors ease-linear duration-200"
-                    @click="$inertia.visit('/otros-servicios')">OTROS SERVICIOS</button>
-                <a href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página%20,%20me%20interesa%20su%20servicio!"
-                    target="_blank" rel="noopener noreferrer">
-                    <i class="fa-brands fa-whatsapp text-xl ml-2"></i>
-                </a>
-            </div>
+
+            <!-- Menú Móvil Desplegable -->
+            <transition name="fade-slide">
+                <div v-if="showMobileMenu" class="absolute top-full left-0 w-full bg-white/95 backdrop-blur-md shadow-lg lg:hidden flex flex-col p-4 space-y-2 border-t border-slate-100">
+                    <button class="w-full text-left px-4 py-3 bg-primary/10 text-primary rounded-xl font-bold">LOTES EN VENTA</button>
+                    <button @click="$inertia.visit('/otros-servicios')" class="w-full text-left px-4 py-3 text-slate-700 font-bold hover:bg-slate-50 rounded-xl">OTROS SERVICIOS</button>
+                </div>
+            </transition>
         </nav>
 
-        <main class="pt-14">
-            <!-- home desktop-->
-            <section class="hidden md:block mt-9 relative md:mb-8 lg:mb-16" id="Inicio">
-                <figure class="rounded-[20px] lg:h-[630px] md:h-full relative">
-                    <img class="mx-auto w-full h-full object-cover" src="../../../public/images/home_lotes.png" alt="famialia abrazada de espardas mirando una casa">
-
-                    <div class="absolute bottom-20 lg:bottom-36 left-8 lg:left-28 h-1/2 w-1/2 lg:w-1/3">
-                        <p class="text-white lg:text-3xl">EL SITIO IDEAL PARA ENCONTRAR EL TERRERNO PERFECTO PARA TI
+        <main class="pt-24 lg:pt-32 pb-16 space-y-16 lg:space-y-24">
+            
+            <!-- Hero Section (Unificado y Modernizado) -->
+            <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="relative h-[60vh] min-h-[500px] lg:h-[600px] rounded-[32px] overflow-hidden shadow-xl group">
+                    <img class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="../../../public/images/home_lotes.png" alt="Familia admirando su nuevo terreno">
+                    
+                    <!-- Capa de gradiente para legibilidad -->
+                    <div class="absolute inset-0 bg-gradient-to-r from-slate-900/90 via-slate-900/50 to-transparent"></div>
+                    
+                    <div class="absolute inset-0 flex flex-col justify-center p-8 lg:p-16 max-w-2xl">
+                        <span class="px-4 py-1.5 bg-primary/20 text-primary border border-primary/30 rounded-full text-xs font-bold tracking-widest uppercase mb-6 inline-block w-max backdrop-blur-sm">
+                            Terrenos en Venta
+                        </span>
+                        <h1 class="text-4xl lg:text-6xl font-black text-white leading-[1.1] tracking-tight mb-6">
+                            El sitio ideal para encontrar el <span class="text-primary">terreno perfecto</span> para ti.
+                        </h1>
+                        <p class="text-slate-300 text-lg mb-10 max-w-lg">
+                            Desarrollos exclusivos, ubicaciones estratégicas y la certeza jurídica que tu patrimonio necesita.
                         </p>
-                        <p class="text-[#D9D9D9] lg:text-3xl mt-5">TERRENOS EN VENTA </p>
+                        
                         <a href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página,%20me%20interesa%20comprar%20un%20terreno"
-                            class="ml-auto mr-2 mt-14 lg:text-xl rounded-full border-2 border-primary text-black inline-flex justify-center items-center py-1 px-4 lg:px-9 bg-primary transition-all">
-                            Contáctanos
+                           class="bg-primary text-slate-900 px-8 py-4 rounded-full font-black text-lg hover:bg-primary/90 hover:scale-105 transition-all shadow-lg shadow-primary/20 w-max flex items-center gap-3">
+                            Contactar Asesor <i class="fa-solid fa-arrow-right"></i>
                         </a>
                     </div>
-                </figure>
-            </section>
-
-            <!-- home mobile-->
-            <section class="md:hidden mt-9 relative mb-16" id="InicioM">
-                <div class="rounded-[20px] h-[300px] relative">
-                    <img class="absolute right-0 top-0 h-[100%]" src="../../../public/images/home_lotes.png" alt="famialia abrazada de espardas mirando una casa">
-                    <div class="absolute bottom-16 left-4 h-1/2 w-[230px]">
-                        <p class="text-white text-sm">EL SITIO IDEAL PARA ENCONTRAR EL TERRERNO PERFECTO PARA TI </p>
-                        <p class="text-[#D9D9D9] text-sm mt-5">TERRENOS EN VENTA </p>
-                        <button @click="goToContact"
-                            class="ml-auto mr-20 mt-14 text-sm rounded-full border-2 border-primary text-black flex justify-between items-center py-1 px-5 bg-primary transition-all">
-                            Contáctanos
-                        </button>
-                    </div>
                 </div>
             </section>
 
-            <!-- Services -->
-            <section class="lg:mx-36 md:mx-10 mx-5 relative mb-16 lg:mb-32" id="Servicios">
-                <h2 class="font-bold my-5 lg:my-10 text-lg lg:text-2xl text-center">
-                    Explora nuestros fraccionamientos y encuentra tu lote perfecto.</h2>
-                <div class="grid xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-4">
-                    <SubdivisionCard v-for="subdivision in subdivisions.data" :key="subdivision"
-                        :subdivision="subdivision" />
+            <!-- Sección de Fraccionamientos -->
+            <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-12">
+                    <h2 class="text-3xl lg:text-4xl font-black text-slate-900 tracking-tight mb-4">
+                        Explora nuestros desarrollos
+                    </h2>
+                    <p class="text-slate-500 text-lg">
+                        Encuentra la ubicación que mejor se adapte a tu estilo de vida o proyecto de inversión.
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <SubdivisionCard v-for="subdivision in subdivisions.data" :key="subdivision.id" :subdivision="subdivision" />
                 </div>
             </section>
 
-            <section class="bg-[#EDEDED] rounded-t-[70px] lg:px-5 md:px-10 p-2 lg:py-14">
-                <h2 class="py-9 text-lg lg:text-2xl ml-3 font-bold">Descubre los diferentes tamaños de terreno que
-                    tenemos para ti.
-                </h2>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:mx-10 justify-center">
-                    <BatchCard class="mx-auto" v-for="batch in batchesLocal" :key="batch" :batch="batch" />
+            <!-- Sección de Lotes Específicos -->
+            <section class="bg-white rounded-[40px] lg:rounded-[64px] shadow-sm border border-slate-100 py-16 lg:py-24 px-4 sm:px-6 lg:px-8 max-w-[1400px] mx-auto">
+                <div class="text-center max-w-3xl mx-auto mb-12">
+                    <h2 class="text-3xl lg:text-4xl font-black text-slate-900 tracking-tight mb-4">
+                        Lotes disponibles por tamaño
+                    </h2>
+                    <p class="text-slate-500 text-lg">
+                        Descubre las diferentes opciones y medidas de terreno que tenemos listas para escriturar.
+                    </p>
                 </div>
-                <p v-if="loadingItems" class="text-xs my-4 text-center">
-                    Cargando <i class="fa-sharp fa-solid fa-circle-notch fa-spin ml-2 text-primary"></i>
-                </p>
-                <div v-else-if="(total_batches > 2) && (batches.data.length < total_batches) && batches.data.length"
-                    @click="fetchItemsByPage" class="text-center mt-7">
-                    <button class="flex items-center justify-center text-white bg-black rounded-full w-6 h-6 mx-auto">
-                        <i class="fa-solid fa-angle-down"></i>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 justify-center">
+                    <BatchCard v-for="batch in batchesLocal" :key="batch.id" :batch="batch" />
+                </div>
+                
+                <!-- Botón Cargar Más -->
+                <div class="text-center mt-12">
+                    <p v-if="loadingItems" class="text-primary font-bold flex items-center justify-center gap-3">
+                        Cargando catálogo <i class="fa-solid fa-circle-notch fa-spin"></i>
+                    </p>
+                    <button v-else-if="batchesLocal.length < total_batches" 
+                            @click="fetchItemsByPage" 
+                            class="bg-slate-900 hover:bg-slate-800 text-white px-8 py-3.5 rounded-full font-bold transition-all shadow-md flex items-center gap-3 mx-auto">
+                        Ver más terrenos <i class="fa-solid fa-angle-down"></i>
                     </button>
                 </div>
             </section>
-            <footer class="p-4 md:grid md:grid-cols-3 lg:grid-cols-4 gap-3 text-white bg-[#1A1A1A] md:relative text-sm">
-                <figure class="h-full md:h-auto flex space-y-2">
-                    <img class="h-16 md:h-1/4" src="../../../public/images/logo_light.png" alt="logo de ingenieria zafiro. Mapa blanco y un marcador de posición similar al de google maps" />
-                    <span class="lg:font-bold text-primary lg:text-xl">INGENIERÍA ZAFIRO</span>
-                </figure>
-                <div class="flex flex-col lg:text-base">
-                    <h2 class="lg:text-xl text-primary lg:font-bold mb-5">Venta de terrenos</h2>
-                    <li v-for="(lote, index) in lotes" :key="index">{{ lote.title }}</li>
-                    <div class="flex lg:hidden flex-col mb-5 mt-5">
-                        <h2 class="lg:text-xl text-primary lg:font-bold mb-5">Contacto</h2>
-                        <p class="flex items-center text-xs">
-                            <i class="fa-solid fa-envelope mr-3"></i>
-                            jose.rod@ingenieriazafiro.dtw.com.mx
-                        </p>
-                        <p>
-                            <i class="fa-solid fa-phone mr-2 text-xs"></i>
-                            3312517732
-                        </p>
-                    </div>
-                </div>
-                <div class="flex flex-col">
-                    <h2 class="lg:text-xl text-primary lg:font-bold mb-5">Servicios</h2>
-                    <li v-for="(service, index) in services" :key="index">{{ service.title }}</li>
-                </div>
-                <div class="hidden lg:flex flex-col mb-5">
-                    <h2 class="lg:text-xl text-primary lg:font-bold mb-5">Contacto</h2>
-                    <p>
-                        <i class="fa-solid fa-envelope mr-3"></i>
-                        jose.rod@ingenieriazafiro.dtw.com.mx
-                    </p>
-                    <p>
-                        <i class="fa-solid fa-phone mr-3"></i>
-                        3312517732
-                    </p>
-                </div>
-                <div class="col-span-full flex-col justify-center md:flex-row flex items-center md:justify-between">
-                    <p class="flex mt-4 space-x-1">
-                        <small>Copyrigth &copy; {{ currentYear }} </small>
-                        <small class="block md:inline"> Ingeniería Zafiro. Todos los derechos reservados.</small>
-                    </p>
-                    <figure class="mt-4 cursor-pointer w-1/2 ">
-                        <a class="flex justify-end items-center" href="https://dtw.com.mx/" target="_blank">
-                            <p class="text-white text-xl">BY</p>
-                            <img class="w-20 lg:w-[10%]" src="@/../../public/images/DTW_logo_blanco.png" alt="">
-                        </a>
-                    </figure>
-                </div>
-            </footer>
         </main>
+
+        <!-- Footer Premium -->
+        <footer class="bg-slate-900 pt-16 pb-8 px-6 lg:px-12 rounded-t-[40px] lg:rounded-t-[64px] text-slate-300">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-12">
+                
+                <!-- Columna 1: Marca -->
+                <div class="space-y-6">
+                    <div class="flex items-center gap-3">
+                        <img class="h-12" src="../../../public/images/logo_light.png" alt="Ingeniería Zafiro Logo Light" />
+                        <span class="font-black text-primary text-xl">INGENIERÍA ZAFIRO</span>
+                    </div>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Construimos confianza y patrimonio. Expertos en venta de terrenos, topografía, y diseño arquitectónico con acabados de lujo.
+                    </p>
+                </div>
+
+                <!-- Columna 2: Desarrollos -->
+                <div>
+                    <h3 class="text-white font-bold text-lg mb-6 uppercase tracking-wider">Desarrollos</h3>
+                    <ul class="space-y-3">
+                        <li v-for="(lote, index) in lotes" :key="index" class="text-sm hover:text-primary cursor-pointer transition-colors flex items-center gap-2">
+                            <div class="w-1.5 h-1.5 rounded-full bg-primary/50"></div>
+                            {{ lote.title }}
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Columna 3: Servicios -->
+                <div>
+                    <h3 class="text-white font-bold text-lg mb-6 uppercase tracking-wider">Servicios Especializados</h3>
+                    <ul class="space-y-3">
+                        <li v-for="(service, index) in services" :key="index" class="text-sm hover:text-primary cursor-pointer transition-colors flex items-center gap-2">
+                            <div class="w-1.5 h-1.5 rounded-full bg-primary/50"></div>
+                            {{ service.title }}
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Columna 4: Contacto -->
+                <div>
+                    <h3 class="text-white font-bold text-lg mb-6 uppercase tracking-wider">Contáctanos</h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center shrink-0 text-primary">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <span class="text-sm mt-1 break-all">jose.rod@ingenieriazafiro.dtw.com.mx</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center shrink-0 text-primary">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <span class="text-sm mt-1">3312517732</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="max-w-7xl mx-auto border-t border-slate-800 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+                <p class="text-sm text-slate-500">
+                    &copy; {{ currentYear }} Ingeniería Zafiro. Todos los derechos reservados.
+                </p>
+                <a href="https://dtw.com.mx/" target="_blank" class="flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity">
+                    <span class="text-xs font-bold tracking-widest">POWERED BY</span>
+                    <img class="h-6" src="@/../../public/images/DTW_logo_blanco.png" alt="DTW Logo">
+                </a>
+            </div>
+        </footer>
     </div>
 </template>
 
-<script>
-import { useForm, Link, Head } from "@inertiajs/vue3";
-import InputError from "@/Components/InputError.vue";
-import SubdivisionCard from "@/Components/MyComponents/Subdivision/SubdivisionCard.vue";
-import BatchCard from "@/Components/MyComponents/Batch/BatchCard.vue";
+<script setup>
+import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { Head, Link } from "@inertiajs/vue3";
+import axios from 'axios';
+import SubdivisionCard from "@/Pages/Subdivision/Partials/SubdivisionCard.vue";
+import BatchCard from "@/Pages/Batch/Partials/BatchCard.vue";
 
+// Props
+const props = defineProps({
+    subdivisions: { type: Object, default: () => ({ data: [] }) },
+    batches: { type: Object, default: () => ({ data: [] }) },
+    total_batches: { type: Number, default: 0 },
+});
 
-export default {
-    data() {
-        const form = useForm({
-            name: null,
-            address: null,
-            phone: null,
-            service: null,
-            message: null,
-        });
-        return {
-            form,
-            currentYear: new Date().getFullYear(), //año dinamico para footer
-            isNavbarFixed: false,
-            showMobileMenu: false,
-            currentServiceIndex: null,
-            showPreview: false,
-            loadingItems: false,
-            batchesLocal: null,
-            services: [
-                {
-                    title: "Deslinde de parcelas",
-                    description: "Definimos de manera precisa las fronteras de tu parcela para garantizar la propiedad y el uso adecuado de la tierra.",
-                },
-                {
-                    title: "Planos topográficos",
-                    description: "Brindamos una visión detallada y precisa del terreno. Ya sea para proyectos de construcción, planificación urbana o análisis del terreno.",
-                },
-                {
-                    title: "Obra civil",
-                    description: "Desde el diseño hasta la construcción, gestionamos cada etapa del proceso con precisión y profesionalismo.",
-                },
-                {
-                    title: "Lotificaciones",
-                    description: "Convertimos terrenos en comunidades planificadas, creamos espacios funcionales y atractivos ",
-                },
-                {
-                    title: "Diseño arquitectónico",
-                    description: "Desde residencias hasta espacios comerciales, cada diseño es una expresión de tus necesidades y estilos. ",
-                },
-                {
-                    title: "Experiencia con acabados de lujo",
-                    description: "Desde selecciones de materiales exclusivos hasta ejecución impecable, creamos ambientes que reflejan tu gusto refinado.",
-                },
-            ],
-            lotes: [
-                {
-                    title: 'Fraccionamiento "Los Arrayanes"',
-                },
-                {
-                    title: 'Fraccionamiento "El Crucero"',
-                },
-            ],
-        };
-    },
-    props: {
-        subdivisions: Object,
-        batches: Object,
-        total_batches: Number,
-    },
-    components: {
-        InputError,
-        SubdivisionCard,
-        BatchCard,
-        Link,
-        Head,
-    },
-    methods: {
-        handleScroll() {
-            const currentScrollY = window.scrollY;
+// Estado Reactivo
+const isNavbarFixed = ref(true);
+const showMobileMenu = ref(false);
+const lastScrollY = ref(0);
+const currentYear = ref(new Date().getFullYear());
 
-            if (currentScrollY > this.lastScrollY && currentScrollY > window.innerHeight) {
-                // Si se hace scroll hacia abajo y se ha pasado el alto de la pantalla
-                this.isNavbarFixed = false;
-            } else {
-                // Si se hace scroll hacia arriba
-                this.isNavbarFixed = true;
-            }
+const loadingItems = ref(false);
+const batchesLocal = ref([]);
 
-            this.lastScrollY = currentScrollY;
-        },
-        async fetchItemsByPage() {
-            try {
-                this.loadingItems = true;
-                const response = await axios.get(route('batches.get-by-page'));
+// Datos Estáticos
+const lotes = [
+    { title: 'Fraccionamiento "Los Arrayanes"' },
+    { title: 'Fraccionamiento "El Crucero"' },
+];
 
-                if (response.status === 200) {
-                    this.batchesLocal = [...this.batchesLocal, ...response.data.items];
-                }
-            } catch (error) {
-                console.log(error)
-            } finally {
-                this.loadingItems = false;
-            }
-        },
-    },
-    mounted() {
-        window.addEventListener('scroll', this.handleScroll);
-        this.batchesLocal = this.batches.data;
-    },
-    beforeDestroy() {
-        window.removeEventListener('scroll', this.handleScroll);
-    },
+const services = [
+    { title: "Deslinde de parcelas" },
+    { title: "Planos topográficos" },
+    { title: "Obra civil" },
+    { title: "Lotificaciones" },
+    { title: "Diseño arquitectónico" },
+    { title: "Acabados de lujo" },
+];
+
+// Métodos
+const handleScroll = () => {
+    const currentScrollY = window.scrollY;
+    
+    // Ocultar Navbar al bajar, Mostrar al subir (o si está hasta arriba)
+    if (currentScrollY > lastScrollY.value && currentScrollY > 100) {
+        isNavbarFixed.value = false;
+    } else {
+        isNavbarFixed.value = true;
+    }
+
+    lastScrollY.value = currentScrollY;
 };
+
+const fetchItemsByPage = async () => {
+    try {
+        loadingItems.value = true;
+        // Asumiendo que el endpoint maneja la lógica de la página a través de la sesión o similar, 
+        // o puedes agregar `?page=X` si tu Laravel usa el paginador estándar.
+        const response = await axios.get(route('batches.get-by-page'));
+
+        if (response.status === 200 && response.data.items) {
+            batchesLocal.value = [...batchesLocal.value, ...response.data.items];
+        }
+    } catch (error) {
+        console.error("Error cargando lotes:", error);
+    } finally {
+        loadingItems.value = false;
+    }
+};
+
+// Lifecycle Hooks
+onMounted(() => {
+    batchesLocal.value = props.batches?.data || [];
+    window.addEventListener('scroll', handleScroll);
+});
+
+onBeforeUnmount(() => {
+    window.removeEventListener('scroll', handleScroll);
+});
 </script>
 
-<style>
-/* Estilos para la barra de navegación */
-.navbar {
-    position: absolute;
-    top: 0;
-    background-color: #ffffff;
-    opacity: 0.9;
+<style scoped>
+/* Transición suave para el menú móvil */
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+    transition: all 0.3s ease;
 }
-
-.fixed-navbar {
-    position: fixed;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-    z-index: 100;
-}
-
-html {
-    scroll-behavior: smooth;
+.fade-slide-enter-from,
+.fade-slide-leave-to {
+    opacity: 0;
+    transform: translateY(-10px);
 }
 </style>

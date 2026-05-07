@@ -1,434 +1,482 @@
 <template>
-
     <Head>
-        <title>{{ subdivision.data.name }}</title>
-        <meta name="description"
-            content="Descubre soluciones inmobiliarias integrales con ingeniería zafiro. Expertos en venta de terrenos, topografía, obra civil, diseño arquitectónico y acabados de lujo. Con años de experiencia, garantizamos precisión y satisfacción. ¡Transforma tus proyectos con nosotros!">
-        <meta name="keywords"
-            content="ingeniería, construcción, materiales, terreno, lote, fraccionamientos, obras, casas, residencias, industria, medicion, topografía, cimientos, drenaje, calles, gps, deslinde, prcelas, hectáreas, lotificación, cimentación, demolición, Mecanica de suelos, cimbrado, losas, estructura">
+        <title>{{ subdivision.data.name }} | Ingeniería Zafiro</title>
+        <meta name="description" content="Descubre soluciones inmobiliarias integrales con ingeniería zafiro. Expertos en venta de terrenos, topografía, obra civil, diseño arquitectónico y acabados de lujo.">
+        <meta name="keywords" content="ingeniería, construcción, materiales, terreno, lote, fraccionamientos, obras, casas, residencias, industria, medicion, topografía, cimientos, drenaje, calles, gps, deslinde, parcelas, hectáreas, lotificación, cimentación, demolición">
         <meta name="robots" content="index">
         <meta name="author" content="DTW">
     </Head>
-    <div class="relative">
 
-        <div v-if="showPreview" class="fixed inset-0 bg-black opacity-90 z-20"></div>
+    <div class="relative bg-slate-50 min-h-screen font-sans selection:bg-primary selection:text-black">
 
-        <!-- Imagenenes -->
-        <div v-if="showPreview" @click="showPreview = false"
-            class="fixed inset-0 flex justify-center items-center border z-30">
-            <!-- Change image -->
-            <div class="absolute top-1/2 lg:top-1/2 w-4/5 lg:w-2/3 flex justify-between items-center">
-                <i @click.stop="handleMinusImage"
-                    class="fa-solid fa-angle-left text-white text-lg px-[19px] py-3 rounded-full bg-gray-400/60 hover:scale-105"></i>
-                <i @click.stop="handlePlusImage"
-                    class="fa-solid fa-angle-right text-white text-lg px-[19px] py-3 rounded-full bg-gray-400/60 hover:scale-105"></i>
+        <!-- MODAL GALERÍA DE IMÁGENES -->
+        <transition name="fade">
+            <div v-if="showPreview" class="fixed inset-0 z-[60] flex justify-center items-center">
+                <!-- Fondo oscuro difuminado -->
+                <div @click="closePreview" class="absolute inset-0 bg-slate-900/90 backdrop-blur-md cursor-pointer"></div>
+                
+                <!-- Controles -->
+                <button @click="closePreview" class="absolute top-6 right-6 text-white/70 hover:text-white transition-colors z-20">
+                    <i class="fa-solid fa-xmark text-4xl"></i>
+                </button>
+                
+                <button v-if="subdivision.data.images?.length > 1" @click.stop="prevImage" class="absolute left-4 sm:left-10 top-1/2 -translate-y-1/2 w-14 h-14 bg-white/10 hover:bg-white/20 text-white rounded-full flex items-center justify-center backdrop-blur-sm transition-all z-20">
+                    <i class="fa-solid fa-chevron-left text-xl"></i>
+                </button>
+                
+                <button v-if="subdivision.data.images?.length > 1" @click.stop="nextImage" class="absolute right-4 sm:right-10 top-1/2 -translate-y-1/2 w-14 h-14 bg-white/10 hover:bg-white/20 text-white rounded-full flex items-center justify-center backdrop-blur-sm transition-all z-20">
+                    <i class="fa-solid fa-chevron-right text-xl"></i>
+                </button>
+
+                <!-- Imagen Activa -->
+                <div class="relative z-10 w-full max-w-5xl px-4 flex flex-col items-center">
+                    <img class="w-full max-h-[80vh] object-contain rounded-xl shadow-2xl" 
+                         :src="subdivision.data.images[currentImage]?.original_url" 
+                         alt="Vista del Fraccionamiento">
+                    <p class="text-white mt-4 font-medium tracking-widest text-sm">
+                        {{ currentImage + 1 }} / {{ subdivision.data.images?.length || 1 }}
+                    </p>
+                </div>
             </div>
-            <div>
-                <img class="w-[700px] rounded-lg mx-auto" :src="subdivision.data.images[currentImage].original_url">
-            </div>
-        </div>
+        </transition>
 
-        <!-- whatsapp button -->
-        <a class="lg:hidden z-50 w-14 h-14 lg:w-20 lg:h-20 rounded-full bg-green-600 shadow-md shadow-green-800/100 flex items-center justify-center fixed bottom-3 right-3 hover:scale-105"
-            href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página,%20me%20interesa%20comprar%20un%20terreno"
-            target="_blank" rel="noopener noreferrer">
-            <i class="fa-brands fa-beat fa-whatsapp text-2xl lg:text-4xl text-gray-100"></i>
+        <!-- BOTÓN FLOTANTE WHATSAPP -->
+        <a class="z-50 w-14 h-14 lg:w-16 lg:h-16 rounded-full bg-green-500 shadow-lg shadow-green-500/30 flex items-center justify-center fixed bottom-6 right-6 hover:scale-110 hover:bg-green-400 transition-all duration-300"
+            :href="whatsappLink" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">
+            <i class="fa-brands fa-whatsapp text-3xl lg:text-4xl text-white"></i>
         </a>
 
-        <!-- mobile menu (hamburger) -->
-        <div v-if="showMobileMenu"
-            class="flex flex-col z-50 bg-[#262626] rounded-xl w-2/3 md:w-1/3 fixed top-24 md:top-20 right-5 border-white border py-1 text-white">
-            <button class="mx-1 py-2 hover:bg-primary rounded-lg" @click="$inertia.visit('/')">LOTES</button>
-            <button class="mx-1 py-2 hover:bg-primary rounded-lg" @click="$inertia.visit('/otros-servicios')">OTROS
-                SERVICIOS</button>
-        </div>
+        <!-- NAVEGACIÓN SUPERIOR -->
+        <nav :class="['fixed top-0 w-full z-40 transition-all duration-300', isNavbarFixed ? 'bg-white/90 backdrop-blur-md shadow-sm py-2' : 'bg-transparent py-4']">
+            <div class="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex space-x-3 items-center cursor-pointer" @click="$inertia.visit('/')">
+                    <img src="../../../../public/images/logo_dark.png" class="h-10 lg:h-12 drop-shadow-sm transition-transform hover:scale-105" alt="Ingeniería Zafiro Logo" />
+                    <span class="font-black text-primary text-xl tracking-tight hidden sm:block">INGENIERÍA ZAFIRO</span>
+                </div>
 
-        <!-- navbar -->
-        <nav :class="['navbar', { 'fixed-navbar': isNavbarFixed }]"
-            class="flex items-center justify-between py-4 lg:px-10 px-6 w-full dark:bg-white">
-            <div class="flex space-x-2 items-center">
-                <img src="../../../../public/images/logo_dark.png" class="h-14" alt="logo" />
-                <span class="font-bold text-primary text-xl">INGENIERÍA ZAFIRO</span>
-            </div>
-            <button @click="showMobileMenu = !showMobileMenu" class="lg:hidden">
-                <i class="fa-solid fa-bars text-xl text-primary"></i>
-            </button>
-            <div class="mr-12 hidden lg:inline">
-                <button class="mx-2 rounded-sm px-1 py-px hover:bg-primarylight"
-                    @click="$inertia.visit('/')">LOTES</button>
-                <button
-                    class="mx-2 rounded-sm px-1 py-px hover:bg-primarylight transition-colors ease-linear duration-200"
-                    @click="$inertia.visit('/otros-servicios')">OTROS SERVICIOS</button>
-                <a href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página,%20me%20interesa%20comprar%20un%20terreno"
-                    target="_blank" rel="noopener noreferrer">
-                    <i class="fa-brands fa-whatsapp text-xl ml-2"></i>
-                </a>
-            </div>
-        </nav>
+                <!-- Botón Menú Móvil -->
+                <button @click="showMobileMenu = !showMobileMenu" class="lg:hidden text-2xl text-slate-800 p-2 focus:outline-none">
+                    <i :class="showMobileMenu ? 'fa-solid fa-xmark' : 'fa-solid fa-bars'"></i>
+                </button>
 
-        <main class="pt-20">
-
-            <section class="lg:p-20 md:p-4 lg:mx-12 mx-2">
-                <h1 class="font-bold text-3xl">Lotes {{ subdivision.data.type + ' en fraccionamiento "' +
-        subdivision.data.name + '"' }}</h1>
-                <p class="text-sm text-[#4D4D4D] underline"><i class="fa-solid fa-location-dot mr-2"></i> Terrenos en {{
-        subdivision.data.address }}</p>
-
-                <!-- imagenes -->
-                <div class="lg:grid grid-cols-2 gap-9 mt-5 relative space-y-3 lg:space-y-0">
-                    <figure class="w-full h-[600px] flex justify-center">
-                        <img class="object-cover rounded-xl w-full" :src="subdivision.data.images[0]?.original_url"
-                            alt="">
-                    </figure>
-                    <div class="grid grid-cols-2 gap-7 pt-4 lg:pt-0">
-                        <figure v-if="subdivision.data.images?.length > 1" class="w-full">
-                            <img class="object-cover rounded-xl w-full h-[286px]"
-                                :src="subdivision.data.images[1]?.original_url" alt="">
-                        </figure>
-                        <figure v-if="subdivision.data.images?.length > 2" class="w-full">
-                            <img class="object-cover rounded-xl w-full h-[286px]"
-                                :src="subdivision.data.images[2]?.original_url" alt="">
-                        </figure>
-                        <figure v-if="subdivision.data.images?.length > 3" class="w-full hidden lg:block">
-                            <img class="object-cover rounded-xl w-full h-[286px]"
-                                :src="subdivision.data.images[3]?.original_url" alt="">
-                        </figure>
-                        <figure v-if="subdivision.data.images?.length > 4" class="w-full hidden lg:block">
-                            <img class="object-cover rounded-xl w-full h-[286px]"
-                                :src="subdivision.data.images[4]?.original_url" alt="">
-                        </figure>
-                    </div>
-                    <button @click="showPreview = true" v-if="subdivision.data.images?.length > 5 || true"
-                        class="absolute -bottom-5 right-20 rounded-[10px] bg-white border border-[#D9D9D9] py-2 px-3">
-                        Mostrar todas las fotos
-                        <i class="fa-regular fa-images ml-2 text-xs"></i>
+                <!-- Enlaces Escritorio -->
+                <div class="hidden lg:flex items-center space-x-2">
+                    <button @click="$inertia.visit('/')" class="px-5 py-2 rounded-xl text-slate-600 font-semibold hover:bg-slate-100 transition-colors">
+                        LOTES EN VENTA
                     </button>
-                </div>
-
-                <!-- Informacion -->
-                <div class="mt-10 lg:grid grid-cols-4 gap-x-8">
-                    <div class="col-span-3">
-                        <p class="flex items-center text-sm text-[#4A4A4A] border-b pb-2">
-                            <Link href="/" class="flex items-center text-gray-400">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" class="w-4 h-4 mr-1">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
-                            </svg>
-                            <span>Inicio</span>
-                            </Link>
-                            <i class="fa-solid fa-chevron-right mx-2"></i>
-                            <span class="text-black">
-                                {{ subdivision.data.name }}
-                            </span>
-                        </p>
-
-                        <div class="my-7">
-                            <p class="font-bold text-lg mb-4 pl-4">Características</p>
-
-                            <div
-                                class="flex flex-wrap items-center border-b border-[#D9D9D9] pb-7 space-x-3 pl-4 gap-y-2">
-
-                                <!-- Precio desde -->
-                                <div
-                                    class="rounded-md border border-[#D9D9D9] flex items-center px-2 py-1 ml-3 md:ml-0">
-                                    <i class="fa-solid fa-dollar-sign border-r border-[#D9D9D9] pr-1 text-lg"></i>
-                                    <div class="flex flex-col justify-center px-3">
-                                        <p class="text-sm text-[#4D4D4D]">Precio desde</p>
-                                        <p class="text-base font-bold">{{ subdivision.data.lowest_price.numberFormat }}
-                                            MXN
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <!-- Superficie desde -->
-                                <div class="rounded-md border border-[#D9D9D9] flex items-center px-2 py-1">
-                                    <i class="fa-solid fa-ruler-horizontal border-r border-[#D9D9D9] pr-1 text-lg"></i>
-                                    <div class="flex flex-col justify-center px-3">
-                                        <p class="text-sm text-[#4D4D4D]">Superficie desde</p>
-                                        <p class="text-base font-bold">{{ subdivision.data.lowest_surface }} m2</p>
-                                    </div>
-                                </div>
-
-                                <!-- Ubicación -->
-                                <div class="rounded-md border border-[#D9D9D9] flex items-center px-2 py-1">
-                                    <i class="fa-solid fa-location-dot border-r border-[#D9D9D9] pr-1 text-lg"></i>
-                                    <div class="flex flex-col justify-center px-3">
-                                        <p class="text-sm text-[#4D4D4D]">Ubicación</p>
-                                        <p class="text-base font-bold">{{ subdivision.data.address }}</p>
-                                    </div>
-                                </div>
-
-                                <!-- Vista previa -->
-                                <a v-if="subdivision.data.planos?.length > 0"
-                                    :href="subdivision.data.planos[0]?.original_url" target="_blank"
-                                    class="rounded-md border border-[#D9D9D9] flex items-center px-2 py-1 cursor-pointer">
-                                    <i class="fa-solid fa-file-lines border-r border-[#D9D9D9] pr-1 text-lg"></i>
-                                    <div class="flex flex-col justify-center px-3">
-                                        <p class="text-sm text-[#4D4D4D]">Vista previa</p>
-                                        <p class="text-base font-bold">{{ subdivision.data.planos[0]?.file_name }}</p>
-                                    </div>
-                                </a>
-
-                                <!-- Lotes disponibles -->
-                                <div class="rounded-md border border-[#D9D9D9] flex items-center px-2 py-1">
-                                    <i class="fa-solid fa-check border-r border-[#D9D9D9] pr-1 text-lg"></i>
-                                    <div class="flex flex-col justify-center px-3">
-                                        <p class="text-sm text-[#4D4D4D]">Lotes disponibles</p>
-                                        <p class="text-base font-bold">{{ subdivision.data.batches_availables }}</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Descripción -->
-                            <div class="my-4 pl-4 border-b border-[#D9D9D9] pb-7">
-                                <p class="font-bold text-lg">Descripción</p>
-                                <p class="text-[#4D4D4D] mt-4">{{ subdivision.data.description }}</p>
-                            </div>
-
-                            <!-- Amenidades -->
-                            <div v-if="subdivision.data.amenities" class="my-4 pl-4 border-b border-[#D9D9D9] pb-7">
-                                <p class="font-bold text-lg">Amenidades</p>
-                                <div class="flex items-center flex-wrap space-y-2 space-x-3 mt-4">
-                                    <p v-for="amenity in subdivision.data.amenities" :key="amenity"
-                                        class="text-[#4D4D4D] py-2 px-3 rounded-lg border border-[#D9D9D9]"><i
-                                            class="mr-3" :class="getIcon(amenity)"></i>{{ amenity }}</p>
-                                </div>
-                            </div>
-
-                            <!-- mapa -->
-                            <div v-if="subdivision.data.lon && subdivision.data.lat" class="my-4 pl-4">
-                                <p class="font-bold text-lg">Ubicación</p>
-                                <div ref="map" style="height: 400px;"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- contactar por whatsApp -->
-                    <div class="rounded-lg border border-[#D9D9D9DD] shadow-sm self-start py-3 px-6 mt-7">
-                        <p>Contacta con el vendedor para resolver tus dudas </p>
-                        <div class="flex justify-center mt-5">
-                            <PrimaryButton>
-                                <a href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página%20,%20me%20interesa%20su%20servicio!"
-                                    target="_blank" rel="noopener noreferrer">Contactar por whatsapp</a>
-                            </PrimaryButton>
-                        </div>
-                    </div>
-
-                    <!-- lotes del fraccionamiento  -->
-                    <div class="my-9 col-span-full">
-                        <p class="text-lg font-bold">Lotes de {{ subdivision.data.name }} </p>
-                        <div v-if="subdivision.data.batches?.length > 0"
-                            class="grid xs:grid-cols-1 justify-center lg:grid-cols-2 gap-x-4 gap-y-4 mt-7 lg:mx-24">
-                            <BatchCard v-for="batch in subdivision.data.batches" :key="batch" :batch="batch" />
-                        </div>
-                        <p class="text-sm text-gray-400 text-center" v-else>No hay lotes disponibles dentro de este
-                            fraccionamiento</p>
-                    </div>
-
-                </div>
-            </section>
-
-            <!-- footer  -->
-            <footer class="p-4 md:grid md:grid-cols-3 lg:grid-cols-4 gap-3 text-white bg-[#1A1A1A] md:relative text-sm">
-                <figure class="h-full md:h-auto flex space-y-2">
-                    <img class="h-16 md:h-1/4" src="../../../../public/images/logo_light.png" />
-                    <span class="lg:font-bold text-primary lg:text-xl">INGENIERÍA ZAFIRO</span>
-                </figure>
-                <div class="flex flex-col lg:text-base">
-                    <h2 class="lg:text-xl text-primary lg:font-bold mb-5">Venta de terrenos</h2>
-                    <li v-for="(lote, index) in lotes" :key="index">{{ lote.title }}</li>
-                    <div class="flex lg:hidden flex-col mb-5 mt-5">
-                        <h2 class="lg:text-xl text-primary lg:font-bold mb-5">Contacto</h2>
-                        <p class="flex items-center text-xs">
-                            <i class="fa-solid fa-envelope mr-3"></i>
-                            jose.rod@ingenieriazafiro.dtw.com.mx
-                        </p>
-                        <p>
-                            <i class="fa-solid fa-phone mr-2 text-xs"></i>
-                            3312517732
-                        </p>
-                    </div>
-                </div>
-                <div class="flex flex-col">
-                    <h2 class="lg:text-xl text-primary lg:font-bold mb-5">Servicios</h2>
-                    <li v-for="(service, index) in services" :key="index">{{ service.title }}</li>
-                </div>
-                <div class="hidden lg:flex flex-col mb-5">
-                    <h2 class="lg:text-xl text-primary lg:font-bold mb-5">Contacto</h2>
-                    <p>
-                        <i class="fa-solid fa-envelope mr-3"></i>
-                        jose.rod@ingenieriazafiro.dtw.com.mx
-                    </p>
-                    <p>
-                        <i class="fa-solid fa-phone mr-3"></i>
-                        3312517732
-                    </p>
-                </div>
-                <div class="col-span-full flex-col justify-center md:flex-row flex items-center md:justify-between">
-                    <p class="flex mt-4">
-                        <small>Copyrigth &copy; 2023 </small>
-                        <small class="block md:inline"> Ingeniería Zafiro. Todos los derechos reservados.</small>
-                    </p>
-                    <a href="https://dtw.com.mx" target="_blank"
-                        class="flex justify-end items-center space-x-2 md:mr-24">
-                        <small>by Digtital Tech Work</small>
-                        <img class="w-6" src="../../../../public/images/dtw_logo.png">
+                    <button @click="$inertia.visit('/otros-servicios')" class="px-5 py-2 rounded-xl text-slate-600 font-semibold hover:bg-slate-100 transition-colors">
+                        OTROS SERVICIOS
+                    </button>
+                    <a href="https://api.whatsapp.com/send?phone=523329281702" target="_blank" rel="noopener noreferrer" 
+                       class="ml-4 w-10 h-10 flex items-center justify-center rounded-full bg-slate-100 hover:bg-green-50 text-slate-600 hover:text-green-500 transition-colors">
+                        <i class="fa-brands fa-whatsapp text-xl"></i>
                     </a>
                 </div>
-            </footer>
+            </div>
+
+            <!-- Menú Móvil Desplegable -->
+            <transition name="fade-slide">
+                <div v-if="showMobileMenu" class="absolute top-full left-0 w-full bg-white/95 backdrop-blur-md shadow-lg lg:hidden flex flex-col p-4 space-y-2 border-t border-slate-100">
+                    <button @click="$inertia.visit('/')" class="w-full text-left px-4 py-3 text-slate-700 font-bold hover:bg-slate-50 rounded-xl">LOTES EN VENTA</button>
+                    <button @click="$inertia.visit('/otros-servicios')" class="w-full text-left px-4 py-3 text-slate-700 font-bold hover:bg-slate-50 rounded-xl">OTROS SERVICIOS</button>
+                </div>
+            </transition>
+        </nav>
+
+        <main class="pt-24 lg:pt-32 pb-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Breadcrumb Moderno -->
+            <div class="flex flex-wrap items-center gap-2 text-sm text-slate-500 font-medium mb-8 bg-white px-5 py-3 rounded-full w-max shadow-sm border border-slate-100">
+                <Link href="/" class="hover:text-primary transition-colors flex items-center gap-2">
+                    <i class="fa-solid fa-house text-xs"></i> Inicio
+                </Link>
+                <i class="fa-solid fa-chevron-right text-[10px] text-slate-300"></i>
+                <span class="text-slate-800 font-bold">{{ subdivision.data.name }}</span>
+            </div>
+
+            <!-- Título y Encabezado -->
+            <div class="mb-8">
+                <div class="flex items-start justify-between gap-4">
+                    <div>
+                        <span class="px-3 py-1 bg-indigo-50 text-indigo-600 border border-indigo-100 rounded-full text-[10px] font-black tracking-widest uppercase mb-3 inline-block">
+                            Desarrollo en Venta
+                        </span>
+                        <h1 class="text-3xl lg:text-5xl font-black text-slate-900 tracking-tight">{{ subdivision.data.name }}</h1>
+                        <p class="text-lg text-slate-500 mt-3 flex items-center gap-2">
+                            <i class="fa-solid fa-location-dot text-primary"></i> {{ subdivision.data.address }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Galería de Imágenes (Mosaico Moderno) -->
+            <div class="relative grid grid-cols-1 lg:grid-cols-4 gap-3 lg:gap-4 h-[400px] lg:h-[500px] mb-12 rounded-[32px] overflow-hidden group">
+                <!-- Imagen Principal -->
+                <div class="lg:col-span-2 h-full cursor-pointer overflow-hidden" @click="openGallery(0)">
+                    <img class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" 
+                         :src="subdivision.data.images[0]?.original_url" alt="Imagen principal del desarrollo">
+                </div>
+                
+                <!-- Grid de imágenes secundarias (Solo Desktop) -->
+                <div class="hidden lg:grid grid-cols-2 grid-rows-2 col-span-2 gap-4 h-full">
+                    <div v-for="i in 4" :key="i" class="h-full w-full relative overflow-hidden cursor-pointer" @click="openGallery(i)">
+                        <img v-if="subdivision.data.images[i]" 
+                             class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" 
+                             :src="subdivision.data.images[i]?.original_url" alt="Imagen secundaria">
+                        <div v-else class="w-full h-full bg-slate-200"></div>
+                        
+                        <!-- Overlay "Ver todas" en la última imagen -->
+                        <div v-if="i === 4 && subdivision.data.images?.length > 5" 
+                             class="absolute inset-0 bg-slate-900/60 hover:bg-slate-900/80 transition-colors flex items-center justify-center text-white font-bold text-lg backdrop-blur-sm">
+                            + Ver todas
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Botón flotante para ver fotos (Móvil y Escritorio) -->
+                <button @click="openGallery(0)" class="absolute bottom-6 right-6 bg-white/90 backdrop-blur-md text-slate-900 px-6 py-3 rounded-full font-bold shadow-lg hover:bg-white transition-all flex items-center gap-2">
+                    <i class="fa-regular fa-images"></i> Mostrar {{ subdivision.data.images?.length || 0 }} fotos
+                </button>
+            </div>
+
+            <!-- Contenido Principal Dividido (Left: Info, Right: Price Card) -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
+                
+                <!-- Columna Izquierda (Características, Descripción y Lotes) -->
+                <div class="lg:col-span-2 space-y-12">
+                    
+                    <!-- Resumen de Características Rápidas -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                        <div class="bg-white p-5 rounded-[24px] border border-slate-100 shadow-sm flex flex-col items-center justify-center text-center">
+                            <i class="fa-solid fa-ruler-horizontal text-2xl text-primary mb-3"></i>
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Superficie (Desde)</p>
+                            <p class="text-lg font-black text-slate-800">{{ subdivision.data.lowest_surface }} m²</p>
+                        </div>
+                        <div class="bg-white p-5 rounded-[24px] border border-slate-100 shadow-sm flex flex-col items-center justify-center text-center">
+                            <i class="fa-solid fa-check-circle text-2xl text-primary mb-3"></i>
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Disponibles</p>
+                            <p class="text-lg font-black text-slate-800">{{ subdivision.data.batches_availables }} Lotes</p>
+                        </div>
+                        <div class="bg-white p-5 rounded-[24px] border border-slate-100 shadow-sm flex flex-col items-center justify-center text-center">
+                            <i class="fa-solid fa-layer-group text-2xl text-primary mb-3"></i>
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Tipo</p>
+                            <p class="text-sm font-black text-slate-800">{{ subdivision.data.type || 'N/A' }}</p>
+                        </div>
+                        <!-- Planos (Si existen) -->
+                        <a v-if="subdivision.data.planos?.length > 0" :href="subdivision.data.planos[0]?.original_url" target="_blank"
+                           class="bg-indigo-50 p-5 rounded-[24px] border border-indigo-100 shadow-sm flex flex-col items-center justify-center text-center hover:bg-indigo-100 transition-colors cursor-pointer group">
+                            <i class="fa-solid fa-file-pdf text-2xl text-indigo-500 mb-3 group-hover:scale-110 transition-transform"></i>
+                            <p class="text-xs font-bold text-indigo-400 uppercase tracking-wider mb-1">Planos</p>
+                            <p class="text-sm font-black text-indigo-700">Ver Archivo</p>
+                        </a>
+                        <div v-else class="bg-slate-50 p-5 rounded-[24px] border border-slate-100 flex flex-col items-center justify-center text-center opacity-60">
+                            <i class="fa-solid fa-file-pdf text-2xl text-slate-400 mb-3"></i>
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Planos</p>
+                            <p class="text-sm font-bold text-slate-500">No disp.</p>
+                        </div>
+                    </div>
+
+                    <!-- Descripción -->
+                    <div class="bg-white p-8 sm:p-10 rounded-[32px] shadow-sm border border-slate-100">
+                        <h2 class="text-2xl font-black text-slate-900 mb-6">Acerca del Desarrollo</h2>
+                        <p class="text-slate-600 leading-relaxed text-lg whitespace-pre-line">{{ subdivision.data.description }}</p>
+                    </div>
+
+                    <!-- Amenidades -->
+                    <div v-if="subdivision.data.amenities?.length" class="bg-white p-8 sm:p-10 rounded-[32px] shadow-sm border border-slate-100">
+                        <h2 class="text-2xl font-black text-slate-900 mb-6">Amenidades Exclusivas</h2>
+                        <div class="flex flex-wrap items-center gap-3">
+                            <div v-for="amenity in subdivision.data.amenities" :key="amenity" 
+                                 class="flex items-center gap-3 px-5 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-slate-700 font-medium">
+                                <i :class="getAmenityIcon(amenity)" class="text-primary text-lg"></i>
+                                {{ amenity }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ubicación en Mapa -->
+                    <div v-if="subdivision.data.lon && subdivision.data.lat" class="bg-white p-8 sm:p-10 rounded-[32px] shadow-sm border border-slate-100">
+                        <h2 class="text-2xl font-black text-slate-900 mb-6 flex items-center gap-3">
+                            Ubicación <i class="fa-solid fa-location-arrow text-primary"></i>
+                        </h2>
+                        <div class="rounded-[24px] overflow-hidden border border-slate-200 shadow-inner h-[400px]">
+                            <div ref="mapContainer" class="w-full h-full"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Columna Derecha (Tarjeta Sticky de Contacto) -->
+                <div class="lg:col-span-1">
+                    <div class="sticky top-32 bg-white rounded-[32px] shadow-xl shadow-slate-200/50 border border-slate-100 p-8">
+                        <p class="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Lotes desde</p>
+                        <p class="text-4xl font-black text-slate-900 mb-6">${{ formatCurrency(subdivision.data.lowest_price) }} <span class="text-lg font-bold text-slate-400">MXN</span></p>
+                        
+                        <div class="space-y-4 mb-8">
+                            <div class="flex justify-between items-center py-3 border-b border-slate-100">
+                                <span class="text-slate-500 font-medium">Lotes disponibles</span>
+                                <span class="text-slate-900 font-bold text-right">{{ subdivision.data.batches_availables }}</span>
+                            </div>
+                            <div class="flex justify-between items-center py-3 border-b border-slate-100">
+                                <span class="text-slate-500 font-medium">Dimensiones desde</span>
+                                <span class="text-slate-900 font-bold text-right">{{ subdivision.data.lowest_surface }} m²</span>
+                            </div>
+                        </div>
+
+                        <a :href="whatsappLink" target="_blank" rel="noopener noreferrer" 
+                           class="w-full bg-slate-900 text-white px-8 py-4 rounded-full font-black text-lg hover:bg-slate-800 hover:scale-[1.02] transition-all flex items-center justify-center gap-3 shadow-lg">
+                            Agendar Visita <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                        
+                        <p class="text-center text-xs text-slate-400 font-medium mt-4">
+                            Recibe asesoría personalizada sin costo.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+            
+            <!-- Listado de Lotes del Fraccionamiento -->
+            <div class="mt-20 pt-16 border-t border-slate-200">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-10">
+                    <div>
+                        <h2 class="text-3xl font-black text-slate-900 tracking-tight">Lotes disponibles</h2>
+                        <p class="text-slate-500 text-lg mt-1">Explora los terrenos dentro de {{ subdivision.data.name }}</p>
+                    </div>
+                </div>
+
+                <div v-if="subdivision.data.batches?.length > 0" class="grid grid-cols-1 lg:grid-cols-2 gap-6 justify-center">
+                    <BatchCard v-for="batch in subdivision.data.batches" :key="batch.id" :batch="batch" />
+                </div>
+                
+                <div v-else class="bg-white rounded-[32px] shadow-sm border border-slate-100 p-16 text-center flex flex-col items-center">
+                    <div class="w-20 h-20 bg-slate-50 text-slate-300 rounded-full flex items-center justify-center mb-4">
+                        <i class="fa-solid fa-tags text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">No hay lotes publicados aún</h3>
+                    <p class="text-slate-500 max-w-sm mx-auto">Pronto agregaremos los lotes individuales para este fraccionamiento.</p>
+                </div>
+            </div>
+            
         </main>
+
+        <!-- FOOTER PREMIUM -->
+        <footer class="bg-slate-900 pt-16 pb-8 px-6 lg:px-12 rounded-t-[40px] lg:rounded-t-[64px] text-slate-300 mt-20">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-12">
+                
+                <div class="space-y-6">
+                    <div class="flex items-center gap-3">
+                        <img class="h-12" src="../../../../public/images/logo_light.png" alt="Ingeniería Zafiro Logo Light" />
+                        <span class="font-black text-primary text-xl">INGENIERÍA ZAFIRO</span>
+                    </div>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Construimos confianza y patrimonio. Expertos en venta de terrenos, topografía, y diseño arquitectónico con acabados de lujo.
+                    </p>
+                </div>
+
+                <div>
+                    <h3 class="text-white font-bold text-lg mb-6 uppercase tracking-wider">Desarrollos</h3>
+                    <ul class="space-y-3">
+                        <li v-for="(lote, index) in lotes" :key="index" class="text-sm hover:text-primary cursor-pointer transition-colors flex items-center gap-2">
+                            <div class="w-1.5 h-1.5 rounded-full bg-primary/50"></div>
+                            {{ lote.title }}
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-white font-bold text-lg mb-6 uppercase tracking-wider">Servicios Especializados</h3>
+                    <ul class="space-y-3">
+                        <li v-for="(service, index) in services" :key="index" class="text-sm hover:text-primary cursor-pointer transition-colors flex items-center gap-2">
+                            <div class="w-1.5 h-1.5 rounded-full bg-primary/50"></div>
+                            {{ service.title }}
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-white font-bold text-lg mb-6 uppercase tracking-wider">Contáctanos</h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center shrink-0 text-primary">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <span class="text-sm mt-1 break-all">jose.rod@ingenieriazafiro.dtw.com.mx</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center shrink-0 text-primary">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <span class="text-sm mt-1">3312517732</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="max-w-7xl mx-auto border-t border-slate-800 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+                <p class="text-sm text-slate-500">
+                    &copy; {{ currentYear }} Ingeniería Zafiro. Todos los derechos reservados.
+                </p>
+                <a href="https://dtw.com.mx/" target="_blank" class="flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity">
+                    <span class="text-xs font-bold tracking-widest">POWERED BY</span>
+                    <img class="h-6" src="@/../../public/images/DTW_logo_blanco.png" alt="DTW Logo">
+                </a>
+            </div>
+        </footer>
     </div>
 </template>
 
-<script>
-import { useForm, Link, Head } from "@inertiajs/vue3";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
-import BatchCard from "@/Components/MyComponents/Batch/BatchCard.vue";
+<script setup>
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
+import { Head, Link } from "@inertiajs/vue3";
+import BatchCard from "@/Pages/Batch/Partials/BatchCard.vue";
 
-export default {
-    data() {
-        const form = useForm({
-            name: null,
-            address: null,
-            phone: null,
-            service: null,
-            message: null,
-        });
-        return {
-            // mapa
-            map: null,
-            marker: null,
-            coordinates: { lat: parseFloat(this.subdivision.data.lat), lng: parseFloat(this.subdivision.data.lon) },
-            // fraccionamieto
-            form,
-            isNavbarFixed: false,
-            showMobileMenu: false,
-            showPreview: false,
-            currentImage: 0,
-            services: [
-                {
-                    title: "Deslinde de parcelas",
-                    description: "Definimos de manera precisa las fronteras de tu parcela para garantizar la propiedad y el uso adecuado de la tierra.",
-                },
-                {
-                    title: "Planos topográficos",
-                    description: "Brindamos una visión detallada y precisa del terreno. Ya sea para proyectos de construcción, planificación urbana o análisis del terreno.",
-                },
-                {
-                    title: "Obra civil",
-                    description: "Desde el diseño hasta la construcción, gestionamos cada etapa del proceso con precisión y profesionalismo.",
-                },
-                {
-                    title: "Lotificaciones",
-                    description: "Convertimos terrenos en comunidades planificadas, creamos espacios funcionales y atractivos ",
-                },
-                {
-                    title: "Diseño arquitectónico",
-                    description: "Desde residencias hasta espacios comerciales, cada diseño es una expresión de tus necesidades y estilos. ",
-                },
-                {
-                    title: "Experiencia con acabados de lujo",
-                    description: "Desde selecciones de materiales exclusivos hasta ejecución impecable, creamos ambientes que reflejan tu gusto refinado.",
-                },
-            ],
-            lotes: [
-                {
-                    title: 'Fraccionamiento "Los Arrayanes"',
-                },
-                {
-                    title: 'Fraccionamiento "El Crucero"',
-                },
-            ],
-        };
-    },
-    props: {
-        subdivision: Object,
-    },
-    methods: {
-        handleScroll() {
-            const currentScrollY = window.scrollY;
+const props = defineProps({
+    subdivision: {
+        type: Object,
+        required: true
+    }
+});
 
-            if (currentScrollY > this.lastScrollY && currentScrollY > window.innerHeight) {
-                // Si se hace scroll hacia abajo y se ha pasado el alto de la pantalla
-                this.isNavbarFixed = false;
-            } else {
-                // Si se hace scroll hacia arriba
-                this.isNavbarFixed = true;
-            }
+// ESTADO Y VARIABLES LOCALES
+const isNavbarFixed = ref(true);
+const showMobileMenu = ref(false);
+const showPreview = ref(false);
+const currentImage = ref(0);
+const lastScrollY = ref(0);
+const currentYear = ref(new Date().getFullYear());
+const mapContainer = ref(null);
 
-            this.lastScrollY = currentScrollY;
-        },
-        getIcon(amenity) {
-            if (amenity == 'Espacio para niños') {
-                return 'fa-solid fa-fan';
-            } else if (amenity == 'Piscina') {
-                return 'fa-solid fa-person-swimming';
-            } else if (amenity == 'Salón de eventos') {
-                return 'fa-solid fa-people-roof';
-            } else if (amenity == 'Áreas verdes') {
-                return 'fa-solid fa-leaf';
-            } else if (amenity == 'Parque') {
-                return 'fa-solid fa-fan';
-            } else if (amenity == 'Gimnasio') {
-                return 'fa-solid fa-dumbbell';
-            }
-        },
-        handlePlusImage() {
-            this.currentImage === (this.subdivision.data.images?.length - 1) ? this.currentImage = 0 : this.currentImage += 1
-        },
-        handleMinusImage() {
-            this.currentImage === 0 ? this.currentImage = this.subdivision.data.images?.length - 1 : this.currentImage -= 1
-        },
-        initMap() {
-            this.map = new google.maps.Map(this.$refs.map, {
-                center: this.coordinates,
-                zoom: 15,
-            });
+// Lógica pre-armada de enlace WhatsApp para evitar cadenas gigantes
+const whatsappLink = computed(() => {
+    const text = encodeURIComponent(`Hola! vi la página, me interesa información sobre el desarrollo: ${props.subdivision.data.name}`);
+    return `https://api.whatsapp.com/send?phone=523329281702&text=${text}`;
+});
 
-            this.marker = new google.maps.Marker({
-                position: this.coordinates,
-                map: this.map,
-                title: 'Ubicación',
-            });
-        },
-    },
-    components: {
-        PrimaryButton,
-        BatchCard,
-        Link,
-        Head,
-    },
-    mounted() {
-        window.addEventListener('scroll', this.handleScroll);
-        if (this.$refs.map) {
-            this.initMap();
-        } else {
-            console.error('Map element not found.');
-        }
-    },
-    beforeDestroy() {
-        window.removeEventListener('scroll', this.handleScroll);
-    },
+// DATOS ESTÁTICOS PARA FOOTER
+const lotes = [
+    { title: 'Fraccionamiento "Los Arrayanes"' },
+    { title: 'Fraccionamiento "El Crucero"' },
+];
+
+const services = [
+    { title: "Deslinde de parcelas" },
+    { title: "Planos topográficos" },
+    { title: "Obra civil" },
+    { title: "Lotificaciones" },
+    { title: "Diseño arquitectónico" },
+    { title: "Acabados de lujo" },
+];
+
+// FUNCIONES UTILITARIAS Y EVENTOS
+const handleScroll = () => {
+    const currentScrollY = window.scrollY;
+    if (currentScrollY > lastScrollY.value && currentScrollY > 100) {
+        isNavbarFixed.value = false;
+    } else {
+        isNavbarFixed.value = true;
+    }
+    lastScrollY.value = currentScrollY;
 };
+
+const formatCurrency = (amount) => {
+    const num = amount?.numberFormat ?? amount;
+    if (!num) return '0.00';
+    if (typeof num === 'string' && num.includes(',')) return num; 
+    return Number(num).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
+const getAmenityIcon = (amenity) => {
+    const icons = {
+        'Espacio para niños': 'fa-solid fa-child-reaching',
+        'Piscina': 'fa-solid fa-person-swimming',
+        'Salón de eventos': 'fa-solid fa-people-roof',
+        'Áreas verdes': 'fa-solid fa-leaf',
+        'Parque': 'fa-solid fa-tree',
+        'Gimnasio': 'fa-solid fa-dumbbell'
+    };
+    return icons[amenity] || 'fa-solid fa-check';
+};
+
+// Funciones Galería Modal
+const openGallery = (index) => {
+    if (props.subdivision.data.images && props.subdivision.data.images[index]) {
+        currentImage.value = index;
+        showPreview.value = true;
+    }
+};
+
+const closePreview = () => {
+    showPreview.value = false;
+};
+
+const nextImage = () => {
+    const total = props.subdivision.data.images?.length || 1;
+    currentImage.value = currentImage.value === (total - 1) ? 0 : currentImage.value + 1;
+};
+
+const prevImage = () => {
+    const total = props.subdivision.data.images?.length || 1;
+    currentImage.value = currentImage.value === 0 ? (total - 1) : currentImage.value - 1;
+};
+
+// Integración Google Maps
+const initMap = () => {
+    if (window.google && props.subdivision.data.lat && props.subdivision.data.lon) {
+        const coords = { 
+            lat: parseFloat(props.subdivision.data.lat), 
+            lng: parseFloat(props.subdivision.data.lon) 
+        };
+        
+        const map = new google.maps.Map(mapContainer.value, {
+            center: coords,
+            zoom: 15,
+            mapTypeControl: false,
+            streetViewControl: false,
+            fullscreenControl: true,
+        });
+
+        new google.maps.Marker({
+            position: coords,
+            map: map,
+            title: props.subdivision.data.name,
+            animation: google.maps.Animation.DROP
+        });
+    }
+};
+
+// CICLO DE VIDA
+onMounted(() => {
+    window.addEventListener('scroll', handleScroll);
+    if (mapContainer.value) {
+        initMap();
+    }
+});
+
+onBeforeUnmount(() => {
+    window.removeEventListener('scroll', handleScroll);
+});
 </script>
 
-<style>
-/* Estilos para la barra de navegación */
-.navbar {
-    position: absolute;
-    top: 0;
-    background-color: #ffffff;
-    opacity: 0.9;
+<style scoped>
+/* Transiciones Suaves para Modales y Menús */
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.4s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
 }
 
-.fixed-navbar {
-    position: fixed;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-    z-index: 100;
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+    transition: all 0.3s ease;
 }
-
-html {
-    scroll-behavior: smooth;
+.fade-slide-enter-from,
+.fade-slide-leave-to {
+    opacity: 0;
+    transform: translateY(-10px);
 }
 </style>

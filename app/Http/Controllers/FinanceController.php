@@ -232,4 +232,62 @@ class FinanceController extends Controller
 
         return response()->json(['success' => true, 'id' => $invoice->id]);
     }
+
+    public function quickRecord(Request $request)
+    {
+        // 1. Validar el token de seguridad (puedes cambiar 'ZafiroRapido' por lo que desees)
+        $secretToken = env('QUICK_FINANCE_TOKEN', 'ZafiroRapido');
+        if ($request->token !== $secretToken) {
+            abort(403, 'Acceso denegado. Token inválido.');
+        }
+
+        // 2. Validar parámetros básicos
+        $request->validate([
+            'tipo' => 'required|in:ingreso,gasto',
+            'concepto' => 'required|string|max:255',
+            'monto' => 'required|numeric|min:0',
+        ]);
+
+        $tipo = $request->tipo;
+        $concepto = $request->concepto;
+        $monto = $request->monto;
+        $fecha = now()->toDateString();
+
+        if ($tipo === 'gasto') {
+            // Guardar como Gasto
+            \App\Models\FinanceExpense::create([
+                'date' => $fecha,
+                'concept' => $concepto,
+                'amount' => $monto,
+                'is_invoiced' => false,
+            ]);
+        } else {
+            // Guardar como Ingreso (Trámite Exprés Completado)
+            $entry = \App\Models\FinanceEntry::create([
+                'date' => $fecha,
+                'client_name' => $concepto, // Usamos el concepto como nombre del cliente/origen
+                'service_type' => 'Ingreso Rápido',
+                'original_amount' => $monto,
+                'iva_mode' => 'sin_iva',
+                'fees' => $monto,
+                'iva' => 0,
+                'total_with_iva' => $monto,
+                'advance_payment' => $monto,
+                'balance' => 0,
+                'status' => 'Completado',
+                'is_declared' => false,
+            ]);
+
+            // Registrar el abono automáticamente
+            \App\Models\FinancePayment::create([
+                'finance_entry_id' => $entry->id,
+                'date' => $fecha,
+                'amount' => $monto,
+                'receipt_number' => 'Exprés',
+            ]);
+        }
+
+        // 3. Retornar la vista de éxito con los datos
+        return view('finanzas.quick', compact('tipo', 'concepto', 'monto'));
+    }
 }

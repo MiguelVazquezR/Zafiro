@@ -1,301 +1,365 @@
 <template>
-
     <Head>
-        <title>Otros servicios</title>
-        <meta name="description"
-            content="Descubre soluciones inmobiliarias integrales con ingeniería zafiro. Expertos en venta de terrenos, topografía, obra civil, diseño arquitectónico y acabados de lujo. Con años de experiencia, garantizamos precisión y satisfacción. ¡Transforma tus proyectos con nosotros!">
-        <meta name="keywords"
-            content="ingeniería, construcción, materiales, terreno, lote, fraccionamientos, obras, casas, residencias, industria, medicion, topografía, cimientos, drenaje, calles, gps, deslinde, prcelas, hectáreas, lotificación, cimentación, demolición, Mecanica de suelos, cimbrado, losas, estructura">
+        <title>Ingeniería Zafiro | Otros Servicios</title>
+        <meta name="description" content="Descubre soluciones inmobiliarias integrales con ingeniería zafiro. Expertos en venta de terrenos, topografía, obra civil, diseño arquitectónico y acabados de lujo.">
+        <meta name="keywords" content="ingeniería, construcción, materiales, terreno, lote, fraccionamientos, obras, casas, residencias, industria, medicion, topografía, cimientos, drenaje, calles, gps, deslinde, parcelas, hectáreas, lotificación, cimentación, demolición">
         <meta name="robots" content="index">
         <meta name="author" content="DTW">
     </Head>
-    <div class="relative">
 
-        <div v-if="showPreview" class="fixed inset-0 bg-black opacity-90 z-20"></div>
+    <div class="relative bg-slate-50 min-h-screen font-sans selection:bg-primary selection:text-black">
 
-        <!-- Imagen centrada sin opacidad -->
-        <div v-if="showPreview" @click="showPreview = false; currentServiceIndex = null;"
-            class="fixed inset-0 flex justify-center items-center z-30">
-            <div class="relative">
-                <h1 class="text-primary my-9 text-3xl text-center">{{ services[currentServiceIndex].title }}</h1>
-                <img class="w-[600px] mx-auto opacity-100" :src="services[currentServiceIndex].image" alt="imagen de personas trabajando">
-                <button @click="goToContact"
-                    class="mx-auto mt-11 text-2xl rounded-full border-2 border-primary text-black dark:text-black flex justify-between items-center py-1 px-5 bg-primary transition-all">
-                    Contáctanos
-                </button>
+        <!-- MODAL DE VISTA PREVIA (Servicios) -->
+        <transition name="fade">
+            <div v-if="showPreview" class="fixed inset-0 z-[60] flex justify-center items-center">
+                <!-- Fondo oscuro difuminado -->
+                <div @click="closePreview" class="absolute inset-0 bg-slate-900/80 backdrop-blur-md cursor-pointer"></div>
+                
+                <!-- Contenido del modal -->
+                <div class="relative z-10 w-full max-w-4xl px-4 flex flex-col items-center">
+                    <button @click="closePreview" class="absolute -top-12 right-4 text-white hover:text-primary transition-colors">
+                        <i class="fa-solid fa-xmark text-4xl"></i>
+                    </button>
+                    <h2 class="text-primary font-black text-3xl md:text-4xl text-center mb-8 drop-shadow-md">
+                        {{ services[currentServiceIndex].title }}
+                    </h2>
+                    <img class="w-full max-h-[60vh] object-contain rounded-2xl shadow-2xl" :src="services[currentServiceIndex].image" alt="Detalle del servicio">
+                    
+                    <button @click="goToContact" class="mt-10 bg-primary text-slate-900 px-8 py-3.5 rounded-full font-black text-lg hover:bg-primary/90 hover:scale-105 transition-all shadow-lg shadow-primary/20 flex items-center gap-3">
+                        Solicitar Presupuesto <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
             </div>
-        </div>
+        </transition>
 
-        <!-- whatsapp button -->
-        <a class="lg:hidden z-50 w-14 h-14 lg:w-20 lg:h-20 rounded-full bg-green-600 shadow-md shadow-green-800/100 flex items-center justify-center fixed bottom-3 right-3 hover:scale-105"
+        <!-- Botón Flotante de WhatsApp -->
+        <a class="z-50 w-14 h-14 lg:w-16 lg:h-16 rounded-full bg-green-500 shadow-lg shadow-green-500/30 flex items-center justify-center fixed bottom-6 right-6 hover:scale-110 hover:bg-green-400 transition-all duration-300"
             href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página%20,%20me%20interesa%20su%20servicio!"
-            target="_blank" rel="noopener noreferrer">
-            <i class="fa-brands fa-beat fa-whatsapp text-2xl lg:text-4xl text-gray-100"></i>
+            target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">
+            <i class="fa-brands fa-whatsapp text-3xl lg:text-4xl text-white"></i>
         </a>
 
-        <!-- mobile menu (hamburger) -->
-        <div v-if="showMobileMenu"
-            class="flex flex-col z-50 bg-[#262626] rounded-xl w-2/3 md:w-1/3 fixed top-24 md:top-20 right-5 border-white border py-1 text-white">
-            <button class="mx-1 py-2 hover:bg-primary rounded-lg" @click="$inertia.visit('/')">LOTES</button>
-            <button class="mx-1 py-2 bg-primary rounded-lg">OTROS SERVICIOS</button>
-            <!-- <button class="mx-1 py-2 hover:bg-primary rounded-lg" @click="scrollToSection('InicioM')">Inicio</button>
-            <button class="mx-1 py-2 hover:bg-primary rounded-lg" @click="scrollToSection('Servicios')">Servicios</button>
-            <button class="mx-1 py-2 hover:bg-primary rounded-lg" @click="scrollToSection('Contacto')">Proyectos</button>
-            <button class="mx-1 py-2 hover:bg-primary rounded-lg" @click="scrollToSection('Contacto')">Contacto</button> -->
-        </div>
+        <!-- Navegación Superior -->
+        <nav :class="['fixed top-0 w-full z-40 transition-all duration-300', isNavbarFixed ? 'bg-white/90 backdrop-blur-md shadow-sm py-2' : 'bg-transparent py-4']">
+            <div class="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex space-x-3 items-center cursor-pointer" @click="$inertia.visit('/')">
+                    <img src="../../../public/images/logo_dark.png" class="h-10 lg:h-12 drop-shadow-sm transition-transform hover:scale-105" alt="Ingeniería Zafiro Logo" />
+                    <span class="font-black text-primary text-xl tracking-tight hidden sm:block">INGENIERÍA ZAFIRO</span>
+                </div>
 
-        <!-- navbar -->
-        <nav :class="['navbar', { 'fixed-navbar': isNavbarFixed }]"
-            class="flex items-center justify-between py-4 lg:px-10 px-6 w-full dark:bg-white">
-            <div class="flex space-x-2 items-center">
-                <img src="../../../public/images/logo_dark.png" class="h-14" alt="logo de ingenieria zafiro. Mapa blanco y un marcador de posición similar al de google maps" />
-                <span class="font-bold text-primary text-xl">INGENIERÍA ZAFIRO</span>
+                <!-- Botón Menú Móvil -->
+                <button @click="showMobileMenu = !showMobileMenu" class="lg:hidden text-2xl text-slate-800 p-2 focus:outline-none">
+                    <i :class="showMobileMenu ? 'fa-solid fa-xmark' : 'fa-solid fa-bars'"></i>
+                </button>
+
+                <!-- Enlaces Escritorio -->
+                <div class="hidden lg:flex items-center space-x-2">
+                    <button @click="$inertia.visit('/')" class="px-5 py-2 rounded-xl text-slate-600 font-semibold hover:bg-slate-100 transition-colors">
+                        LOTES EN VENTA
+                    </button>
+                    <button class="px-5 py-2 rounded-xl bg-primary/10 text-primary font-bold transition-colors">
+                        OTROS SERVICIOS
+                    </button>
+                    <a href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página%20,%20me%20interesa%20su%20servicio!"
+                        target="_blank" rel="noopener noreferrer" class="ml-4 w-10 h-10 flex items-center justify-center rounded-full bg-slate-100 hover:bg-green-50 text-slate-600 hover:text-green-500 transition-colors">
+                        <i class="fa-brands fa-whatsapp text-xl"></i>
+                    </a>
+                </div>
             </div>
-            <button @click="showMobileMenu = !showMobileMenu" class="lg:hidden">
-                <i class="fa-solid fa-bars text-xl text-primary"></i>
-            </button>
-            <div class="mr-12 hidden lg:inline">
-                <button
-                    class="mx-2 rounded-sm px-1 py-px hover:bg-primarylight transition-colors ease-linear duration-200"
-                    @click="$inertia.visit('/')">LOTES</button>
-                <button class="mx-2 rounded-sm px-1 py-px bg-primarylight font-bold">OTROS SERVICIOS</button>
-                <a href="https://api.whatsapp.com/send?phone=523329281702&text=Hola!%20vi%20tu%20página%20,%20me%20interesa%20su%20servicio!"
-                    target="_blank" rel="noopener noreferrer">
-                    <i class="fa-brands fa-whatsapp text-xl ml-2"></i>
-                </a>
-                <!-- <button class="mx-2 rounded-[10px] px-1 py-px hover:bg-primary hover:text-white"
-                    @click="scrollToSection('Inicio')">Inicio</button>
-                <button class="mx-2 rounded-[10px] px-1 py-px hover:bg-primary hover:text-white"
-                    @click="scrollToSection('Servicios')">Servicios</button>
-                <button class="mx-2 rounded-[10px] px-1 py-px hover:bg-primary hover:text-white"
-                    @click="scrollToSection('Contacto')">Proyectos</button>
-                <button class="mx-2 rounded-[10px] px-1 py-px hover:bg-primary hover:text-white"
-                    @click="scrollToSection('Contacto')">Contacto</button> -->
-            </div>
+
+            <!-- Menú Móvil Desplegable -->
+            <transition name="fade-slide">
+                <div v-if="showMobileMenu" class="absolute top-full left-0 w-full bg-white/95 backdrop-blur-md shadow-lg lg:hidden flex flex-col p-4 space-y-2 border-t border-slate-100">
+                    <button @click="$inertia.visit('/')" class="w-full text-left px-4 py-3 text-slate-700 font-bold hover:bg-slate-50 rounded-xl">LOTES EN VENTA</button>
+                    <button class="w-full text-left px-4 py-3 bg-primary/10 text-primary rounded-xl font-bold">OTROS SERVICIOS</button>
+                </div>
+            </transition>
         </nav>
 
-        <main class="pt-20">
-            <!-- home desktop-->
-            <section class="hidden md:block lg:mx-24 mx-1 mt-9 relative mb-24" id="Inicio">
-                <div class="bg-[#1A1A1A] rounded-[20px] h-[400px] relative">
-                    <img class="absolute left-0 top-0" src="../../../public/images/decoration_left.png" alt="lineas amarillas para decoración">
-                    <img class="absolute right-0 top-0 h-[400px]" src="../../../public/images/decoration_right.png" alt="lineas amarillas para decoración">
-                    <div class="flex h-full py-24">
-                        <div @click="currentKirbyIndex = currentKirbyIndex == 0 ? (kirby.length - 1) : currentKirbyIndex - 1"
-                            class="w-8 h-full mr-2 flex justify-center items-center cursor-pointer">
-                            <button class="z-20 text-white text-lg ml-8">
-                                <i class="fa-solid fa-chevron-left"></i>
-                            </button>
-                        </div>
-                        <figure class="md:w-1/2 lg:w-1/3 h-2/3 z-20">
-                            <img class="h-[450px] mx-auto" :src="kirby[currentKirbyIndex].image">
-                        </figure>
-                        <div class="w-2/3 flex flex-col ml-5 pr-32 text-3xl">
-                            <h1 class="text-center text-primary mb-8">{{ kirby[currentKirbyIndex].title }}</h1>
-                            <p class="text-white text-justify">{{ kirby[currentKirbyIndex].description }}</p>
-                        </div>
-                        <div @click="currentKirbyIndex = currentKirbyIndex == (kirby.length - 1) ? 0 : currentKirbyIndex + 1"
-                            class="w-8 h-full ml-2 flex justify-center items-center cursor-pointer">
-                            <button class="z-20 text-white text-lg mr-8">
-                                <i class="fa-solid fa-chevron-right"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <button @click="goToContact"
-                    class="ml-auto mr-14 mt-11 text-2xl rounded-full border-2 border-primary text-black flex justify-between items-center py-1 px-5 bg-primary transition-all">
-                    Contáctanos
-                </button>
-            </section>
+        <main class="pt-24 lg:pt-32 pb-16 space-y-16 lg:space-y-24">
+            
+            <!-- Hero Section: Nosotros & Tecnología -->
+            <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="bg-slate-900 rounded-[32px] lg:rounded-[48px] overflow-hidden shadow-xl relative min-h-[500px] flex items-center">
+                    
+                    <!-- Fondos decorativos -->
+                    <div class="absolute -left-32 -top-32 w-96 h-96 bg-primary/20 rounded-full blur-3xl opacity-50"></div>
+                    <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-indigo-500/20 rounded-full blur-3xl opacity-50"></div>
 
-            <!-- home mobile-->
-            <section class="md:hidden mx-4 mt-9 relative mb-16" id="InicioM">
-                <div class="bg-[#1A1A1A] rounded-[20px] h-[450px] relative">
-                    <img class="absolute -left-0 bottom-10 h-[160px]" src="../../../public/images/decoration_left.png" alt="lineas amarillas para decoración">
-                    <img class="absolute right-0 top-0 h-[300px]" src="../../../public/images/decoration_right.png" alt="lineas amarillas para decoración">
-                    <div class="flex flex-col items-center text-xl px-7 pt-7 h-1/2">
-                        <h1 class="text-center text-primary mb-8">{{ kirby[currentKirbyIndex].title }}</h1>
-                        <p class="text-white text-justify">{{ kirby[currentKirbyIndex].description }}</p>
-                    </div>
-                    <div class="flex h-1/2">
-                        <div @click="currentKirbyIndex = currentKirbyIndex == 0 ? (kirby.length - 1) : currentKirbyIndex - 1"
-                            class="w-8 h-full mr-2 flex justify-center items-center cursor-pointer">
-                            <button class="z-20 text-white text-lg ml-8">
-                                <i class="fa-solid fa-chevron-left"></i>
-                            </button>
-                        </div>
-                        <figure class="w-full z-20 rounded-2xl">
-                            <img class="h-[300px] rounded-2xl mx-auto" :src="kirby[currentKirbyIndex].image" alt="imagen de personas trabajando en obra civil">
-                        </figure>
-                        <div @click="currentKirbyIndex = currentKirbyIndex == (kirby.length - 1) ? 0 : currentKirbyIndex + 1"
-                            class="w-8 h-full ml-2 flex justify-center items-center cursor-pointer">
-                            <button class="z-20 text-white text-lg mr-8">
-                                <i class="fa-solid fa-chevron-right"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <button @click="goToContact"
-                    class=" ml-auto mr-5 mt-20 text-2xl rounded-full border-2 border-primary dark:text-black text-black flex justify-between items-center py-1 px-5 bg-primary transition-all">
-                    Contáctanos
-                </button>
-            </section>
-
-            <!-- Services -->
-            <section class="lg:mx-24 mx-1 mt-9 relative mb-32" id="Servicios">
-                <h2 class="font-bold mb-10 text-3xl text-center">Nuestros servicios</h2>
-
-                <div class="grid xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-44">
-                    <div v-for="(service, index) in services" :key="index"
-                        class="bg-[#1A1A1A] rounded-[20px] px-5 pt-6  min-h-[326px] text-2xl relative">
-                        <h1 class="text-primary text-center mb-3">{{ service.title }}</h1>
-                        <p class="text-white text-justify">{{ service.description }}</p>
-                        <figure @click="showPreview = true; currentServiceIndex = index;"
-                            class="w-3/4 h-48 rounded-[20px] absolute -bottom-[104px] left-[12.5%] cursor-pointer">
-                            <img class="h-48 w-full rounded-[20px]" :src="service.image" alt="imagen que representa uno de los servicios de ingenieria zafiro">
-                            <div
-                                class="w-6 h-6 rounded-full bg-black opacity-50 flex items-center justify-center absolute bottom-3 right-4">
-                                <i class="fa-solid fa-magnifying-glass-plus text-white text-xs"></i>
-                            </div>
-                        </figure>
-                    </div>
-                </div>
-            </section>
-
-            <!-- form -->
-            <section class="lg:mx-24 md:mx-20 mx-1 mt-44 relative" id="Contacto">
-                <div class="lg:grid grid-cols-5 gap-9 mb-6">
-                    <div class="col-span-3 border-2 border-primary rounded-[20px] py-10 px-5">
-                        <div class="flex h-full">
-                            <div @click="currentProyectIndex = currentProyectIndex == 0 ? (projects.length - 1) : currentProyectIndex - 1"
-                                class="w-8 h-11/12 lg:h-full mr-2 flex justify-center items-center cursor-pointer">
-                                <button>
+                    <div class="relative z-10 flex flex-col lg:flex-row items-stretch w-full h-full">
+                        
+                        <!-- Texto (Lado Izquierdo) -->
+                        <div class="flex-1 p-8 lg:p-16 flex flex-col justify-center text-center lg:text-left">
+                            <span class="px-4 py-1.5 bg-primary/20 text-primary border border-primary/30 rounded-full text-xs font-bold tracking-widest uppercase mb-6 inline-block w-max mx-auto lg:mx-0">
+                                ¿Por qué elegirnos?
+                            </span>
+                            <transition name="fade" mode="out-in">
+                                <div :key="currentKirbyIndex">
+                                    <h1 class="text-4xl lg:text-5xl font-black text-primary leading-tight tracking-tight mb-6">
+                                        {{ kirby[currentKirbyIndex].title }}
+                                    </h1>
+                                    <p class="text-slate-300 text-lg lg:text-xl leading-relaxed max-w-lg mx-auto lg:mx-0">
+                                        {{ kirby[currentKirbyIndex].description }}
+                                    </p>
+                                </div>
+                            </transition>
+                            
+                            <div class="mt-10 flex items-center justify-center lg:justify-start gap-4">
+                                <button @click="prevKirby" class="w-12 h-12 rounded-full border border-slate-700 text-slate-300 hover:bg-slate-800 hover:text-white flex items-center justify-center transition-all">
                                     <i class="fa-solid fa-chevron-left"></i>
                                 </button>
-                            </div>
-                            <figure class="w-1/2">
-                                <img :src="projects[currentProyectIndex].image" alt="imagen que muestra a personas trabajando en proyecto de obra">
-                            </figure>
-                            <div class="w-1/2 flex flex-col ml-5 justify-start text-3xl">
-                                <h1 class="text-center font-bold mb-12 lg:mb-32">PROYECTOS</h1>
-                                <p class="text-center text-xl">{{ projects[currentProyectIndex].description }}</p>
-                            </div>
-                            <div @click="currentProyectIndex = currentProyectIndex == (projects.length - 1) ? 0 : currentProyectIndex + 1"
-                                class="w-8 h-11/12 lg:h-full ml-2 flex justify-center items-center cursor-pointer">
-                                <button>
+                                <div class="flex gap-2">
+                                    <span v-for="(k, idx) in kirby" :key="idx" 
+                                          class="w-2.5 h-2.5 rounded-full transition-all duration-300"
+                                          :class="currentKirbyIndex === idx ? 'bg-primary w-6' : 'bg-slate-700'">
+                                    </span>
+                                </div>
+                                <button @click="nextKirby" class="w-12 h-12 rounded-full border border-slate-700 text-slate-300 hover:bg-slate-800 hover:text-white flex items-center justify-center transition-all">
                                     <i class="fa-solid fa-chevron-right"></i>
                                 </button>
                             </div>
                         </div>
+
+                        <!-- Imagen (Lado Derecho) -->
+                        <div class="flex-1 relative min-h-[300px] lg:min-h-full p-4 lg:p-8 flex items-center justify-center">
+                            <transition name="fade" mode="out-in">
+                                <img :key="currentKirbyIndex" 
+                                     class="w-full h-full object-cover rounded-2xl lg:rounded-[32px] shadow-2xl" 
+                                     :src="kirby[currentKirbyIndex].image" 
+                                     alt="Imagen representativa de la empresa">
+                            </transition>
+                        </div>
+
                     </div>
-                    <form @submit.prevent="store" class="col-span-2 md:mt-12 lg:mt-0 mt-8 mx-8">
-                        <h2 class="font-bold mb-3 text-xl text-primary">CONTÁCTANOS</h2>
-                        <div class="mb-5">
-                            <label for="name">Nombre <span class="text-primary">*</span></label>
-                            <input v-model="form.name" type="text" id="name" required ref="nameInput"
-                                class="active:ring-0 focus:ring-0 border-none outline-none bg-[#D9D9D9] block w-full text-[#808080] rounded-[10px] h-9"
-                                placeholder="Escribe tu nombre" />
-                            <p class="text-red-600 text-xs" v-if="form.errors?.name">{{ form.errors?.name }}</p>
-                        </div>
-                        <div class="mb-5">
-                            <label for="phone">Teléfono <span class="text-primary">*</span></label>
-                            <input v-model="form.phone" type="text" id="phone" required
-                                class="active:ring-0 focus:ring-0 border-none outline-none bg-[#D9D9D9] block w-full text-[#808080] rounded-[10px] h-9"
-                                placeholder="Escribe tu teléfono" />
-                            <p class="text-red-600 text-xs" v-if="form.errors?.phone">{{ form.errors?.phone }}</p>
-                        </div>
-                        <div class="mb-5">
-                            <label for="service">Servicio</label>
-                            <select v-model="form.service" id="service"
-                                class="active:ring-0 focus:ring-0 border-none outline-none bg-[#D9D9D9] block w-full text-[#808080] rounded-[10px]">
-                                <option v-for="(service, index) in services" :key="index" :value="service.title">{{
-            service.title }}</option>
-                            </select>
-                        </div>
-                        <div class="mb-5">
-                            <label for="address">Dirección</label>
-                            <input v-model="form.address" type="text" id="address"
-                                class="active:ring-0 focus:ring-0 border-none outline-none bg-[#D9D9D9] block w-full text-[#808080] rounded-[10px] h-9"
-                                placeholder="Escribe la dirección donde solicita el servicio" />
-                            <p class="text-red-600 text-xs" v-if="form.errors?.address">{{ form.errors?.address }}</p>
-                        </div>
-                        <div class="mb-5">
-                            <label for="address">Mensaje <span class="text-primary">*</span></label>
-                            <textarea v-model="form.message" rows="5" required
-                                class="active:ring-0 focus:ring-0 border-none outline-none bg-[#D9D9D9] block w-full text-[#808080] rounded-[10px]"
-                                placeholder="Dejános un mensaje "></textarea>
-                            <p class="text-red-600 text-xs" v-if="form.errors?.message">{{ form.errors?.message }}</p>
-                        </div>
-                        <button type="submit"
-                            class="mx-auto mt-5 rounded-full border-2 border-primary text-black flex justify-between items-center py-1 px-5 hover:bg-primary transition-all">
-                            Enviar
-                            <i class="fa-solid fa-chevron-right ml-6"></i>
-                        </button>
-                    </form>
-                    <!-- <figure class="rounded-[20px] hidden lg:block">
-                        <img class="rounded-[20px]" src="../../../public/assets/images/contact.png" />
-                    </figure> -->
                 </div>
             </section>
 
-            <footer class="p-4 md:grid md:grid-cols-3 lg:grid-cols-4 gap-3 text-white bg-[#1A1A1A] md:relative text-sm">
-                <figure class="h-full md:h-auto flex space-y-2">
-                    <img class="h-16 md:h-1/4" src="../../../public/images/logo_light.png" alt="logo de ingenieria zafiro. Mapa blanco y un marcador de posición similar al de google maps" />
-                    <span class="lg:font-bold text-primary lg:text-xl">INGENIERÍA ZAFIRO</span>
-                </figure>
-                <div class="flex flex-col lg:text-base">
-                    <h2 class="lg:text-xl text-primary lg:font-bold mb-5">Venta de terrenos</h2>
-                    <li v-for="(lote, index) in lotes" :key="index">{{ lote.title }}</li>
-                    <div class="flex lg:hidden flex-col mb-5 mt-5">
-                        <h2 class="lg:text-xl text-primary lg:font-bold mb-5">Contacto</h2>
-                        <p class="flex items-center text-xs">
-                            <i class="fa-solid fa-envelope mr-3"></i>
-                            jose.rod@ingenieriazafiro.dtw.com.mx
-                        </p>
-                        <p>
-                            <i class="fa-solid fa-phone mr-2 text-xs"></i>
-                            3312517732
-                        </p>
+            <!-- Sección de Servicios -->
+            <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-12 lg:mb-16">
+                    <h2 class="text-3xl lg:text-4xl font-black text-slate-900 tracking-tight mb-4">
+                        Nuestros Servicios
+                    </h2>
+                    <p class="text-slate-500 text-lg">
+                        Soluciones integrales de ingeniería, topografía y construcción con los más altos estándares de calidad.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div v-for="(service, index) in services" :key="index"
+                         class="group bg-white rounded-[32px] overflow-hidden shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col">
+                        
+                        <!-- Imagen superior -->
+                        <div class="h-56 relative overflow-hidden bg-slate-100 cursor-pointer" @click="openPreview(index)">
+                            <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+                                 :src="service.image" 
+                                 alt="Representación del servicio">
+                            <!-- Overlay Hover -->
+                            <div class="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/30 transition-colors flex items-center justify-center">
+                                <div class="w-12 h-12 bg-primary text-slate-900 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all scale-75 group-hover:scale-100">
+                                    <i class="fa-solid fa-magnifying-glass-plus"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Texto Inferior -->
+                        <div class="p-8 flex-1 flex flex-col">
+                            <h3 class="text-xl font-bold text-slate-900 mb-3">{{ service.title }}</h3>
+                            <p class="text-slate-500 leading-relaxed mb-6 flex-1">{{ service.description }}</p>
+                            <button @click="goToContact" class="text-primary font-bold hover:text-slate-900 transition-colors flex items-center gap-2 mt-auto w-max">
+                                Solicitar servicio <i class="fa-solid fa-arrow-right text-sm"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <div class="flex flex-col">
-                    <h2 class="lg:text-xl text-primary lg:font-bold mb-5">Servicios</h2>
-                    <li v-for="(service, index) in services" :key="index">{{ service.title }}</li>
+            </section>
+
+            <!-- Sección Proyectos & Contacto -->
+            <section id="Contacto" class="bg-white rounded-[40px] lg:rounded-[64px] shadow-sm border border-slate-100 py-16 lg:py-24 px-4 sm:px-6 lg:px-8 max-w-[1400px] mx-auto">
+                <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+                    
+                    <!-- Lado Izquierdo: Carrusel de Proyectos -->
+                    <div class="relative bg-slate-50 rounded-[32px] p-6 sm:p-10 border border-slate-100 text-center flex flex-col items-center">
+                        <span class="text-primary font-black uppercase tracking-widest text-sm mb-2">Galería de Obras</span>
+                        <h2 class="text-3xl font-black text-slate-900 mb-8">Nuestros Proyectos</h2>
+                        
+                        <div class="relative w-full aspect-square sm:aspect-video lg:aspect-square overflow-hidden rounded-2xl shadow-lg mb-8">
+                            <transition name="fade" mode="out-in">
+                                <img :key="currentProyectIndex" 
+                                     class="w-full h-full object-cover" 
+                                     :src="projects[currentProyectIndex].image" 
+                                     alt="Imagen del proyecto">
+                            </transition>
+                            <!-- Etiqueta sobre la imagen -->
+                            <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent p-6">
+                                <p class="text-white text-lg font-medium drop-shadow-md">
+                                    {{ projects[currentProyectIndex].description }}
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Controles -->
+                        <div class="flex items-center justify-center gap-6 w-full">
+                            <button @click="prevProject" class="w-12 h-12 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 hover:text-primary flex items-center justify-center transition-all shadow-sm">
+                                <i class="fa-solid fa-arrow-left"></i>
+                            </button>
+                            <span class="text-sm font-bold text-slate-400">
+                                {{ currentProyectIndex + 1 }} / {{ projects.length }}
+                            </span>
+                            <button @click="nextProject" class="w-12 h-12 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 hover:text-primary flex items-center justify-center transition-all shadow-sm">
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Lado Derecho: Formulario de Contacto -->
+                    <div class="flex flex-col justify-center">
+                        <h2 class="text-3xl lg:text-4xl font-black text-slate-900 tracking-tight mb-2">
+                            Ponte en contacto
+                        </h2>
+                        <p class="text-slate-500 mb-10 text-lg">
+                            Déjanos tus datos y nos comunicaremos contigo a la brevedad para asesorarte.
+                        </p>
+
+                        <form @submit.prevent="store" class="space-y-6">
+                            <!-- Nombre -->
+                            <div>
+                                <label for="name" class="block text-sm font-bold text-slate-700 mb-2">Nombre completo <span class="text-primary">*</span></label>
+                                <input v-model="form.name" type="text" id="name" required ref="nameInput"
+                                    class="w-full bg-slate-50 border border-slate-200 text-slate-900 rounded-2xl px-4 py-3.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+                                    placeholder="Ej. Juan Pérez" />
+                                <InputError :message="form.errors?.name" class="mt-1" />
+                            </div>
+
+                            <!-- Teléfono y Servicio -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="phone" class="block text-sm font-bold text-slate-700 mb-2">Teléfono <span class="text-primary">*</span></label>
+                                    <input v-model="form.phone" type="tel" id="phone" required
+                                        class="w-full bg-slate-50 border border-slate-200 text-slate-900 rounded-2xl px-4 py-3.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+                                        placeholder="10 dígitos" />
+                                    <InputError :message="form.errors?.phone" class="mt-1" />
+                                </div>
+                                <div>
+                                    <label for="service" class="block text-sm font-bold text-slate-700 mb-2">Servicio de interés</label>
+                                    <select v-model="form.service" id="service"
+                                        class="w-full bg-slate-50 border border-slate-200 text-slate-900 rounded-2xl px-4 py-3.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all appearance-none">
+                                        <option value="" disabled selected>Selecciona una opción</option>
+                                        <option v-for="(service, index) in services" :key="index" :value="service.title">{{ service.title }}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Dirección -->
+                            <div>
+                                <label for="address" class="block text-sm font-bold text-slate-700 mb-2">Dirección del proyecto</label>
+                                <input v-model="form.address" type="text" id="address"
+                                    class="w-full bg-slate-50 border border-slate-200 text-slate-900 rounded-2xl px-4 py-3.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+                                    placeholder="Ubicación aproximada" />
+                                <InputError :message="form.errors?.address" class="mt-1" />
+                            </div>
+
+                            <!-- Mensaje -->
+                            <div>
+                                <label for="message" class="block text-sm font-bold text-slate-700 mb-2">Mensaje <span class="text-primary">*</span></label>
+                                <textarea v-model="form.message" id="message" rows="4" required
+                                    class="w-full bg-slate-50 border border-slate-200 text-slate-900 rounded-2xl px-4 py-3.5 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all resize-none"
+                                    placeholder="Cuéntanos más sobre lo que necesitas..."></textarea>
+                                <InputError :message="form.errors?.message" class="mt-1" />
+                            </div>
+
+                            <!-- Botón Enviar -->
+                            <button type="submit" :disabled="form.processing"
+                                class="w-full sm:w-auto bg-slate-900 text-white px-10 py-4 rounded-full font-black text-lg hover:bg-slate-800 hover:scale-[1.02] disabled:opacity-70 disabled:hover:scale-100 transition-all flex items-center justify-center gap-3 shadow-lg">
+                                Enviar Mensaje <i class="fa-solid fa-paper-plane"></i>
+                            </button>
+                        </form>
+                    </div>
+
                 </div>
-                <div class="hidden lg:flex flex-col mb-5">
-                    <h2 class="lg:text-xl text-primary lg:font-bold mb-5">Contacto</h2>
-                    <p>
-                        <i class="fa-solid fa-envelope mr-3"></i>
-                        jose.rod@ingenieriazafiro.dtw.com.mx
-                    </p>
-                    <p>
-                        <i class="fa-solid fa-phone mr-3"></i>
-                        3312517732
-                    </p>
-                </div>
-                <div class="col-span-full flex-col justify-center md:flex-row flex items-center md:justify-between">
-                    <p class="flex mt-4 space-x-1">
-                        <small>Copyrigth &copy; {{ currentYear }} </small>
-                        <small class="block md:inline"> Ingeniería Zafiro. Todos los derechos reservados.</small>
-                    </p>
-                    <figure class="mt-4 cursor-pointer w-1/2 ">
-                        <a class="flex justify-end items-center" href="https://dtw.com.mx/" target="_blank">
-                            <p class="text-white text-xl">BY</p>
-                            <img class="w-20 lg:w-[10%]" src="@/../../public/images/DTW_logo_blanco.png" alt="">
-                        </a>
-                    </figure>
-                </div>
-            </footer>
+            </section>
+
         </main>
+
+        <!-- Footer Premium -->
+        <footer class="bg-slate-900 pt-16 pb-8 px-6 lg:px-12 rounded-t-[40px] lg:rounded-t-[64px] text-slate-300">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-12">
+                
+                <!-- Columna 1: Marca -->
+                <div class="space-y-6">
+                    <div class="flex items-center gap-3">
+                        <img class="h-12" src="../../../public/images/logo_light.png" alt="Ingeniería Zafiro Logo Light" />
+                        <span class="font-black text-primary text-xl">INGENIERÍA ZAFIRO</span>
+                    </div>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Construimos confianza y patrimonio. Expertos en venta de terrenos, topografía, y diseño arquitectónico con acabados de lujo.
+                    </p>
+                </div>
+
+                <!-- Columna 2: Desarrollos -->
+                <div>
+                    <h3 class="text-white font-bold text-lg mb-6 uppercase tracking-wider">Desarrollos</h3>
+                    <ul class="space-y-3">
+                        <li v-for="(lote, index) in lotes" :key="index" class="text-sm hover:text-primary cursor-pointer transition-colors flex items-center gap-2">
+                            <div class="w-1.5 h-1.5 rounded-full bg-primary/50"></div>
+                            {{ lote.title }}
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Columna 3: Servicios -->
+                <div>
+                    <h3 class="text-white font-bold text-lg mb-6 uppercase tracking-wider">Servicios Especializados</h3>
+                    <ul class="space-y-3">
+                        <li v-for="(service, index) in services" :key="index" class="text-sm hover:text-primary cursor-pointer transition-colors flex items-center gap-2">
+                            <div class="w-1.5 h-1.5 rounded-full bg-primary/50"></div>
+                            {{ service.title }}
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Columna 4: Contacto -->
+                <div>
+                    <h3 class="text-white font-bold text-lg mb-6 uppercase tracking-wider">Contáctanos</h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center shrink-0 text-primary">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <span class="text-sm mt-1 break-all">jose.rod@ingenieriazafiro.dtw.com.mx</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center shrink-0 text-primary">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <span class="text-sm mt-1">3312517732</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="max-w-7xl mx-auto border-t border-slate-800 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+                <p class="text-sm text-slate-500">
+                    &copy; {{ currentYear }} Ingeniería Zafiro. Todos los derechos reservados.
+                </p>
+                <a href="https://dtw.com.mx/" target="_blank" class="flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity">
+                    <span class="text-xs font-bold tracking-widest">POWERED BY</span>
+                    <img class="h-6" src="@/../../public/images/DTW_logo_blanco.png" alt="DTW Logo">
+                </a>
+            </div>
+        </footer>
     </div>
 </template>
 
-<script>
-import { useForm, Link, Head } from "@inertiajs/vue3";
+<script setup>
+import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { Head, Link, useForm } from "@inertiajs/vue3";
 import { useToast } from "vue-toastification";
 import InputError from "@/Components/InputError.vue";
 
-// services images
+// Services images
 import s1 from "../../../public/images/services1.png";
 import s2 from "../../../public/images/services2.png";
 import s3 from "../../../public/images/services3.png";
@@ -303,241 +367,173 @@ import s4 from "../../../public/images/services4.png";
 import s5 from "../../../public/images/services5.png";
 import s6 from "../../../public/images/services6.png";
 
-// home images
+// Home images
 import h1 from "../../../public/images/h1.png";
 import h2 from "../../../public/images/h2.png";
 
-// projects images
+// Projects images
 import p1 from "../../../public/images/p1.png";
 import p2 from "../../../public/images/p2.png";
-import p3 from "../../../public/images/p3.png";
 import p4 from "../../../public/images/p4.png";
 import p5 from "../../../public/images/p5.png";
-import p6 from "../../../public/images/p6.png";
 import p7 from "../../../public/images/p7.png";
 import p8 from "../../../public/images/p8.png";
 import p9 from "../../../public/images/p9.png";
 import p10 from "../../../public/images/p10.png";
 import p11 from "../../../public/images/p11.png";
-import p12 from "../../../public/images/p12.png";
 import p13 from "../../../public/images/p13.png";
 import p14 from "../../../public/images/p14.png";
-import p15 from "../../../public/images/p15.png";
-import p16 from "../../../public/images/p16.png";
 import p17 from "../../../public/images/p17.png";
 import p18 from "../../../public/images/p18.png";
 import p19 from "../../../public/images/p19.png";
-import p20 from "../../../public/images/p20.png";
 
-export default {
-    data() {
-        const form = useForm({
-            name: null,
-            address: null,
-            phone: null,
-            service: null,
-            message: null,
-        });
-        return {
-            form,
-            currentYear: new Date().getFullYear(), //año dinamico para footer
-            isNavbarFixed: false,
-            currentTestimony: 0,
-            lastScrollY: 0,
-            showMobileMenu: false,
-            currentProyectIndex: 0,
-            currentServiceIndex: null,
-            currentKirbyIndex: 0,
-            showPreview: false,
-            services: [
-                {
-                    title: "Deslinde de parcelas",
-                    description: "Definimos de manera precisa las fronteras de tu parcela para garantizar la propiedad y el uso adecuado de la tierra.",
-                    image: s1,
-                },
-                {
-                    title: "Planos topográficos",
-                    description: "Brindamos una visión detallada y precisa del terreno. Ya sea para proyectos de construcción, planificación urbana o análisis del terreno.",
-                    image: s2,
-                },
-                {
-                    title: "Obra civil",
-                    description: "Desde el diseño hasta la construcción, gestionamos cada etapa del proceso con precisión y profesionalismo.",
-                    image: s3,
-                },
-                {
-                    title: "Lotificaciones",
-                    description: "Convertimos terrenos en comunidades planificadas, creamos espacios funcionales y atractivos ",
-                    image: s4,
-                },
-                {
-                    title: "Diseño arquitectónico",
-                    description: "Desde residencias hasta espacios comerciales, cada diseño es una expresión de tus necesidades y estilos. ",
-                    image: s5,
-                },
-                {
-                    title: "Experiencia con acabados de lujo",
-                    description: "Desde selecciones de materiales exclusivos hasta ejecución impecable, creamos ambientes que reflejan tu gusto refinado.",
-                    image: s6,
-                },
-            ],
-            projects: [
-                {
-                    description: "Pulido de losa",
-                    image: p1,
-                },
-                {
-                    description: "Cimentación y compactación de material de banco",
-                    image: p2,
-                },
-                {
-                    description: "Mecanica de suelos",
-                    image: p4,
-                },
-                {
-                    description: "Demolición y retiro de escombro ",
-                    image: p5,
-                },
-                {
-                    description: "Replanteo de puntos con gps topografico",
-                    image: p7,
-                },
-                {
-                    description: " Cimbrado, armado y colado de losa Estructural",
-                    image: p8,
-                },
-                {
-                    description: "Mecanica de suelos prueba spt",
-                    image: p9,
-                },
-                {
-                    description: "Carga y acarreo de escombro",
-                    image: p10,
-                },
-                {
-                    description: "Cimentación de mampostería ",
-                    image: p11,
-                },
-                {
-                    description: "Experiencia en proyectos verticales",
-                    image: p13,
-                },
-                {
-                    description: "Armado de losa",
-                    image: p14,
-                },
-                {
-                    description: "Construction de carcamárcamo pluvial",
-                    image: p17,
-                },
-                {
-                    description: "Estructura de acero",
-                    image: p18,
-                },
-                {
-                    description: "Muro con ladrillo aparente",
-                    image: p19,
-                },
-            ],
-            kirby: [
-                {
-                    title: "Nosotros",
-                    image: h1,
-                    description: "Contamos con amplia experiencia en el ramo de la construcción."
-                },
-                {
-                    title: "Tecnología avanzada ",
-                    image: h2,
-                    description: "Nuestro compromiso con tecnología de vanguardia nos lleva a emplear el potente receptor GNSS Reach RS+ de Emlid."
-                },
-            ],
-            lotes: [
-                {
-                    title: 'Fraccionamiento "Los Arrayanes"',
-                },
-                {
-                    title: 'Fraccionamiento "El Crucero"',
-                },
-            ],
-        };
-    },
-    components: {
-        InputError,
-    },
-    mounted() {
-        window.addEventListener('scroll', this.handleScroll);
-        this.toast = useToast();
-    },
-    beforeDestroy() {
-        window.removeEventListener('scroll', this.handleScroll);
-    },
-    methods: {
-        handleScroll() {
-            const currentScrollY = window.scrollY;
+// Estado Reactivo
+const isNavbarFixed = ref(true);
+const showMobileMenu = ref(false);
+const lastScrollY = ref(0);
+const currentYear = ref(new Date().getFullYear());
 
-            if (currentScrollY > this.lastScrollY && currentScrollY > window.innerHeight) {
-                // Si se hace scroll hacia abajo y se ha pasado el alto de la pantalla
-                this.isNavbarFixed = false;
-            } else {
-                // Si se hace scroll hacia arriba
-                this.isNavbarFixed = true;
-            }
+const showPreview = ref(false);
+const currentServiceIndex = ref(0);
+const currentKirbyIndex = ref(0);
+const currentProyectIndex = ref(0);
+const nameInput = ref(null);
 
-            this.lastScrollY = currentScrollY;
-        },
-        scrollToSection(sectionId) {
-            const section = document.getElementById(sectionId);
-            section.scrollIntoView({ behavior: 'smooth' });
-            this.showMobileMenu = false;
-        },
-        store() {
-            this.form.post(route("messages.store"), {
-                onSuccess: () => {
-                    this.toast.success("Mensaje enviado correctamente", {
-                        timeout: 5000
-                    });
+const toast = useToast();
 
-                    this.form.reset();
-                    this.goToContact();
-                },
-                onError: () => {
-                    this.toast.error("Completar correctamente formulario", {
-                        timeout: 5000
-                    });
+const form = useForm({
+    name: null,
+    address: null,
+    phone: null,
+    service: "",
+    message: null,
+});
 
-                    this.goToContact();
-                }
-            });
-        },
-        goToContact() {
-            this.showPreview = false;
-            this.scrollToSection('Contacto');
-            this.$refs.nameInput.focus();
-        }
-    },
-    components: {
-        Link,
-        Head,
+// Datos Estáticos
+const lotes = [
+    { title: 'Fraccionamiento "Los Arrayanes"' },
+    { title: 'Fraccionamiento "El Crucero"' },
+];
+
+const services = [
+    { title: "Deslinde de parcelas", description: "Definimos de manera precisa las fronteras de tu parcela para garantizar la propiedad y el uso adecuado de la tierra.", image: s1 },
+    { title: "Planos topográficos", description: "Brindamos una visión detallada y precisa del terreno. Ya sea para proyectos de construcción, planificación urbana o análisis del terreno.", image: s2 },
+    { title: "Obra civil", description: "Desde el diseño hasta la construcción, gestionamos cada etapa del proceso con precisión y profesionalismo.", image: s3 },
+    { title: "Lotificaciones", description: "Convertimos terrenos en comunidades planificadas, creamos espacios funcionales y atractivos.", image: s4 },
+    { title: "Diseño arquitectónico", description: "Desde residencias hasta espacios comerciales, cada diseño es una expresión de tus necesidades y estilos.", image: s5 },
+    { title: "Experiencia con acabados de lujo", description: "Desde selecciones de materiales exclusivos hasta ejecución impecable, creamos ambientes que reflejan tu gusto refinado.", image: s6 },
+];
+
+const kirby = [
+    { title: "Nosotros", description: "Contamos con amplia experiencia en el ramo de la construcción e ingeniería. Tu proyecto en las mejores manos.", image: h1 },
+    { title: "Tecnología avanzada", description: "Nuestro compromiso con tecnología de vanguardia nos lleva a emplear el potente receptor GNSS Reach RS+ de Emlid.", image: h2 },
+];
+
+const projects = [
+    { description: "Pulido de losa", image: p1 },
+    { description: "Cimentación y compactación de material", image: p2 },
+    { description: "Mecánica de suelos", image: p4 },
+    { description: "Demolición y retiro de escombro", image: p5 },
+    { description: "Replanteo de puntos con GPS", image: p7 },
+    { description: "Cimbrado, armado y colado estructural", image: p8 },
+    { description: "Mecánica de suelos (Prueba SPT)", image: p9 },
+    { description: "Carga y acarreo de escombro", image: p10 },
+    { description: "Cimentación de mampostería", image: p11 },
+    { description: "Experiencia en proyectos verticales", image: p13 },
+    { description: "Armado de losa", image: p14 },
+    { description: "Construcción de cárcamo pluvial", image: p17 },
+    { description: "Estructura de acero", image: p18 },
+    { description: "Muro con ladrillo aparente", image: p19 },
+];
+
+// Métodos
+const handleScroll = () => {
+    const currentScrollY = window.scrollY;
+    if (currentScrollY > lastScrollY.value && currentScrollY > 100) {
+        isNavbarFixed.value = false;
+    } else {
+        isNavbarFixed.value = true;
+    }
+    lastScrollY.value = currentScrollY;
+};
+
+// Navegación Carruseles
+const nextKirby = () => {
+    currentKirbyIndex.value = currentKirbyIndex.value === kirby.length - 1 ? 0 : currentKirbyIndex.value + 1;
+};
+const prevKirby = () => {
+    currentKirbyIndex.value = currentKirbyIndex.value === 0 ? kirby.length - 1 : currentKirbyIndex.value - 1;
+};
+
+const nextProject = () => {
+    currentProyectIndex.value = currentProyectIndex.value === projects.length - 1 ? 0 : currentProyectIndex.value + 1;
+};
+const prevProject = () => {
+    currentProyectIndex.value = currentProyectIndex.value === 0 ? projects.length - 1 : currentProyectIndex.value - 1;
+};
+
+// Modal de Servicios
+const openPreview = (index) => {
+    currentServiceIndex.value = index;
+    showPreview.value = true;
+};
+const closePreview = () => {
+    showPreview.value = false;
+};
+
+// Formulario
+const goToContact = () => {
+    showPreview.value = false;
+    const section = document.getElementById('Contacto');
+    if (section) {
+        section.scrollIntoView({ behavior: 'smooth' });
+        setTimeout(() => {
+            if (nameInput.value) nameInput.value.focus();
+        }, 500);
     }
 };
+
+const store = () => {
+    form.post(route("messages.store"), {
+        onSuccess: () => {
+            toast.success("Mensaje enviado correctamente", { timeout: 5000 });
+            form.reset();
+        },
+        onError: () => {
+            toast.error("Por favor completa correctamente el formulario", { timeout: 5000 });
+            goToContact();
+        }
+    });
+};
+
+// Lifecycle Hooks
+onMounted(() => {
+    window.addEventListener('scroll', handleScroll);
+});
+
+onBeforeUnmount(() => {
+    window.removeEventListener('scroll', handleScroll);
+});
 </script>
 
-<style>
-/* Estilos para la barra de navegación */
-.navbar {
-    position: absolute;
-    top: 0;
-    background-color: #ffffff;
-    opacity: 0.9;
+<style scoped>
+/* Transiciones Suaves (Fade y Slides) */
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.4s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
 }
 
-.fixed-navbar {
-    position: fixed;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-    z-index: 100;
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+    transition: all 0.3s ease;
 }
-
-html {
-    scroll-behavior: smooth;
+.fade-slide-enter-from,
+.fade-slide-leave-to {
+    opacity: 0;
+    transform: translateY(-10px);
 }
 </style>

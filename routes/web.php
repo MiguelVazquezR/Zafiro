@@ -96,6 +96,10 @@ Route::middleware([
     });
 });
 
+// Endpoint de Registro Rápido (WhatsApp)
+Route::get('/finanzas/quick', [FinanceController::class, 'quickRecord'])->name('finanzas.quick');
+
+
 // ** works routes **
 Route::resource('works', WorkController::class)->middleware('auth');
 Route::get('works/{work_id}/invoice', [WorkController::class, 'showInvoice'])->middleware('auth')->name('works.invoice');

@@ -11,7 +11,6 @@
 
     <el-menu
       :default-active="currentRoute"
-      :default-openeds="['gestion']"
       :collapse="isCollapsed && !isMobile"
       class="one-ui-menu"
       unique-opened
@@ -37,33 +36,16 @@
         <template #title>Cotizaciones</template>
       </el-menu-item>
 
-      <!-- Submenú de Terrenos -->
-      <el-sub-menu index="gestion">
-        <template #title>
-          <el-icon><HomeFilled /></el-icon>
-          <span class="menu-text">Terrenos y Gestión</span>
-        </template>
+      <!-- Módulos de Terrenos (Ahora separados) -->
+      <el-menu-item index="subdivisions.index" @click="navigate('subdivisions.index')">
+        <el-icon><MapLocation /></el-icon>
+        <template #title>Fraccionamientos</template>
+      </el-menu-item>
 
-        <el-menu-item index="subdivisions.create" @click="navigate('subdivisions.create')">
-          <el-icon><Plus /></el-icon>
-          <template #title>Nuevo fraccionamiento</template>
-        </el-menu-item>
-
-        <el-menu-item index="subdivisions.index" @click="navigate('subdivisions.index')">
-          <el-icon><MapLocation /></el-icon>
-          <template #title>Fraccionamientos</template>
-        </el-menu-item>
-
-        <el-menu-item index="batches.create" @click="navigate('batches.create')">
-          <el-icon><LocationInformation /></el-icon>
-          <template #title>Nuevo lote</template>
-        </el-menu-item>
-
-        <el-menu-item index="batches.index" @click="navigate('batches.index')">
-          <el-icon><Grid /></el-icon>
-          <template #title>Lista de lotes</template>
-        </el-menu-item>
-      </el-sub-menu>
+      <el-menu-item index="batches.index" @click="navigate('batches.index')">
+        <el-icon><Grid /></el-icon>
+        <template #title>Lotes</template>
+      </el-menu-item>
 
       <!-- Opción de Finanzas -->
       <el-menu-item index="finanzas.index" @click="goToFinanzas">
@@ -83,10 +65,7 @@ import {
   ChatDotRound,
   Briefcase,
   Document,
-  HomeFilled, 
-  Plus, 
   MapLocation, 
-  LocationInformation, 
   Grid, 
   Money,
   Fold,    
@@ -118,10 +97,10 @@ const currentRoute = computed(() => {
   if (route().current('messages.*')) return 'messages.index';
   if (route().current('works.*')) return 'works.index';
   if (route().current('quotes.*')) return 'quotes.index';
-  if (route().current('subdivisions.create')) return 'subdivisions.create';
-  if (route().current('subdivisions.index')) return 'subdivisions.index';
-  if (route().current('batches.create')) return 'batches.create';
-  if (route().current('batches.index')) return 'batches.index';
+  // Actualizado: Todo lo que sea subdivisiones resaltará "subdivisions.index"
+  if (route().current('subdivisions.*')) return 'subdivisions.index';
+  // Actualizado: Todo lo que sea lotes resaltará "batches.index"
+  if (route().current('batches.*')) return 'batches.index';
   if (route().current('finanzas.*')) return 'finanzas.index';
   return '';
 });
@@ -208,8 +187,7 @@ const goToFinanzas = () => {
   background-color: transparent !important;
 }
 
-:deep(.el-menu-item),
-:deep(.el-sub-menu__title) {
+:deep(.el-menu-item) {
   border-radius: 16px;
   margin-bottom: 6px;
   height: 52px;
@@ -220,17 +198,14 @@ const goToFinanzas = () => {
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-:deep(.el-menu-item:hover),
-:deep(.el-sub-menu__title:hover) {
+:deep(.el-menu-item:hover) {
   background-color: #f1f3f5 !important;
   color: #212529 !important;
   transform: translateX(4px);
 }
 
 .sidenav-container.is-collapsed :deep(.el-menu-item:hover),
-.sidenav-container.is-collapsed :deep(.el-sub-menu__title:hover),
-.sidenav-container.is-mobile :deep(.el-menu-item:hover),
-.sidenav-container.is-mobile :deep(.el-sub-menu__title:hover) {
+.sidenav-container.is-mobile :deep(.el-menu-item:hover) {
   transform: none; /* Deshabilitamos el efecto en colapsado o móvil */
 }
 
@@ -238,15 +213,6 @@ const goToFinanzas = () => {
   background-color: #e0e7ff !important;
   color: #4f46e5 !important;
   font-weight: 700;
-}
-
-:deep(.el-menu--inline) {
-  background-color: transparent !important;
-}
-:deep(.el-menu--inline .el-menu-item) {
-  padding-left: 50px !important;
-  height: 48px;
-  line-height: 48px;
 }
 
 :deep(.el-icon) {
@@ -260,7 +226,6 @@ const goToFinanzas = () => {
   font-size: 1rem;
 }
 
-:deep(.el-menu--collapse .el-sub-menu__title),
 :deep(.el-menu--collapse .el-menu-item) {
   padding: 0 !important;
   display: flex;
