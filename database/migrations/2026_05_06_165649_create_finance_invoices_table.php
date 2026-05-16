@@ -18,6 +18,10 @@ return new class extends Migration
             $table->decimal('sat_payment', 12, 2)->default(0); // Pago al SAT
             $table->decimal('released_balance', 12, 2)->default(0); // Saldo liberado
             $table->integer('liquidated_records_count')->default(0);
+            
+            // Llave foránea para saber quién registró la factura
+            $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
+            
             $table->timestamps();
         });
     }

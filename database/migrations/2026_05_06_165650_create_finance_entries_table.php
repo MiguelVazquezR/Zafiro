@@ -33,6 +33,9 @@ return new class extends Migration
             // Relación con Factura (Si ya fue declarado)
             $table->foreignId('finance_invoice_id')->nullable()->constrained('finance_invoices')->nullOnDelete();
             
+            // Llave foránea para saber quién registró el trámite/ingreso
+            $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
+            
             $table->timestamps();
         });
     }

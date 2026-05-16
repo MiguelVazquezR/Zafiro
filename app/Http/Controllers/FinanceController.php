@@ -8,6 +8,7 @@ use App\Models\FinancePayment;
 use App\Models\FinanceExpense;
 use App\Models\FinanceService;
 use App\Models\FinanceInvoice;
+use App\Models\User;
 
 class FinanceController extends Controller
 {
@@ -20,7 +21,10 @@ class FinanceController extends Controller
     // Devuelve todos los datos iniciales para el state de React
     public function getAllData()
     {
-        $entries = FinanceEntry::with('payments')->orderBy('id', 'desc')->get()->map(function($e) {
+        $usersMap = User::pluck('name', 'id');
+        $usersList = User::select('id', 'name')->get(); // Lista para los dropdowns
+
+        $entries = FinanceEntry::with('payments')->orderBy('id', 'desc')->get()->map(function($e) use ($usersMap) {
             return [
                 'id' => $e->id,
                 'fecha' => $e->date,
@@ -39,28 +43,31 @@ class FinanceController extends Controller
                 'declarado' => (bool)$e->is_declared,
                 'folioFactura' => $e->finance_invoice_id ? $e->invoice->invoice_folio ?? null : null,
                 'numeroRecibo' => $e->receipt_number,
-                'historialPagos' => $e->payments->map(function($p) {
+                'registradoPor' => $usersMap[$e->user_id] ?? 'Sistema',
+                'historialPagos' => $e->payments->map(function($p) use ($usersMap) {
                     return [
                         'id' => $p->id,
                         'fecha' => $p->date,
                         'monto' => (float)$p->amount,
-                        'recibo' => $p->receipt_number
+                        'recibo' => $p->receipt_number,
+                        'registradoPor' => $usersMap[$p->user_id] ?? 'Sistema'
                     ];
                 })
             ];
         });
 
-        $expenses = FinanceExpense::orderBy('id', 'desc')->get()->map(function($ex) {
+        $expenses = FinanceExpense::orderBy('id', 'desc')->get()->map(function($ex) use ($usersMap) {
             return [
                 'id' => $ex->id,
                 'fecha' => $ex->date,
                 'concepto' => $ex->concept,
                 'monto' => (float)$ex->amount,
-                'facturado' => (bool)$ex->is_invoiced
+                'facturado' => (bool)$ex->is_invoiced,
+                'registradoPor' => $usersMap[$ex->user_id] ?? 'Sistema'
             ];
         });
 
-        $invoices = FinanceInvoice::orderBy('id', 'desc')->get()->map(function($inv) {
+        $invoices = FinanceInvoice::orderBy('id', 'desc')->get()->map(function($inv) use ($usersMap) {
             return [
                 'id' => $inv->id,
                 'fecha' => $inv->date,
@@ -70,7 +77,8 @@ class FinanceController extends Controller
                 'totalGeneral' => (float)$inv->grand_total,
                 'pagoSat' => (float)$inv->sat_payment,
                 'liberado' => (float)$inv->released_balance,
-                'registrosLiquidacion' => $inv->liquidated_records_count
+                'registrosLiquidacion' => $inv->liquidated_records_count,
+                'registradoPor' => $usersMap[$inv->user_id] ?? 'Sistema'
             ];
         });
 
@@ -82,11 +90,96 @@ class FinanceController extends Controller
             'entries' => $entries,
             'expenses' => $expenses,
             'invoices' => $invoices,
-            'services' => $services
+            'services' => $services,
+            'users' => $usersList
         ]);
     }
 
-    // Guarda o actualiza un trámite
+    // ==========================================
+    // MÉTODO DE REGISTRO RÁPIDO (WhatsApp)
+    // ==========================================
+    public function quickRecord(Request $request)
+    {
+        // 1. Validar el token de seguridad
+        $secretToken = env('QUICK_FINANCE_TOKEN', 'ZafiroRapido');
+        if ($request->token !== $secretToken) {
+            abort(403, 'Acceso denegado. Token inválido.');
+        }
+
+        // 2. Validar parámetros básicos
+        $request->validate([
+            'tipo' => 'required|in:ingreso,gasto',
+            'concepto' => 'required|string|max:255',
+            'monto' => 'required|numeric|min:0',
+            'usuario' => 'nullable|string'
+        ]);
+
+        $tipo = $request->tipo;
+        $concepto = $request->concepto;
+        $monto = $request->monto;
+        $fecha = now()->toDateString();
+        
+        $userId = null;
+        $registradoPor = 'Sistema';
+
+        // 3. Buscar match de usuario
+        if ($request->has('usuario') && !empty($request->usuario)) {
+            $user = User::where('name', 'LIKE', '%' . $request->usuario . '%')->first();
+            if ($user) {
+                $userId = $user->id;
+                $registradoPor = $user->name;
+            }
+        }
+
+        // 4. Guardar (Usamos instanciación directa para esquivar el $fillable si no está actualizado)
+        if ($tipo === 'gasto') {
+            $expense = new FinanceExpense([
+                'date' => $fecha,
+                'concept' => $concepto,
+                'amount' => $monto,
+                'is_invoiced' => false,
+            ]);
+            $expense->user_id = $userId;
+            $expense->save();
+            
+        } else {
+            // Ingreso
+            $entry = new FinanceEntry([
+                'date' => $fecha,
+                'client_name' => $concepto, 
+                'service_type' => 'Ingreso Rápido',
+                'original_amount' => $monto,
+                'iva_mode' => 'sin_iva',
+                'fees' => $monto,
+                'iva' => 0,
+                'total_with_iva' => $monto,
+                'advance_payment' => $monto,
+                'balance' => 0,
+                'status' => 'Completado',
+                'is_declared' => false,
+            ]);
+            $entry->user_id = $userId;
+            $entry->save();
+
+            // Abono Automático
+            $payment = new FinancePayment([
+                'finance_entry_id' => $entry->id,
+                'date' => $fecha,
+                'amount' => $monto,
+                'receipt_number' => 'Exprés',
+            ]);
+            $payment->user_id = $userId;
+            $payment->save();
+        }
+
+        // 5. Retornar la vista de éxito
+        return view('finanzas.quick', compact('tipo', 'concepto', 'monto', 'registradoPor'));
+    }
+
+    // ==========================================
+    // MÉTODOS DEL PANEL (Vue/React)
+    // ==========================================
+
     public function storeEntry(Request $request)
     {
         $data = [
@@ -106,19 +199,29 @@ class FinanceController extends Controller
             'receipt_number' => $request->numeroRecibo,
         ];
 
-        $entry = FinanceEntry::create($data);
+        $entry = new FinanceEntry($data);
+        // Si el frontend envía user_id, lo usa; si no, usa el usuario logueado
+        $entry->user_id = $request->user_id ?: auth()->id(); 
+        $entry->save();
 
-        // Si hay anticipo inicial, registrarlo como el primer pago
         if ($request->anticipo > 0) {
-            FinancePayment::create([
+            $payment = new FinancePayment([
                 'finance_entry_id' => $entry->id,
                 'date' => $request->fecha,
                 'amount' => $request->anticipo,
                 'receipt_number' => $request->numeroRecibo ?? 'S/N'
             ]);
+            $payment->user_id = $request->user_id ?: auth()->id();
+            $payment->save();
         }
 
-        return response()->json(['success' => true, 'id' => $entry->id]);
+        $usuarioNombre = User::find($entry->user_id)->name ?? 'Sistema';
+
+        return response()->json([
+            'success' => true, 
+            'id' => $entry->id, 
+            'registrado_por' => $usuarioNombre
+        ]);
     }
 
     public function updateEntry(Request $request, FinanceEntry $financeEntry)
@@ -154,17 +257,18 @@ class FinanceController extends Controller
         return response()->json(['success' => true]);
     }
 
-    // Guarda un abono/pago
     public function storePayment(Request $request)
     {
-        $payment = FinancePayment::create([
+        $payment = new FinancePayment([
             'finance_entry_id' => $request->entryId,
             'date' => $request->fecha,
             'amount' => $request->amount,
             'receipt_number' => $request->recibo
         ]);
+        $payment->user_id = $request->user_id ?: auth()->id();
+        $payment->save();
 
-        // Actualizar el saldo de la entrada principal
+        // Actualizar el saldo
         $entry = FinanceEntry::find($request->entryId);
         $newAdvance = $entry->advance_payment + $request->amount;
         $newBalance = $entry->total_with_iva - $newAdvance;
@@ -176,19 +280,33 @@ class FinanceController extends Controller
             'status' => $status
         ]);
 
-        return response()->json(['success' => true, 'id' => $payment->id]);
+        $usuarioNombre = User::find($payment->user_id)->name ?? 'Sistema';
+
+        return response()->json([
+            'success' => true, 
+            'id' => $payment->id,
+            'registrado_por' => $usuarioNombre
+        ]);
     }
 
-    // Gastos
     public function storeExpense(Request $request)
     {
-        $expense = FinanceExpense::create([
+        $expense = new FinanceExpense([
             'date' => $request->fecha,
             'concept' => $request->concepto,
             'amount' => $request->monto,
             'is_invoiced' => $request->facturado
         ]);
-        return response()->json(['success' => true, 'id' => $expense->id]);
+        $expense->user_id = $request->user_id ?: auth()->id();
+        $expense->save();
+
+        $usuarioNombre = User::find($expense->user_id)->name ?? 'Sistema';
+
+        return response()->json([
+            'success' => true, 
+            'id' => $expense->id,
+            'registrado_por' => $usuarioNombre
+        ]);
     }
 
     public function destroyExpense(FinanceExpense $financeExpense)
@@ -197,7 +315,6 @@ class FinanceController extends Controller
         return response()->json(['success' => true]);
     }
 
-    // Servicios
     public function storeService(Request $request)
     {
         $service = FinanceService::create(['name' => $request->nombre]);
@@ -210,10 +327,9 @@ class FinanceController extends Controller
         return response()->json(['success' => true]);
     }
 
-    // Facturación (IVA)
     public function storeInvoice(Request $request)
     {
-        $invoice = FinanceInvoice::create([
+        $invoice = new FinanceInvoice([
             'date' => $request->fecha,
             'invoice_folio' => $request->folioFactura,
             'total_fees' => $request->honorariosTotal,
@@ -223,71 +339,18 @@ class FinanceController extends Controller
             'released_balance' => $request->liberado,
             'liquidated_records_count' => $request->registrosLiquidacion
         ]);
+        $invoice->user_id = auth()->id(); // Usualmente solo admins facturan
+        $invoice->save();
 
-        // Marcar trámites seleccionados como declarados
         FinanceEntry::whereIn('id', $request->entryIds)->update([
             'is_declared' => true,
             'finance_invoice_id' => $invoice->id
         ]);
 
-        return response()->json(['success' => true, 'id' => $invoice->id]);
-    }
-
-    public function quickRecord(Request $request)
-    {
-        // 1. Validar el token de seguridad (puedes cambiar 'ZafiroRapido' por lo que desees)
-        $secretToken = env('QUICK_FINANCE_TOKEN', 'ZafiroRapido');
-        if ($request->token !== $secretToken) {
-            abort(403, 'Acceso denegado. Token inválido.');
-        }
-
-        // 2. Validar parámetros básicos
-        $request->validate([
-            'tipo' => 'required|in:ingreso,gasto',
-            'concepto' => 'required|string|max:255',
-            'monto' => 'required|numeric|min:0',
+        return response()->json([
+            'success' => true, 
+            'id' => $invoice->id,
+            'registrado_por' => auth()->user()->name ?? 'Sistema'
         ]);
-
-        $tipo = $request->tipo;
-        $concepto = $request->concepto;
-        $monto = $request->monto;
-        $fecha = now()->toDateString();
-
-        if ($tipo === 'gasto') {
-            // Guardar como Gasto
-            \App\Models\FinanceExpense::create([
-                'date' => $fecha,
-                'concept' => $concepto,
-                'amount' => $monto,
-                'is_invoiced' => false,
-            ]);
-        } else {
-            // Guardar como Ingreso (Trámite Exprés Completado)
-            $entry = \App\Models\FinanceEntry::create([
-                'date' => $fecha,
-                'client_name' => $concepto, // Usamos el concepto como nombre del cliente/origen
-                'service_type' => 'Ingreso Rápido',
-                'original_amount' => $monto,
-                'iva_mode' => 'sin_iva',
-                'fees' => $monto,
-                'iva' => 0,
-                'total_with_iva' => $monto,
-                'advance_payment' => $monto,
-                'balance' => 0,
-                'status' => 'Completado',
-                'is_declared' => false,
-            ]);
-
-            // Registrar el abono automáticamente
-            \App\Models\FinancePayment::create([
-                'finance_entry_id' => $entry->id,
-                'date' => $fecha,
-                'amount' => $monto,
-                'receipt_number' => 'Exprés',
-            ]);
-        }
-
-        // 3. Retornar la vista de éxito con los datos
-        return view('finanzas.quick', compact('tipo', 'concepto', 'monto'));
     }
 }

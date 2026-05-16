@@ -14,6 +14,10 @@ return new class extends Migration
             $table->string('concept');
             $table->decimal('amount', 12, 2);
             $table->boolean('is_invoiced')->default(false); // facturado
+            
+            // Llave foránea para saber quién registró el gasto
+            $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
+            
             $table->timestamps();
         });
     }

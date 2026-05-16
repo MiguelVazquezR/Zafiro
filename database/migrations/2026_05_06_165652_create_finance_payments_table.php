@@ -14,6 +14,10 @@ return new class extends Migration
             $table->date('date');
             $table->decimal('amount', 12, 2);
             $table->string('receipt_number')->nullable();
+            
+            // Llave foránea para saber quién registró el abono
+            $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
+            
             $table->timestamps();
         });
     }

@@ -16,7 +16,6 @@
 </head>
 <body class="bg-slate-50">
  
-  
   <div id="root"></div>
 
   <script type="text/babel">
@@ -55,6 +54,7 @@
       const [ivaRecords, setIvaRecords] = useState([]);
       const [customServices, setCustomServices] = useState([]);
       const [expenses, setExpenses] = useState([]);
+      const [usersList, setUsersList] = useState([]);
       const [isLoading, setIsLoading] = useState(true);
 
       // Cargar datos iniciales desde el Backend
@@ -64,6 +64,7 @@
             setExpenses(data.expenses);
             setIvaRecords(data.invoices);
             setCustomServices(data.services);
+            if (data.users) setUsersList(data.users);
             setIsLoading(false);
         }).catch(err => console.error("Error cargando datos", err));
       }, []);
@@ -83,13 +84,13 @@
       const [declarationFolio, setDeclarationFolio] = useState('');
       const [selectedInvoiceIds, setSelectedInvoiceIds] = useState([]);
       const [paymentModal, setPaymentModal] = useState({ 
-        isOpen: false, entryId: null, amount: '', fecha: new Date().toISOString().split('T')[0], recibo: '' 
+        isOpen: false, entryId: null, amount: '', fecha: new Date().toISOString().split('T')[0], recibo: '', user_id: '' 
       });
 
       const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
       const [expenseFormData, setExpenseFormData] = useState({
         fecha: new Date().toISOString().split('T')[0],
-        concepto: '', monto: '', facturado: false
+        concepto: '', monto: '', facturado: false, user_id: ''
       });
 
       const defaultServices = [
@@ -104,7 +105,7 @@
         fecha: new Date().toISOString().split('T')[0],
         numeroRecibo: '', tipoServicio: 'Deslinde de Parcela', tipoServicioOtro: '',
         ubicacion: '', cliente: '', telefono: '', montoIngresado: '', modoIva: 'sin_iva',
-        anticipo: '', estado: 'En Proceso'
+        anticipo: '', estado: 'En Proceso', user_id: ''
       });
 
       const handleInputChange = (e) => {
@@ -119,15 +120,16 @@
           fecha: expenseFormData.fecha,
           concepto: expenseFormData.concepto,
           monto: parseFloat(expenseFormData.monto) || 0,
-          facturado: expenseFormData.facturado
+          facturado: expenseFormData.facturado,
+          user_id: expenseFormData.user_id || null
         };
 
         try {
             const res = await apiCall('/finanzas/expenses', 'POST', payload);
-            const newExpense = { ...payload, id: res.id };
+            const newExpense = { ...payload, id: res.id, registradoPor: res.registrado_por };
             setExpenses([newExpense, ...expenses]);
             setIsExpenseModalOpen(false);
-            setExpenseFormData({ fecha: new Date().toISOString().split('T')[0], concepto: '', monto: '', facturado: false });
+            setExpenseFormData({ fecha: new Date().toISOString().split('T')[0], concepto: '', monto: '', facturado: false, user_id: '' });
         } catch(e) { alert("Error guardando gasto"); }
       };
 
@@ -165,6 +167,7 @@
           honorarios: honorariosBase, iva: ivaCalculado, totalConIva: totalConIva,
           anticipo: anticipo, saldo: saldo, estado: estadoFinal,
           montoOriginal: monto, modoIvaOriginal: formData.modoIva,
+          user_id: formData.user_id || null
         };
 
         try {
@@ -175,18 +178,20 @@
                 newEntryData.declarado = oldEntry?.declarado || false;
                 newEntryData.folioFactura = oldEntry?.folioFactura || null;
                 newEntryData.historialPagos = oldEntry?.historialPagos || [];
+                newEntryData.registradoPor = oldEntry?.registradoPor;
                 setEntries(entries.map(ent => ent.id === editingId ? newEntryData : ent));
             } else {
                 const res = await apiCall('/finanzas/entries', 'POST', newEntryData);
                 newEntryData.id = res.id;
                 newEntryData.declarado = false;
-                newEntryData.historialPagos = anticipo > 0 ? [{id: Date.now(), fecha: formData.fecha, monto: anticipo, recibo: formData.numeroRecibo || 'S/N'}] : [];
+                newEntryData.registradoPor = res.registrado_por;
+                newEntryData.historialPagos = anticipo > 0 ? [{id: Date.now(), fecha: formData.fecha, monto: anticipo, recibo: formData.numeroRecibo || 'S/N', registradoPor: res.registrado_por}] : [];
                 setEntries([newEntryData, ...entries]);
             }
             
             setIsFormOpen(false);
             setEditingId(null);
-            setFormData({ fecha: new Date().toISOString().split('T')[0], numeroRecibo: '', tipoServicio: 'Deslinde de Parcela', tipoServicioOtro: '', ubicacion: '', cliente: '', telefono: '', montoIngresado: '', modoIva: 'sin_iva', anticipo: '', estado: 'En Proceso' });
+            setFormData({ fecha: new Date().toISOString().split('T')[0], numeroRecibo: '', tipoServicio: 'Deslinde de Parcela', tipoServicioOtro: '', ubicacion: '', cliente: '', telefono: '', montoIngresado: '', modoIva: 'sin_iva', anticipo: '', estado: 'En Proceso', user_id: '' });
         } catch (e) { alert("Error guardando trámite"); }
       };
 
@@ -198,10 +203,8 @@
       };
 
       const handleLiquidate = async (entry) => {
-          // Un atajo de liquidación (Requiere abrir modal de pago para registrar recibo, o forzarlo aquí)
-          // Para mantener el histórico limpio, abriremos el modal de pago pre-llenado
           setPaymentModal({
-              isOpen: true, entryId: entry.id, amount: entry.saldo.toString(), fecha: new Date().toISOString().split('T')[0], recibo: ''
+              isOpen: true, entryId: entry.id, amount: entry.saldo.toString(), fecha: new Date().toISOString().split('T')[0], recibo: '', user_id: ''
           });
       };
 
@@ -214,10 +217,10 @@
         if (amountToAdd <= 0) return;
 
         try {
-            const payload = { entryId: entry.id, fecha: paymentModal.fecha, amount: amountToAdd, recibo: paymentModal.recibo || 'S/N' };
+            const payload = { entryId: entry.id, fecha: paymentModal.fecha, amount: amountToAdd, recibo: paymentModal.recibo || 'S/N', user_id: paymentModal.user_id || null };
             const res = await apiCall('/finanzas/payments', 'POST', payload);
             
-            const newPago = { id: res.id, fecha: paymentModal.fecha, monto: amountToAdd, recibo: paymentModal.recibo || 'S/N' };
+            const newPago = { id: res.id, fecha: paymentModal.fecha, monto: amountToAdd, recibo: paymentModal.recibo || 'S/N', registradoPor: res.registrado_por };
             const newAnticipo = entry.anticipo + amountToAdd;
             const newSaldo = entry.totalConIva - newAnticipo;
             let newState = entry.estado;
@@ -229,7 +232,7 @@
                 ...ent, anticipo: newAnticipo, saldo: newSaldo, estado: newState, historialPagos: updatedHistorial
             } : ent));
             
-            setPaymentModal({ isOpen: false, entryId: null, amount: '', fecha: new Date().toISOString().split('T')[0], recibo: '' });
+            setPaymentModal({ isOpen: false, entryId: null, amount: '', fecha: new Date().toISOString().split('T')[0], recibo: '', user_id: '' });
         } catch(e) { alert("Error al guardar el pago"); }
       };
 
@@ -271,7 +274,7 @@
         try {
             const res = await apiCall('/finanzas/invoices', 'POST', payload);
             
-            const newRecord = { ...payload, id: res.id };
+            const newRecord = { ...payload, id: res.id, registradoPor: res.registrado_por };
             setIvaRecords([newRecord, ...ivaRecords]);
             setEntries(entries.map(ent => selectedInvoiceIds.includes(ent.id) ? { ...ent, declarado: true, folioFactura: folio } : ent));
 
@@ -356,7 +359,8 @@
           montoIngresado: entry.montoOriginal || entry.honorarios,
           modoIva: entry.modoIvaOriginal || 'sin_iva',
           tipoServicioOtro: serviceTypes.includes(entry.tipoServicio) ? '' : entry.tipoServicio,
-          tipoServicio: serviceTypes.includes(entry.tipoServicio) ? entry.tipoServicio : 'Otro'
+          tipoServicio: serviceTypes.includes(entry.tipoServicio) ? entry.tipoServicio : 'Otro',
+          user_id: '' // Al editar no sobreescribimos el user original a menos que lo cambie
         });
         setEditingId(entry.id);
         setIsFormOpen(true);
@@ -387,8 +391,7 @@
               </div>
               
               <div className="flex flex-wrap gap-2 md:gap-3">
-                {/* --- NUEVO BOTÓN PARA REGRESAR AL ERP --- */}
-                <a href="{{ route('dashboard') }}" className="flex items-center gap-2 bg-slate-800 hover:bg-slate-900 text-white px-4 py-2.5 rounded-xl font-semibold shadow-md transition-colors">
+                <a href="/dashboard" className="flex items-center gap-2 bg-slate-800 hover:bg-slate-900 text-white px-4 py-2.5 rounded-xl font-semibold shadow-md transition-colors">
                   🏠 Volver a ERP
                 </a>
 
@@ -456,12 +459,23 @@
                         ) : (
                           currentFilteredEntries.map((entry) => (
                             <tr key={entry.id} className="hover:bg-slate-50/50 transition-colors">
-                              <td className="p-4"><div className="font-medium text-slate-800">{entry.tipoServicio}</div><div className="text-sm text-slate-500">{entry.fecha}</div></td>
+                              <td className="p-4">
+                                <div className="font-medium text-slate-800">{entry.tipoServicio}</div>
+                                <div className="text-sm text-slate-500">{entry.fecha}</div>
+                                {entry.registradoPor && <div className="text-[10px] text-indigo-500 font-semibold mt-1 truncate max-w-[120px]" title="Registrado por">👤 {entry.registradoPor}</div>}
+                              </td>
                               <td className="p-4"><div className="font-medium text-slate-800">{entry.cliente}</div>{entry.telefono && (<div className="text-xs text-slate-500 mt-0.5">📞 {entry.telefono}</div>)}<div className="text-sm text-slate-500 truncate max-w-[150px] mt-0.5" title={entry.ubicacion}>{entry.ubicacion || 'Sin ubicación'}</div></td>
                               {currentView === 'history' && (<td className="p-4 text-center"><span className="px-2.5 py-1 bg-slate-100 text-slate-600 rounded-lg text-xs font-mono border border-slate-200">{entry.folioFactura || 'S/N'}</span></td>)}
                               <td className="p-4 text-right font-medium text-slate-700">{formatCurrency(entry.honorarios)}</td>
                               <td className="p-4 text-right text-orange-600">{formatCurrency(entry.iva)}</td>
-                              <td className="p-4 text-right"><div className="text-emerald-600 font-bold">{formatCurrency(entry.anticipo)}</div>{entry.historialPagos && entry.historialPagos.length > 0 && (<div className="text-[11px] text-slate-400 mt-0.5">Últ. Recibo: <span className="font-mono">#{entry.historialPagos[entry.historialPagos.length - 1].recibo || 'S/N'}</span></div>)}</td>
+                              <td className="p-4 text-right">
+                                <div className="text-emerald-600 font-bold">{formatCurrency(entry.anticipo)}</div>
+                                {entry.historialPagos && entry.historialPagos.length > 0 && (
+                                    <div className="text-[11px] text-slate-400 mt-0.5">
+                                        Últ. Recibo: <span className="font-mono">#{entry.historialPagos[entry.historialPagos.length - 1].recibo || 'S/N'}</span>
+                                    </div>
+                                )}
+                              </td>
                               <td className="p-4 text-right font-bold text-slate-900">{formatCurrency(entry.saldo)}</td>
                               <td className="p-4 text-center">
                                 {currentView === 'dashboard' ? (
@@ -471,7 +485,7 @@
                               <td className="p-4 text-center">
                                 <div className="flex justify-center gap-1 text-lg">
                                   {!entry.declarado && entry.saldo > 0 && (<button onClick={() => handleLiquidate(entry)} className="p-1 hover:text-blue-600" title="Liquidar Saldo">✅</button>)}
-                                  {!entry.declarado && (<button onClick={() => setPaymentModal({ isOpen: true, entryId: entry.id, amount: '', fecha: new Date().toISOString().split('T')[0], recibo: '' })} className="p-1 hover:text-emerald-600" title="Abonar Pago">💳</button>)}
+                                  {!entry.declarado && (<button onClick={() => setPaymentModal({ isOpen: true, entryId: entry.id, amount: '', fecha: new Date().toISOString().split('T')[0], recibo: '', user_id: '' })} className="p-1 hover:text-emerald-600" title="Abonar Pago">💳</button>)}
                                   <button onClick={() => openEditForm(entry)} className="p-1 hover:text-indigo-600" title="Modificar">✏️</button>
                                   <button onClick={() => deleteEntry(entry.id)} className="p-1 hover:text-red-600" title="Eliminar">🗑️</button>
                                 </div>
@@ -551,7 +565,10 @@
                          <tr><td colSpan="5" className="p-8 text-center text-slate-400">No hay gastos registrados en el sistema.</td></tr>
                       ) : expenses.map(ex => (
                          <tr key={ex.id} className="hover:bg-slate-50">
-                           <td className="p-4 text-sm text-slate-500">{ex.fecha}</td>
+                           <td className="p-4 text-sm text-slate-500">
+                               {ex.fecha}
+                               {ex.registradoPor && <div className="text-[10px] text-indigo-500 font-semibold mt-0.5" title="Registrado por">👤 {ex.registradoPor}</div>}
+                           </td>
                            <td className="p-4 font-medium text-slate-800">{ex.concepto}</td>
                            <td className="p-4">
                              {ex.facturado 
@@ -621,7 +638,17 @@
                       <thead><tr className="bg-slate-50 text-slate-500 text-sm uppercase tracking-wider"><th className="p-4">Fecha</th><th className="p-4">Folio Factura</th><th className="p-4 text-center">Trámites Agrupados</th><th className="p-4 text-right">Facturado (Total)</th><th className="p-4 text-right text-blue-600">Pago al SAT</th><th className="p-4 text-right text-green-600">Saldo Liberado</th></tr></thead>
                       <tbody className="divide-y divide-slate-100">
                         {ivaRecords.map((record) => (
-                          <tr key={record.id} className="hover:bg-slate-50"><td className="p-4">{record.fecha}</td><td className="p-4"><span className="px-3 py-1 bg-slate-100 rounded-lg text-sm font-mono">{record.folioFactura}</span></td><td className="p-4 text-center">{record.registrosLiquidacion}</td><td className="p-4 text-right"><div className="font-bold">{formatCurrency(record.totalGeneral)}</div><div className="text-xs text-slate-500">IVA: {formatCurrency(record.ivaTotal)}</div></td><td className="p-4 text-right text-blue-700 font-medium">{formatCurrency(record.pagoSat)}</td><td className="p-4 text-right font-bold text-green-700">{formatCurrency(record.liberado)}</td></tr>
+                          <tr key={record.id} className="hover:bg-slate-50">
+                            <td className="p-4">
+                                {record.fecha}
+                                {record.registradoPor && <div className="text-[10px] text-indigo-500 font-semibold mt-0.5" title="Registrado por">👤 {record.registradoPor}</div>}
+                            </td>
+                            <td className="p-4"><span className="px-3 py-1 bg-slate-100 rounded-lg text-sm font-mono">{record.folioFactura}</span></td>
+                            <td className="p-4 text-center">{record.registrosLiquidacion}</td>
+                            <td className="p-4 text-right"><div className="font-bold">{formatCurrency(record.totalGeneral)}</div><div className="text-xs text-slate-500">IVA: {formatCurrency(record.ivaTotal)}</div></td>
+                            <td className="p-4 text-right text-blue-700 font-medium">{formatCurrency(record.pagoSat)}</td>
+                            <td className="p-4 text-right font-bold text-green-700">{formatCurrency(record.liberado)}</td>
+                          </tr>
                         ))}
                         {ivaRecords.length === 0 && <tr><td colSpan="6" className="p-8 text-center text-slate-400">No hay facturas registradas.</td></tr>}
                       </tbody>
@@ -641,6 +668,14 @@
                     <div><label className="text-sm font-semibold">Concepto (Ej. Gasolina, Papelería, Equipo)</label><input required type="text" value={expenseFormData.concepto} onChange={e => setExpenseFormData({...expenseFormData, concepto: e.target.value})} className="w-full p-2 border rounded-lg" /></div>
                     <div><label className="text-sm font-semibold">Monto del Gasto</label><input required type="number" step="0.01" min="0" value={expenseFormData.monto} onChange={e => setExpenseFormData({...expenseFormData, monto: e.target.value})} className="w-full p-2 border rounded-lg" /></div>
                     
+                    <div>
+                        <label className="text-sm font-semibold text-slate-700">Registrado por (Opcional)</label>
+                        <select value={expenseFormData.user_id} onChange={e => setExpenseFormData({...expenseFormData, user_id: e.target.value})} className="w-full p-2 border border-slate-200 rounded-lg bg-slate-50 text-slate-700">
+                            <option value="">(Mi Usuario Actual)</option>
+                            {usersList.map(u => <option key={u.id} value={u.id}>{u.name}</option>)}
+                        </select>
+                    </div>
+
                     <div className="flex items-center gap-3 mt-4 p-4 bg-slate-50 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-100 transition" onClick={() => setExpenseFormData({...expenseFormData, facturado: !expenseFormData.facturado})}>
                         <input type="checkbox" checked={expenseFormData.facturado} readOnly className="w-5 h-5 cursor-pointer accent-emerald-600" />
                         <label className="text-sm font-semibold cursor-pointer select-none">¿Fue facturado para deducir?</label>
@@ -669,6 +704,15 @@
                     <div className="col-span-2"><label className="text-sm font-semibold">Honorarios</label><div className="flex gap-2"><select name="modoIva" value={formData.modoIva} onChange={handleInputChange} className="p-2 border rounded-lg"><option value="sin_iva">Sin IVA</option><option value="con_iva">Con IVA</option></select><input required type="number" name="montoIngresado" value={formData.montoIngresado} onChange={handleInputChange} className="w-full p-2 border rounded-lg" /></div></div>
                     <div><label className="text-sm font-semibold">Anticipo</label><input type="number" name="anticipo" value={formData.anticipo} onChange={handleInputChange} className="w-full p-2 border rounded-lg" disabled={!!editingId} /></div>
                     <div><label className="text-sm font-semibold">Recibo #</label><input type="text" name="numeroRecibo" value={formData.numeroRecibo} onChange={handleInputChange} className="w-full p-2 border rounded-lg uppercase" disabled={!!editingId} /></div>
+                    
+                    <div className="col-span-2">
+                        <label className="text-sm font-semibold text-slate-700">Registrado por (Opcional)</label>
+                        <select name="user_id" value={formData.user_id || ''} onChange={handleInputChange} className="w-full p-2 border border-slate-200 rounded-lg bg-slate-50 text-slate-700">
+                            <option value="">(Mi Usuario Actual)</option>
+                            {usersList.map(u => <option key={u.id} value={u.id}>{u.name}</option>)}
+                        </select>
+                    </div>
+
                     <div className="col-span-2 flex gap-2 mt-4"><button type="button" onClick={() => setIsFormOpen(false)} className="flex-1 py-2 bg-slate-200 rounded-lg">Cancelar</button><button type="submit" className="flex-1 py-2 bg-indigo-600 text-white rounded-lg">Guardar</button></div>
                   </form>
                 </div>
@@ -682,7 +726,16 @@
                   <form onSubmit={handleSavePayment} className="space-y-4">
                     <div className="grid grid-cols-2 gap-4"><div><label className="text-sm font-semibold">Fecha</label><input required type="date" value={paymentModal.fecha} onChange={e => setPaymentModal({...paymentModal, fecha: e.target.value})} className="w-full p-2 border rounded-lg" /></div><div><label className="text-sm font-semibold">Recibo #</label><input type="text" value={paymentModal.recibo} onChange={e => setPaymentModal({...paymentModal, recibo: e.target.value})} className="w-full p-2 border rounded-lg uppercase" /></div></div>
                     <div><label className="text-sm font-semibold">Monto</label><input required type="number" value={paymentModal.amount} onChange={e => setPaymentModal({...paymentModal, amount: e.target.value})} className="w-full p-2 border rounded-lg" /></div>
-                    <div className="flex gap-2"><button type="button" onClick={() => setPaymentModal({ isOpen: false, entryId: null, amount: '', fecha: new Date().toISOString().split('T')[0], recibo: '' })} className="flex-1 py-2 bg-slate-200 rounded-lg">Cancelar</button><button type="submit" className="flex-1 py-2 bg-emerald-600 text-white rounded-lg">Guardar</button></div>
+                    
+                    <div>
+                        <label className="text-sm font-semibold text-slate-700">Recibido por (Opcional)</label>
+                        <select value={paymentModal.user_id} onChange={e => setPaymentModal({...paymentModal, user_id: e.target.value})} className="w-full p-2 border border-slate-200 rounded-lg bg-slate-50 text-slate-700">
+                            <option value="">(Mi Usuario Actual)</option>
+                            {usersList.map(u => <option key={u.id} value={u.id}>{u.name}</option>)}
+                        </select>
+                    </div>
+
+                    <div className="flex gap-2"><button type="button" onClick={() => setPaymentModal({ isOpen: false, entryId: null, amount: '', fecha: new Date().toISOString().split('T')[0], recibo: '', user_id: '' })} className="flex-1 py-2 bg-slate-200 rounded-lg">Cancelar</button><button type="submit" className="flex-1 py-2 bg-emerald-600 text-white rounded-lg">Guardar</button></div>
                   </form>
                 </div>
               </div>
